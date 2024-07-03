@@ -51,7 +51,7 @@ namespace Zombies
         // Abstracted this incase we do ADS on guns we will want to Lerp the FOV down by the ADS FOV scale.
         void SetFov(float fov, float t = 1f)
         {
-            viewCamera.fieldOfView = fov;   
+            viewCamera.fieldOfView = fov;
         }
 
         void UpdateCameraRotation()

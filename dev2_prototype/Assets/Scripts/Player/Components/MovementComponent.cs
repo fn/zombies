@@ -13,7 +13,7 @@ namespace Zombies
         [SerializeField] float JumpPower;
         [SerializeField] float CrouchHeight;
         [SerializeField] float StandHeight;
-        
+
         // Player movement vector.
         Vector3 movement;
 
