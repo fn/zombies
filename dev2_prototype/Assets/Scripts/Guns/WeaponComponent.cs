@@ -22,20 +22,10 @@ public class WeaponComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Press button to shoot
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Shoot();
-        }
-
-        if (Input.GetButtonDown("Reload"))
-        {
-            Reload();
-        }
 
     }
 
-    public void Shoot()
+    public void Shoot(Vector3 origin, Vector3 direction)
     {
         float shotCooldown = 1f / rateOfFire;
 
@@ -49,6 +39,8 @@ public class WeaponComponent : MonoBehaviour
         currentAmmo--;
 
         // Implement actual shooting mechanics (raycasting, instantiating bullets, etc.) here
+
+        Debug.DrawRay(origin, direction);
     }
 
     public void Reload()

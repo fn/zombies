@@ -6,7 +6,7 @@ namespace Zombies
     public class ViewComponent : MonoBehaviour
     {
         // Our target view FOV.
-        [SerializeField] float viewFOV;
+        [SerializeField] public float viewFOV;
 
         // Our view look sensitivity.
         [SerializeField] float lookSensitivity;
@@ -15,7 +15,7 @@ namespace Zombies
         [SerializeField] bool invertY;
 
         // Our current camera attached to our view.
-        [SerializeField] Camera viewCamera;
+        [SerializeField] public Camera viewCamera;
 
         // We don't need to clamp the yaw like we do the pitch. Although it should just reset between (0 & 360) or (180 & -180)
         private const float MAX_PITCH = 89f;
@@ -26,16 +26,14 @@ namespace Zombies
 
         void Start()
         {
-
+            // Set the view camera's field of view.
+            SetFov(viewFOV);
         }
 
         void Update()
         {
             // Lock the cursor. (This should probably be done in the UI eventually)
             LockInput();
-
-            // Set the view camera's field of view.
-            SetFov(viewFOV);
 
             // Update the view camera's rotation.
             UpdateCameraRotation();
@@ -49,9 +47,9 @@ namespace Zombies
         }
 
         // Abstracted this incase we do ADS on guns we will want to Lerp the FOV down by the ADS FOV scale.
-        void SetFov(float fov, float t = 1f)
+        public void SetFov(float fov, float t = 1f)
         {
-            viewCamera.fieldOfView = fov;
+            viewCamera.fieldOfView = Mathf.Lerp(viewCamera.fieldOfView, fov, t);
         }
 
         void UpdateCameraRotation()
