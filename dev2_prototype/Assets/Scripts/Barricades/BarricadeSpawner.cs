@@ -28,6 +28,8 @@ public class BarricadeSpawner : MonoBehaviour
                 {
                     barricade.StartRepair();
                 }
+                else
+                    Debug.Log("barricade = null");
             }
         }
     }
@@ -47,17 +49,27 @@ public class BarricadeSpawner : MonoBehaviour
                 {
                     barricade.StopRepair();
                 }
-            }
+                else
+                    Debug.Log("barricade = null");
+            } 
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+            PurchaseAttempt();
+
+    }
+
+    public void PurchaseAttempt()
     {
         // player in range
-        if (other.CompareTag("Player") && playerInRange)
-        {   
+        if (playerInRange)
+        {
+
             // purchase barricade
-            if (Input.GetKeyDown(KeyCode.E) && PLACEHOLDERMONEY >= purchaseCost)
+            if (PLACEHOLDERMONEY >= purchaseCost)
             {
                 // is the child active or not
                 if (!barricadeToSpawn.activeSelf)
@@ -68,7 +80,11 @@ public class BarricadeSpawner : MonoBehaviour
                     // reduce player money by cost
                     PLACEHOLDERMONEY -= purchaseCost;
                 }
+                else
+                    Debug.Log("barricadeToSpawn is spawned");
             }
+            else
+                Debug.Log("player cannot afford");
         }
     }
 
@@ -76,11 +92,15 @@ public class BarricadeSpawner : MonoBehaviour
     {
         // set the object to active
         barricadeToSpawn.SetActive(true);
+        Debug.Log("barricade SetActive(true)");
+
         Barricade barricade = barricadeToSpawn.GetComponent<Barricade>();
-        if(barricade != null)
+        if (barricade != null)
         {
             barricade.ResetHealth();
         }
+        else
+            Debug.Log("barricade = null");
     }
 
 }

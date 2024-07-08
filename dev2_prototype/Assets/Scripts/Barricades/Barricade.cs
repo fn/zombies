@@ -69,16 +69,20 @@ public class Barricade : MonoBehaviour
     public void TakeDamage(float amount)
     {
         Health -= amount;
+        Debug.Log("TakeDamage barricade");
+
         StartCoroutine(FlashDamage());
         if (Health <= 0)
         {
             gameObject.SetActive(false);
+            Debug.Log("barricade SetActive(false)");
         }
     }
 
     public void Repair(float amount)
     {
         Health =+ amount;
+        Debug.Log("Repair barricade");
     }
 
     private void RepairBarricade()
@@ -113,6 +117,7 @@ public class Barricade : MonoBehaviour
     public void ResetHealth()
     {
         Health = maxHealth;
+        Debug.Log("ResetHealth barricade");
     }
 
     // Update is called once per frame
