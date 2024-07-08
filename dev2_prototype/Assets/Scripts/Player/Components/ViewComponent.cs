@@ -6,7 +6,7 @@ namespace Zombies
     public class ViewComponent : MonoBehaviour
     {
         // Our target view FOV.
-        [SerializeField] float viewFOV;
+        [SerializeField] public float viewFOV;
 
         // Our view look sensitivity.
         [SerializeField] float lookSensitivity;
@@ -15,7 +15,16 @@ namespace Zombies
         [SerializeField] bool invertY;
 
         // Our current camera attached to our view.
-        [SerializeField] Camera viewCamera;
+        [SerializeField] public Camera viewCamera;
+
+        [SerializeField] public Transform currentViewModel;
+
+        [SerializeField] public Vector3 recoilEndRot;
+        [SerializeField] public float recoilRecoveryTime;
+        Vector3 originalViewModelRot;
+
+        bool isRecoiling;
+        bool isRecovering;
 
         // We don't need to clamp the yaw like we do the pitch. Although it should just reset between (0 & 360) or (180 & -180)
         private const float MAX_PITCH = 89f;
@@ -26,19 +35,20 @@ namespace Zombies
 
         void Start()
         {
-
-        }
-
-        void Update()
-        {
             // Lock the cursor. (This should probably be done in the UI eventually)
             LockInput();
 
             // Set the view camera's field of view.
             SetFov(viewFOV);
+        }
 
+        void Update()
+        {
             // Update the view camera's rotation.
             UpdateCameraRotation();
+
+            // Update our recoil animation.
+            UpdateViewModelRecoil();
         }
 
         // Locks the cursor to the window.
@@ -49,9 +59,9 @@ namespace Zombies
         }
 
         // Abstracted this incase we do ADS on guns we will want to Lerp the FOV down by the ADS FOV scale.
-        void SetFov(float fov, float t = 1f)
+        public void SetFov(float fov, float t = 1f)
         {
-            viewCamera.fieldOfView = fov;
+            viewCamera.fieldOfView = Mathf.Lerp(viewCamera.fieldOfView, fov, t);
         }
 
         void UpdateCameraRotation()
@@ -69,6 +79,40 @@ namespace Zombies
 
             // Rotate the player on the y-axis.
             transform.Rotate(Vector3.up * lookAngles.y);
+        }
+
+        void UpdateViewModelRecoil()
+        {
+            // TODO: Replace all this crap with an animator.
+            // TODO: Check against the weapon itself. This will add recoil regardless if we really shot.
+            if (Input.GetButtonDown("Fire1") && !isRecoiling)
+            {
+                originalViewModelRot = currentViewModel.localEulerAngles;
+                isRecoiling = true;
+            }
+
+            // Apply recoil.
+            if (isRecoiling)
+            {
+                // Apply viewmodel recoil.
+                currentViewModel.localRotation = Quaternion.Lerp(currentViewModel.localRotation, Quaternion.Euler(recoilEndRot), Time.deltaTime * recoilRecoveryTime);
+
+                if (currentViewModel.localEulerAngles == recoilEndRot)
+                {
+                    isRecovering = true;
+                    isRecoiling = false;
+                }
+            }
+
+            // Recover from the recoil.
+            if (isRecovering)
+            {
+                // Apply viewmodel recoil.
+                currentViewModel.localRotation = Quaternion.Lerp(currentViewModel.localRotation, Quaternion.Euler(originalViewModelRot), Time.deltaTime * recoilRecoveryTime);
+
+                if (currentViewModel.localEulerAngles == originalViewModelRot)
+                    isRecovering = false;
+            }
         }
     }
 }
