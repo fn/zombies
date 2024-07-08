@@ -6,10 +6,89 @@ using UnityEngine;
 
 public class BaseZombie : MonoBehaviour, ZombieStates
 {
-//variables
-
-
 public enum enemyState {NORMAL, SEEK, ATTACK, FLEE};
+//get and set
+public int HP(){
+    return hp;
+}
+public void HP(int i){
+    hp = i;
+}
+
+public int AttackDMG(){
+    return attackDamage;
+}
+public void AttackDMG(int i){
+    attackDamage = i;
+}
+
+public float AttackSPD(){
+    return attackSpeed;
+}
+
+public void AttackSPD(int i){
+    attackSpeed = i;
+}
+
+public int MoveSPD(){
+    return movementSpeed;
+}
+public void MoveSPD(int i){
+    movementSpeed += i;
+}
+
+public int DestructionPWR(){
+    return destructionPower;
+}
+public void DestructionPWR(int i){
+    destructionPower = i;
+}
+
+public int Cost(){
+    return cost;
+}
+public void Cost(int i){
+    cost = i;
+}
+
+public bool IsAttacking(){
+    return attacking;
+}
+void IsAttacking(bool i){
+    attacking = i;
+}
+void IsAttackingToggle(){
+    attacking = !attacking;
+}
+
+public bool SeesPlayer(){
+    return seesPlayer;
+}
+public void SeesPlayer(bool input){
+    seesPlayer = input;
+}
+public enemyState State(){
+    return state;
+}
+public void State(int i){
+    state = (enemyState)i;
+}
+public void State(enemyState i){
+    state = i;
+}
+
+
+//states DO NOT TOUCH THESE ISTFG
+virtual public void Normal(){}
+virtual public void Seek(){}
+virtual public void Attack(){}
+virtual public void Flee(){}
+
+
+//everything below this is protected or privated by the class and wont be able to accessed by other classes
+
+
+
 [SerializeField] protected int hp;
 [SerializeField] protected int attackDamage;
 [SerializeField] protected float attackSpeed;
@@ -37,10 +116,6 @@ protected Vector3 playerDir;
 
 protected GameObject player;
 
-
-
-int layerMask;
-
 void Start(){
     render = GetComponent<Renderer>();
     colorOrig = render.material.color;
@@ -64,76 +139,14 @@ void Update(){
     }
 }
 
-//get and set
-int HP(int hp_ = 0){
-    hp += hp_;
-    return hp;
-}
-
-int AttackDMG(int input = 0){
-    attackDamage += input;
-    return attackDamage;
-}
-
-public float AttackSPD(float i = 0){
-    attackSpeed += i;
-    return attackSpeed;
-}
-
-int MoveSPD(int i = 0){
-    movementSpeed += i;
-    return movementSpeed;
-}
-
-int DestructionPWR(int i = 0){
-    destructionPower += 0;
-    return destructionPower;
-}
-
-int Cost(int i = 0){
-    cost += i;
-    return cost;
-}
-
-public bool SeesPlayer(){
-    return seesPlayer;
-}
-public bool SeesPlayer(bool input){
-    seesPlayer = input;
-    return seesPlayer;
-}
-public enemyState State(){
-    return state;
-}
-public enemyState State(int i){
-    state = (enemyState)i;
-    return state;
-}
-public enemyState State(enemyState i){
-    state = i;
-    return state;
-}
-
-
-
-virtual public void Normal(){}
-virtual public void Seek(){}
-virtual public void Attack(){}
-virtual public void Flee(){}
-
 protected void UpdatePlayerDir(){
     playerDir = player.transform.position - transform.position;
 }
-public void Move(){
+protected void Move(){
     agent.stoppingDistance = origStoppingDistance;
     UpdatePlayerDir();
     agent.SetDestination(player.transform.position);
 }
-
-
-
-
-
 protected IEnumerator Attacking(){
     attacking = true;
     render.material.color = colorPrimed;
@@ -155,7 +168,6 @@ protected void VisibilityCheck(){
         }
     }
 }
-
 protected IEnumerator TargetCheck(float delay = 0.1f){
     yield return new WaitForSeconds(delay);
 
