@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8525642879718419542}
+  - component: {fileID: 8525642879718419546}
   - component: {fileID: 8525642879718419543}
   - component: {fileID: 8525642879718419544}
   - component: {fileID: 8525642879718419545}
-  - component: {fileID: 8525642879718419546}
   m_Layer: 0
   m_Name: Barricade
   m_TagString: Untagged
@@ -35,6 +35,25 @@ Transform:
   m_Father: {fileID: 8525642880432682003}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8525642879718419546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8525642879718419547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84f739fb79f8d664b82ca1e9cb9bc98d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repairHealthAmount: 1
+  repairRateInterval: 1
+  repairRateCost: 1
+  PLACEHOLDERMONEY: 10
+  maxHealth: 5
+  model: {fileID: 8525642879718419544}
+  damageFlash: {r: 0, g: 0, b: 0, a: 0}
 --- !u!33 &8525642879718419543
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -98,25 +117,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8525642879718419546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8525642879718419547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84f739fb79f8d664b82ca1e9cb9bc98d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  repairHealthAmount: 1
-  repairRateInterval: 1
-  repairRateCost: 1
-  PLACEHOLDERMONEY: 10
-  maxHealth: 5
-  model: {fileID: 8525642879718419544}
-  damageFlash: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &8525642880432682005
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,8 +126,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8525642880432682003}
-  - component: {fileID: 8525642880432682004}
   - component: {fileID: 8525642880432682002}
+  - component: {fileID: 8525642880432682004}
   m_Layer: 0
   m_Name: SimpleBarricade
   m_TagString: Untagged
@@ -151,19 +151,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8525642880432682004
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8525642880432682005}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 5, y: 1.5, z: 3}
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &8525642880432682002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,3 +166,16 @@ MonoBehaviour:
   barricadeToSpawn: {fileID: 8525642879718419547}
   purchaseCost: 0
   PLACEHOLDERMONEY: 5
+--- !u!65 &8525642880432682004
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8525642880432682005}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 1.5, z: 3}
+  m_Center: {x: 0, y: 1, z: 0}

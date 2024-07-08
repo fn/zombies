@@ -58,16 +58,15 @@ public class BarricadeSpawner : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
-            PurchaseAttempt();
+            PurchaseBarricade();
 
     }
 
-    public void PurchaseAttempt()
+    public void PurchaseBarricade()
     {
         // player in range
         if (playerInRange)
         {
-
             // purchase barricade
             if (PLACEHOLDERMONEY >= purchaseCost)
             {

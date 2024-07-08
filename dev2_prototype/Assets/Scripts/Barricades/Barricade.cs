@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Barricade : MonoBehaviour
 {
-    // repair logic
+    // repair logic called every Invoke
     [SerializeField] float repairHealthAmount;
     [SerializeField] float repairRateInterval;
-    private bool isRepairing = false;
-
-    // this is called every invoke
     [SerializeField] float repairRateCost;
+    private bool isRepairing = false;
 
     public float PLACEHOLDERMONEY = 10f;
 
@@ -38,11 +36,8 @@ public class Barricade : MonoBehaviour
 
     // its model
     [SerializeField] Renderer model;
-
     // what damage it should flash
     [SerializeField] Color damageFlash;
-
-
     // default color
     Color defaultColor;
 
@@ -81,13 +76,14 @@ public class Barricade : MonoBehaviour
 
     public void Repair(float amount)
     {
-        Health =+ amount;
-        Debug.Log("Repair barricade");
+        Health += amount;
+        
     }
 
     private void RepairBarricade()
     {
-        if(gameObject.activeSelf && PLACEHOLDERMONEY >= repairRateCost)
+        // barricade active && can be afforded && reason to repair
+        if(gameObject.activeSelf && PLACEHOLDERMONEY >= repairRateCost && currentHealth < maxHealth)
         {
             Repair(repairHealthAmount);
             PLACEHOLDERMONEY -= repairRateCost;
@@ -102,6 +98,7 @@ public class Barricade : MonoBehaviour
 
             // how often the barricade is repaired, based on Time.timeScale
             InvokeRepeating(nameof(RepairBarricade), repairRateInterval, repairRateInterval);
+            Debug.Log("RepairBarricade InvokeRepeating");
         }
     }
 
@@ -111,6 +108,7 @@ public class Barricade : MonoBehaviour
         {
             isRepairing = false;
             CancelInvoke(nameof(RepairBarricade));
+            Debug.Log("RepairBarricade CancelInvoke");
         }
     }
 
