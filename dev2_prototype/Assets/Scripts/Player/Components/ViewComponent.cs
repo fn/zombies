@@ -35,15 +35,15 @@ namespace Zombies
 
         void Start()
         {
+            // Lock the cursor. (This should probably be done in the UI eventually)
+            LockInput();
+
             // Set the view camera's field of view.
             SetFov(viewFOV);
         }
 
         void Update()
         {
-            // Lock the cursor. (This should probably be done in the UI eventually)
-            LockInput();
-
             // Update the view camera's rotation.
             UpdateCameraRotation();
 
@@ -83,6 +83,7 @@ namespace Zombies
 
         void UpdateViewModelRecoil()
         {
+            // TODO: Replace all this crap with an animator.
             // TODO: Check against the weapon itself. This will add recoil regardless if we really shot.
             if (Input.GetButtonDown("Fire1") && !isRecoiling)
             {
