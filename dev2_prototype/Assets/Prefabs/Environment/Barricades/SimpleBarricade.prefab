@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 8525642880432682004}
   m_Layer: 0
   m_Name: SimpleBarricade
-  m_TagString: Untagged
+  m_TagString: BarricadeSpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
