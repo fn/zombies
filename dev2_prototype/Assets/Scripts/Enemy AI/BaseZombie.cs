@@ -34,7 +34,7 @@ public int MoveSPD(){
     return movementSpeed;
 }
 public void MoveSPD(int i){
-    movementSpeed += i;
+    movementSpeed = i;
 }
 
 public int DestructionPWR(){
