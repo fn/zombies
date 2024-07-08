@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpawnerScript : MonoBehaviour
@@ -91,7 +92,7 @@ public class SpawnerScript : MonoBehaviour
         {
             nextWave = 0;
             Debug.Log("Waves Complete Looping...");
-            // Add win screen
+            // Add win screen here
         }
         else
         {
@@ -135,7 +136,7 @@ public class SpawnerScript : MonoBehaviour
     void SpawnEnemy(Transform _enemy)
     {
         Debug.Log("Spawning Enemy:" + _enemy.name); // write to console spawning enemy
-        Transform randomPoint = points[Random.Range (0, points.Length)]; // 
+        Transform randomPoint = points[Random.Range(0, points.Length)]; // 
 
         Instantiate(_enemy, randomPoint.position, randomPoint.rotation);
     }
