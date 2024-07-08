@@ -178,6 +178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229183ba35e69e14f96c89451561f10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 54537196}
+  seesPlayer: 0
+  nearPlayer: 0
+  detectionRange: 20
   hp: 10
   attackDamage: 5
   attackSpeed: 5
@@ -186,12 +190,8 @@ MonoBehaviour:
   destructionPower: 10
   cost: 5
   state: 1
-  detectionRange: 20
-  agent: {fileID: 54537196}
   colorPrimed: {r: 0.83410656, g: 1, b: 0.023584902, a: 0}
   attacking: 0
-  seesPlayer: 0
-  nearPlayer: 0
 --- !u!65 &54537198
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -349,6 +349,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 486405498}
+  - component: {fileID: 486405500}
+  - component: {fileID: 486405499}
   m_Layer: 0
   m_Name: MovePos
   m_TagString: Untagged
@@ -364,13 +366,52 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486405497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 54537201}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &486405499
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486405497}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 20
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 1
+--- !u!114 &486405500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486405497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b628f5d95c9b3b48b732701879a4c45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 486405499}
+  seesPlayer: 0
+  nearPlayer: 0
+  detectionRange: 200
+  placeFound: 0
 --- !u!1 &643943554
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +544,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4912dd7f9cbfb424eb165c0fcbebc3aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 999693845}
+  seesPlayer: 0
+  nearPlayer: 0
+  detectionRange: 20
   hp: 3
   attackDamage: 1
   attackSpeed: 0.5
@@ -511,12 +556,8 @@ MonoBehaviour:
   destructionPower: 1
   cost: 1
   state: 1
-  detectionRange: 20
-  agent: {fileID: 999693845}
   colorPrimed: {r: 1, g: 0.880132, b: 0, a: 0}
   attacking: 0
-  seesPlayer: 0
-  nearPlayer: 0
 --- !u!136 &999693847
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -924,6 +965,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b80a6b87834e464e95d2bedbec369df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 1288442321}
+  seesPlayer: 0
+  nearPlayer: 0
+  detectionRange: 30
   hp: 2
   attackDamage: 5
   attackSpeed: 1
@@ -932,12 +977,8 @@ MonoBehaviour:
   destructionPower: 0
   cost: 2
   state: 1
-  detectionRange: 30
-  agent: {fileID: 1288442321}
   colorPrimed: {r: 1, g: 0.9831489, b: 0, a: 0}
   attacking: 0
-  seesPlayer: 0
-  nearPlayer: 0
   fleeingDist: 5
   faceTargetSpeed: 3
   fleeing: 0

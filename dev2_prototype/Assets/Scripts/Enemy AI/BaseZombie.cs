@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class BaseZombie : MonoBehaviour, ZombieStates
+public class BaseZombie : BaseAI, ZombieStates
 {
 public enum enemyState {NORMAL, SEEK, ATTACK, FLEE};
 //get and set
@@ -97,29 +97,20 @@ virtual public void Flee(){}
 [SerializeField] protected int destructionPower;
 [SerializeField] protected int cost;
 [SerializeField] protected enemyState state;
-[SerializeField] protected int detectionRange;
 
-[SerializeField] protected UnityEngine.AI.NavMeshAgent agent;
+
+
 protected Color colorOrig;
 [SerializeField] protected Color colorPrimed;
 
 protected Renderer render;
 
-float origStoppingDistance;
-
-protected Vector3 playerDir;
-
 [SerializeField] protected bool attacking;
 
-[SerializeField] protected bool seesPlayer;
-[SerializeField] protected bool nearPlayer;
-
-protected GameObject player;
-
 void Start(){
+    player = HordeManager.instance.Player();
     render = GetComponent<Renderer>();
     colorOrig = render.material.color;
-    player = HordeManager.instance.Player();
     origStoppingDistance = agent.stoppingDistance;
 }
 void Update(){
@@ -139,14 +130,8 @@ void Update(){
     }
 }
 
-protected void UpdatePlayerDir(){
-    playerDir = player.transform.position - transform.position;
-}
-protected void Move(){
-    agent.stoppingDistance = origStoppingDistance;
-    UpdatePlayerDir();
-    agent.SetDestination(player.transform.position);
-}
+
+
 protected IEnumerator Attacking(){
     attacking = true;
     render.material.color = colorPrimed;
@@ -155,28 +140,7 @@ protected IEnumerator Attacking(){
     render.material.color = colorOrig;
     state = enemyState.SEEK;
 }
-protected void VisibilityCheck(){
-    UpdatePlayerDir();
-    RaycastHit vis;
-    if (Physics.Raycast(transform.position, playerDir, out vis, detectionRange)){
-        Debug.DrawRay(transform.position, playerDir, Color.green);
-        if (vis.collider.CompareTag("Player") && !vis.collider.CompareTag("Obstacle")){
-            seesPlayer = true;
-        }
-        else{
-            seesPlayer = false;
-        }
-    }
-}
-protected IEnumerator TargetCheck(float delay = 0.1f){
-    yield return new WaitForSeconds(delay);
 
-    if (agent.remainingDistance < agent.stoppingDistance) {
-        nearPlayer = true;
-    }
-    else {
-        nearPlayer = false;
-    }
-}
+
 }
 
