@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - WallSpawner
   - Enemy
   - Obstacle
+  - Barricade
+  - BarricadeSpawner
   layers:
   - Default
   - TransparentFX
