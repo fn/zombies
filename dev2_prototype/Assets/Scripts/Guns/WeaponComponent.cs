@@ -9,6 +9,7 @@ public class WeaponComponent : MonoBehaviour
     public int ammoCapacity;
     public int currentAmmo;
     public bool specialGun;
+    public bool infAmmo;
     [SerializeField] GameObject Bullet_Standard;
 
     private float lastShotTime;
@@ -48,8 +49,10 @@ public class WeaponComponent : MonoBehaviour
 
         // Update the last shot time and decrease ammo count
         lastShotTime = Time.time;
-        currentAmmo--;
-
+        if (!infAmmo)
+        {
+            currentAmmo--;
+        }
         // Instantiate the bullet
         GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
 
