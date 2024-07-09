@@ -37,11 +37,16 @@ public class Ranged : BaseZombie
     
     
     public override void Attack(){
-        
-        if (attacking){
+        UpdatePlayerDir();
+        FaceTarget();
 
+        if (attacking)
+        {
+            Attacking();
             return;
         }
+
+
         if (Distance() < fleeingDist){
             fleeing = true;
             
@@ -58,16 +63,9 @@ public class Ranged : BaseZombie
             State(enemyState.SEEK);
             return;
         }
-        
-        
 
-        
 
-        if (!fleeing){
-            Attacking();
-            State(enemyState.SEEK);
-        }
-
+        Attacking();
     }
 
     public override void Flee(){

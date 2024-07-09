@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 617166675004446994}
   - component: {fileID: 617166675004446995}
   - component: {fileID: 617166675004446992}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RunnerTemp
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,6 +126,7 @@ MonoBehaviour:
   destructionPower: 1
   cost: 1
   state: 1
+  phase: 0
   colorPrimed: {r: 1, g: 0.880132, b: 0, a: 0}
   attacking: 0
 --- !u!195 &617166675004446992

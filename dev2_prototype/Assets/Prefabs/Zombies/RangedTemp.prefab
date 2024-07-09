@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 428340237826088456}
   - component: {fileID: 428340237826088463}
   - component: {fileID: 428340237826088461}
+  - component: {fileID: 8726429429620039804}
   m_Layer: 0
   m_Name: RangedTemp
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b80a6b87834e464e95d2bedbec369df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceTargetSpeed: 3
+  faceTargetSpeed: 10
   agent: {fileID: 428340237826088461}
   seesPlayer: 0
   nearPlayer: 0
@@ -56,17 +57,18 @@ MonoBehaviour:
   player: {fileID: 0}
   hp: 2
   attackDamage: 5
-  attackDelay: 1
+  attackDelay: 0.2
   attackCooldown: 2
   movementSpeed: 5
   destructionPower: 0
   cost: 2
   state: 1
+  phase: 0
   colorPrimed: {r: 1, g: 0.9831489, b: 0, a: 0}
   attacking: 0
-  fireRate: 0
+  fireRate: 1
   fleeingDist: 5
-  weapon: {fileID: 0}
+  weapon: {fileID: 8726429429620039804}
   fleeing: 0
 --- !u!33 &428340237826088457
 MeshFilter:
@@ -154,3 +156,24 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
+--- !u!114 &8726429429620039804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428340237826088460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6cbc517b58b4049b6675a4a2c28eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0
+  rateOfFire: 0
+  ammoCapacity: 300
+  currentAmmo: 300
+  magSize: 0
+  specialGun: 0
+  infAmmo: 1
+  layer: 
+  Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}

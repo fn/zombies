@@ -18,8 +18,11 @@ public class BaseAI : MonoBehaviour
 
     [SerializeField] protected GameObject player;
 
+    int layerMask;
+
 
     void Start(){
+        layerMask = LayerMask.NameToLayer("AttackArea");
         player = HordeManager.instance.Player();
     }
 
@@ -30,7 +33,7 @@ public class BaseAI : MonoBehaviour
     protected void VisibilityCheck(){
         UpdatePlayerDir();
         RaycastHit vis;
-        if (Physics.Raycast(transform.position, playerDir, out vis, detectionRange)){
+        if (Physics.Raycast(transform.position, playerDir, out vis, detectionRange, ~layerMask)){
             Debug.DrawRay(transform.position, playerDir, Color.green);
             if (vis.collider.CompareTag("Player") && !vis.collider.CompareTag("Obstacle")){
                 seesPlayer = true;
