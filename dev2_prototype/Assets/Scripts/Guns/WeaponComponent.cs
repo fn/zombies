@@ -10,6 +10,7 @@ public class WeaponComponent : MonoBehaviour
     public int currentAmmo;
     public bool specialGun;
     public bool infAmmo;
+    public string layer;
     [SerializeField] GameObject Bullet_Standard;
 
     private float lastShotTime;
@@ -55,29 +56,25 @@ public class WeaponComponent : MonoBehaviour
         }
         // Instantiate the bullet
         GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
-
-        if (bullet == null){
+        if (bullet == null)
+        {
             return;
         }
 
-        
-
+        bullet.layer = LayerMask.NameToLayer(layer);
         // Transfer the damage value to the bullet
         damage bulletDamage = bullet.GetComponent<damage>();
-        if (bulletDamage != null)
+        bulletDamage.SetDamage(damage);
+
+        // Apply velocity to the bullet
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            bulletDamage.SetDamage(damage);
-
-            // Apply velocity to the bullet
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.velocity = direction * bulletDamage.speed;
-            }
-
-            // Destroy the bullet after a certain time
-            Destroy(bullet, bulletDamage.destroyTime);
+            rb.velocity = direction * bulletDamage.speed;
         }
+
+        // Destroy the bullet after a certain time
+        Destroy(bullet, bulletDamage.destroyTime);
     }
 
     public void Reload()
