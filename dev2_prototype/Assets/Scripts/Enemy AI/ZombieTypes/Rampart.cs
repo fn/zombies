@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rampart : BaseZombie
 {
-    List<GameObject> affected = new List<GameObject>();
+    [SerializeField] public List<GameObject> affected = new List<GameObject>();
     public override void  Seek(){
         StartCoroutine(TargetCheck());
         VisibilityCheck();
@@ -35,17 +35,21 @@ public class Rampart : BaseZombie
     }
 
 
-    private void OnTriggerEnter(Collider other) {
-        affected.Add(other.gameObject);
-    }
-    private void OnTriggerExit(Collider other) {
-        affected.Remove(other.gameObject);
-    }
+    
     protected override void AttackLogic(){
         Debug.Log("Rampart Attack");
 
         if (affected.Count == 0){
             return;
+        }
+
+        foreach (GameObject obj in affected){
+            IDamage dmg = obj.GetComponent<IDamage>();
+            if (dmg == null){
+                continue;
+            }
+            dmg.takeDamage(AttackDMG());
+            Debug.Log("Attacking " + obj.name);
         }
     }
 }
