@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class BaseZombie : BaseAI, ZombieStates
+public class BaseZombie : BaseAI, ZombieStates, IDamage
 {
 public enum enemyState {NORMAL, SEEK, ATTACK, FLEE};
 //get and set
@@ -22,12 +22,12 @@ public void AttackDMG(int i){
     attackDamage = i;
 }
 
-public float AttackSPD(){
-    return attackSpeed;
+public float AttackDelay(){
+    return attackDelay;
 }
 
-public void AttackSPD(int i){
-    attackSpeed = i;
+public void AttackDelay(float i){
+    attackDelay = i;
 }
 
 public float AttackCD(){
@@ -98,7 +98,7 @@ virtual public void Flee(){}
 
 [SerializeField] protected int hp;
 [SerializeField] protected int attackDamage;
-[SerializeField] protected float attackSpeed;
+[SerializeField] protected float attackDelay;
 [SerializeField] protected float attackCooldown;
 [SerializeField] protected int movementSpeed;
 [SerializeField] protected int destructionPower;
@@ -144,12 +144,24 @@ void Update(){
     }
 }
 
+public void takeDamage(int amount){
+    hp -= amount;
+    if (hp <= 0){
+        Destroy(this);
+    }
+    StartCoroutine(FlashDamage() ); 
+}
 
 
+private IEnumerator FlashDamage(){
+    render.material.color = Color.red;
+    yield return new WaitForSeconds(.5f);
+    render.material.color = colorOrig;
+}
 protected IEnumerator Attacking(){
     attacking = true;
     render.material.color = colorPrimed;
-    yield return new WaitForSeconds(AttackSPD());
+    yield return new WaitForSeconds(AttackDelay());
     AttackLogic();
     render.material.color = colorOrig;
     yield return new WaitForSeconds(AttackCD());

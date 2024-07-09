@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class Ranged : BaseZombie
 {
+
+    void Start(){
+        weapon.damage = AttackDMG();
+        agent.speed = movementSpeed;
+        player = HordeManager.instance.Player();
+        render = GetComponent<Renderer>();
+        colorOrig = render.material.color;
+        origStoppingDistance = agent.stoppingDistance;
+    }
     [SerializeField] float fleeingDist;
     
+    [SerializeField] WeaponComponent weapon;
 
     [SerializeField] bool fleeing;
     public override void Seek(){
@@ -66,8 +76,6 @@ public class Ranged : BaseZombie
         //Debug.Log("Old: " + transform.position);
         agent.stoppingDistance = 0;
         agent.SetDestination(newPos);
-
-        Debug.Log("Distance: " + Distance());
         if (Distance() >= detectionRange){
             fleeing = false;
             State(enemyState.SEEK);

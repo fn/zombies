@@ -39,6 +39,6 @@ public class Runner : BaseZombie
     }
 
     protected override void AttackLogic(){
-        Debug.Log("Attack");
+
     }
 }
