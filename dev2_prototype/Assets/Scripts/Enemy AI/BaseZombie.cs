@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class BaseZombie : BaseAI, ZombieStates
+public class BaseZombie : BaseAI, ZombieStates, IDamage
 {
 public enum enemyState {NORMAL, SEEK, ATTACK, FLEE};
 //get and set
@@ -22,12 +22,19 @@ public void AttackDMG(int i){
     attackDamage = i;
 }
 
-public float AttackSPD(){
-    return attackSpeed;
+public float AttackDelay(){
+    return attackDelay;
 }
 
-public void AttackSPD(int i){
-    attackSpeed = i;
+public void AttackDelay(float i){
+    attackDelay = i;
+}
+
+public float AttackCD(){
+    return attackCooldown;
+}
+public void AttackCD(float i){
+    attackCooldown = i;
 }
 
 public int MoveSPD(){
@@ -91,12 +98,16 @@ virtual public void Flee(){}
 
 [SerializeField] protected int hp;
 [SerializeField] protected int attackDamage;
-[SerializeField] protected float attackSpeed;
+[SerializeField] protected float attackDelay;
 [SerializeField] protected float attackCooldown;
 [SerializeField] protected int movementSpeed;
 [SerializeField] protected int destructionPower;
 [SerializeField] protected int cost;
 [SerializeField] protected enemyState state;
+    protected float lastAttackTime;
+
+
+
 
 
 
@@ -108,12 +119,17 @@ protected Renderer render;
 [SerializeField] protected bool attacking;
 
 void Start(){
+    agent.speed = movementSpeed;
     player = HordeManager.instance.Player();
     render = GetComponent<Renderer>();
     colorOrig = render.material.color;
     origStoppingDistance = agent.stoppingDistance;
 }
 void Update(){
+    
+    if (!attacking){
+        movePosition = player.transform.position;
+    }
     switch (state){
         case enemyState.NORMAL:
         Normal();
@@ -128,19 +144,51 @@ void Update(){
         Flee();
         break;
     }
+    FaceTarget();
+}
+
+public void takeDamage(int amount){
+    hp -= amount;
+    if (hp <= 0){
+        Destroy(gameObject);
+    }
+    StartCoroutine(FlashDamage() ); 
 }
 
 
-
-protected IEnumerator Attacking(){
-    attacking = true;
-    render.material.color = colorPrimed;
-    yield return new WaitForSeconds(AttackSPD());
-    attacking = false;
+private IEnumerator FlashDamage(){
+    render.material.color = Color.red;
+    yield return new WaitForSeconds(.5f);
     render.material.color = colorOrig;
-    state = enemyState.SEEK;
 }
 
+
+protected void Attacking(){
+     if (!attacking)
+     {
+         lastAttackTime = Time.time;
+     }
+     FaceTarget();
+     attacking = true;
+      render.material.color = colorPrimed;
+
+        //new WaitForSeconds(AttackDelay());
+    if (!Wait(AttackDelay(), ref lastAttackTime))
+        return;
+    
+        
+    
+    AttackLogic();
+    render.material.color = colorOrig;
+   // return new WaitForSeconds(AttackCD());
+   if (!Wait(AttackCD(), ref lastAttackTime))
+        return;
+    attacking = false;
+  
+}
+
+protected virtual void AttackLogic(){}
+    
 
 }
 

@@ -4,31 +4,44 @@ using UnityEngine;
 
 public class Ranged : BaseZombie
 {
+    [SerializeField] float fireRate;
+
+    void Start(){
+        weapon.damage = AttackDMG();
+        weapon.rateOfFire = fireRate;
+        agent.speed = movementSpeed;
+        player = HordeManager.instance.Player();
+        render = GetComponent<Renderer>();
+        colorOrig = render.material.color;
+        origStoppingDistance = agent.stoppingDistance;
+    }
     [SerializeField] float fleeingDist;
-    [SerializeField] int faceTargetSpeed;
+    
+    [SerializeField] WeaponComponent weapon;
 
     [SerializeField] bool fleeing;
     public override void Seek(){
+        
+        
         agent.speed = movementSpeed;
         Move();
         VisibilityCheck();
         StartCoroutine(TargetCheck());
-        if (nearPlayer){
+        if (nearPlayer && seesPlayer){
             State(enemyState.ATTACK);
         }
     }
     
 
-    float Distance(){
-        float dist = Vector3.Distance(transform.position, player.transform.position);
-        return dist;
-    }
     
-    void FaceTarget(){
-        Quaternion rot = Quaternion.LookRotation(playerDir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
-    }
+    
+    
     public override void Attack(){
+        
+        if (attacking){
+
+            return;
+        }
         if (Distance() < fleeingDist){
             fleeing = true;
             
@@ -48,11 +61,11 @@ public class Ranged : BaseZombie
         
         
 
-        FaceTarget();
+        
 
-        if (!attacking && !fleeing){
-            StartCoroutine(Attacking());
-            Debug.Log("Attack");
+        if (!fleeing){
+            Attacking();
+            State(enemyState.SEEK);
         }
 
     }
@@ -65,12 +78,16 @@ public class Ranged : BaseZombie
         //Debug.Log("Old: " + transform.position);
         agent.stoppingDistance = 0;
         agent.SetDestination(newPos);
-
-        Debug.Log("Distance: " + Distance());
         if (Distance() >= detectionRange){
             fleeing = false;
             State(enemyState.SEEK);
         }
 
+    }
+
+    protected override void AttackLogic(){
+        
+        UpdatePlayerDir();
+        weapon.Shoot(transform.position, playerDir);
     }
 }

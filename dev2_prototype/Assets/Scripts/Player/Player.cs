@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Zombies
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IDamage
     {
         [SerializeField] MovementComponent Movement;
         [SerializeField] ViewComponent View;
@@ -13,7 +13,10 @@ namespace Zombies
         [SerializeField] Transform WeaponPivot;
 
         int HeldWeaponIndex;
-        WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; set => value = Weapons[HeldWeaponIndex]; }
+
+        public int Health, MaxHealth;
+
+        public WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; set => value = Weapons[HeldWeaponIndex]; }
 
         Vector3 origAimPosition;
 
@@ -36,13 +39,10 @@ namespace Zombies
 
         void UpdateWeapons()
         {
-            // Update held weapon index.
-            //for (int i = 0; i < Weapons.Count; i++)
-            //    if (Input.GetButtonDown($"Slot{i + 1}"))
-            //        HeldWeaponIndex = i;
-
             if (HeldWeapon == null)
                 return;
+
+            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.currentAmmo}/{HeldWeapon.remainingAmmo}");
 
             if (Input.GetButtonDown("Fire1"))
             {
@@ -60,10 +60,9 @@ namespace Zombies
 
         void UpdateAiming()
         {
-            IsAiming = false;
-            if (Input.GetButton("Fire2"))
-                IsAiming = true;
+            IsAiming = Input.GetButton("Fire2");
 
+            // This code below is kind of trash.
             float fovOffset = IsAiming ? 25f : 0f;
             View.SetFov(90f - fovOffset, Time.deltaTime * 2f);
 
@@ -71,6 +70,25 @@ namespace Zombies
                 WeaponPivot.localPosition = Vector3.Lerp(WeaponPivot.localPosition, new Vector3(0f, -0.2f, WeaponPivot.localPosition.z), Time.deltaTime * 10f);
             else
                 WeaponPivot.localPosition = Vector3.Lerp(WeaponPivot.localPosition, origAimPosition, Time.deltaTime * 10f);
+        }
+
+        public void takeDamage(int damage)
+        {
+            Health -= damage;
+
+            StartCoroutine(FlashHurtScreen());
+
+            if (Health <= 0)
+            {
+                GameManager.Instance.StateLose();
+            }
+        }
+
+        IEnumerator FlashHurtScreen()
+        {
+            GameManager.Instance.HurtScreen.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            GameManager.Instance.HurtScreen.SetActive(false);
         }
     }
 }

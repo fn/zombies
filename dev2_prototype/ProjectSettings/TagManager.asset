@@ -8,6 +8,10 @@ TagManager:
   - Obstacle
   - Barricade
   - BarricadeSpawner
+  - Wave1
+  - Wave2
+  - Wave3
+  - Final Wave
   layers:
   - Default
   - TransparentFX
@@ -19,7 +23,7 @@ TagManager:
   - Enemy
   - Enemy Bullet
   - Obstacle
-  - 
+  - ViewModel
   - 
   - 
   - 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BaseAI : MonoBehaviour
 {
+
+    [SerializeField] int faceTargetSpeed;
     protected float origStoppingDistance;
     [SerializeField] protected UnityEngine.AI.NavMeshAgent agent;
     [SerializeField] protected bool seesPlayer;
@@ -11,6 +13,8 @@ public class BaseAI : MonoBehaviour
     [SerializeField] protected int detectionRange;
 
     protected Vector3 playerDir;
+
+    protected Vector3 movePosition;
 
     [SerializeField] protected GameObject player;
 
@@ -32,25 +36,48 @@ public class BaseAI : MonoBehaviour
                 seesPlayer = true;
             }
             else{
-            seesPlayer = false;
+                seesPlayer = false;
             }
         }
     }
+    
 
     protected IEnumerator TargetCheck(float delay = 0.1f){
-    yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
 
-    if (agent.remainingDistance < agent.stoppingDistance) {
-        nearPlayer = true;
-    }
-    else {
-        nearPlayer = false;
-    }
+        if (Distance() <=  origStoppingDistance) {
+            nearPlayer = true;
+        }
+        else {
+            nearPlayer = false;
+        }
+
+        yield return new WaitForSeconds(delay);
     }
     
+    protected void FaceTarget(){
+        Quaternion rot = Quaternion.LookRotation(playerDir);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
+    }
+
+    protected float Distance(){
+        float dist = Vector3.Distance(transform.position, player.transform.position);
+        return dist;
+    }
     protected void Move(){
         agent.stoppingDistance = origStoppingDistance;
-        agent.SetDestination(player.transform.position);
+        agent.SetDestination(movePosition);
+    }
+
+    protected bool Wait(float waitTime, ref float lastWaitTime)
+    {
+        if (Time.time - lastWaitTime < waitTime)
+                return false;
+
+        lastWaitTime = Time.time;
+        return true;
+
+
     }
 }
 
