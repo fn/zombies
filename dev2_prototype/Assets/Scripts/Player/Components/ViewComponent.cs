@@ -19,15 +19,10 @@ namespace Zombies
 
         [SerializeField] public Transform currentViewModel;
 
-        [SerializeField] public Vector3 recoilEndRot;
-        [SerializeField] public float recoilRecoveryTime;
-        Vector3 originalViewModelRot;
-
-        bool isRecoiling;
-        bool isRecovering;
-
         // We don't need to clamp the yaw like we do the pitch. Although it should just reset between (0 & 360) or (180 & -180)
         private const float MAX_PITCH = 89f;
+
+        [SerializeField] public Animator animator;
 
         // X = pitch, Y = yaw
         Vector2 lookAngles;
@@ -85,34 +80,11 @@ namespace Zombies
         {
             // TODO: Replace all this crap with an animator.
             // TODO: Check against the weapon itself. This will add recoil regardless if we really shot.
-            if (Input.GetButtonDown("Fire1") && !isRecoiling)
+            if (Input.GetButtonDown("Fire1"))
             {
-                originalViewModelRot = currentViewModel.localEulerAngles;
-                isRecoiling = true;
+                animator.SetTrigger("Fire");
             }
 
-            // Apply recoil.
-            if (isRecoiling)
-            {
-                // Apply viewmodel recoil.
-                currentViewModel.localRotation = Quaternion.Lerp(currentViewModel.localRotation, Quaternion.Euler(recoilEndRot), Time.deltaTime * recoilRecoveryTime);
-
-                if (currentViewModel.localEulerAngles == recoilEndRot)
-                {
-                    isRecovering = true;
-                    isRecoiling = false;
-                }
-            }
-
-            // Recover from the recoil.
-            if (isRecovering)
-            {
-                // Apply viewmodel recoil.
-                currentViewModel.localRotation = Quaternion.Lerp(currentViewModel.localRotation, Quaternion.Euler(originalViewModelRot), Time.deltaTime * recoilRecoveryTime);
-
-                if (currentViewModel.localEulerAngles == originalViewModelRot)
-                    isRecovering = false;
-            }
         }
     }
 }
