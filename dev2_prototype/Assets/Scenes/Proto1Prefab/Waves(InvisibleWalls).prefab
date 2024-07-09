@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6100472346393443930}
   m_Layer: 0
-  m_Name: Wave 3 Walls
+  m_Name: Wave4Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,7 +368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6100472347623798273}
   m_Layer: 0
-  m_Name: Wave 1 Walls
+  m_Name: Wave2Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -401,7 +401,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6100472347920536264}
   m_Layer: 0
-  m_Name: Wave 2 Walls
+  m_Name: Wave3Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
