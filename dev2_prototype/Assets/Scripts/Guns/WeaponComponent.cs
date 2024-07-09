@@ -14,7 +14,7 @@ public class WeaponComponent : MonoBehaviour
     public string layer;
     [SerializeField] GameObject Bullet_Standard;
     int usedAmmo;
-    int remainingAmmo;
+    public int remainingAmmo;
     
 
     private float lastShotTime;
