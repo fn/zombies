@@ -14,7 +14,7 @@ namespace Zombies
 
         int HeldWeaponIndex;
 
-        int Health, MaxHealth;
+        public int Health, MaxHealth;
 
         public WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; set => value = Weapons[HeldWeaponIndex]; }
 

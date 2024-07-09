@@ -8,21 +8,22 @@ public class autoItemPickup : MonoBehaviour
     [SerializeField] enum pickupType { Health, Ammo }
     [SerializeField] pickupType type;
 
-    public int restoreAmount;
+    [SerializeField] int restoreAmount;
     public WeaponComponent weapon;
+    public Player player;
 
     private void OnTriggerEnter(Collider other)
     {
         if (type == pickupType.Health)
         {
             Destroy(gameObject);
-            //Player.HP = Player.HP + restoreAmount;
+             player.Health += restoreAmount;
 
         }
         if (type == pickupType.Ammo)
         {
             Destroy(gameObject);
-            weapon.currentAmmo = weapon.currentAmmo + restoreAmount;
+            weapon.currentAmmo += restoreAmount;
         }
     }
 }
