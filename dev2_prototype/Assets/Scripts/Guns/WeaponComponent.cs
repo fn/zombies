@@ -8,6 +8,8 @@ public class WeaponComponent : MonoBehaviour
     public float rateOfFire;
     public int ammoCapacity;
     public int currentAmmo;
+    public bool specialGun;
+    [SerializeField] GameObject Bullet_Standard;
 
     private float lastShotTime;
 
@@ -22,7 +24,17 @@ public class WeaponComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Handle shooting input
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Shoot(transform.position, transform.forward);
+        }
 
+        // Handle reload input
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
     }
 
     public void Shoot(Vector3 origin, Vector3 direction)
@@ -38,9 +50,25 @@ public class WeaponComponent : MonoBehaviour
         lastShotTime = Time.time;
         currentAmmo--;
 
-        // Implement actual shooting mechanics (raycasting, instantiating bullets, etc.) here
+        // Instantiate the bullet
+        GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
 
-        Debug.DrawRay(origin, direction);
+        // Transfer the damage value to the bullet
+        damage bulletDamage = bullet.GetComponent<damage>();
+        if (bulletDamage != null)
+        {
+            bulletDamage.SetDamage(damage);
+
+            // Apply velocity to the bullet
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.velocity = direction * bulletDamage.speed;
+            }
+
+            // Destroy the bullet after a certain time
+            Destroy(bullet, bulletDamage.destroyTime);
+        }
     }
 
     public void Reload()

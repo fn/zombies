@@ -1,5 +1,7 @@
 using UnityEngine;
+using TMPro;
 using Zombies;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -8,6 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuPause;
     [SerializeField] GameObject MenuWin;
     [SerializeField] GameObject MenuLose;
+
+    public TMP_Text AmmoHudText;
 
     public Player LocalPlayer;
     
