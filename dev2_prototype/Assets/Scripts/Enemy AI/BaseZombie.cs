@@ -203,8 +203,9 @@ protected void Attacking(){
                 break;
             case attackPhase.ATTACK:
                 if (attackTimer < 0) {
-                    AttackLogic();
                     phase++;
+                    AttackLogic();
+                    
                     attackTimer = AttackCD();
                 }
                 break;
