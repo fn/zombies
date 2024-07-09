@@ -14,16 +14,19 @@ public class autoItemPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (type == pickupType.Health)
+        if (other == player)
         {
-            Destroy(gameObject);
-             player.Health += restoreAmount;
+            if (type == pickupType.Health)
+            {
+                Destroy(gameObject);
+                player.Health += restoreAmount;
 
-        }
-        if (type == pickupType.Ammo)
-        {
-            Destroy(gameObject);
-            weapon.currentAmmo += restoreAmount;
+            }
+            if (type == pickupType.Ammo)
+            {
+                Destroy(gameObject);
+                weapon.currentAmmo += restoreAmount;
+            }
         }
     }
 }
