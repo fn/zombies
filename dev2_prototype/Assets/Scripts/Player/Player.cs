@@ -82,8 +82,6 @@ namespace Zombies
             {
                 GameManager.Instance.StateLose();
             }
-
-
         }
 
         IEnumerator FlashHurtScreen()
