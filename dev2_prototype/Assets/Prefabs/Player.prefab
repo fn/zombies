@@ -48,6 +48,8 @@ MonoBehaviour:
   rateOfFire: 300
   ammoCapacity: 500
   currentAmmo: 30
+  specialGun: 0
+  Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}
 --- !u!1 &6287104669277701476
 GameObject:
   m_ObjectHideFlags: 0

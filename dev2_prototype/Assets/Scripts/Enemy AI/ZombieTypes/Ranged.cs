@@ -5,10 +5,13 @@ using UnityEngine;
 public class Ranged : BaseZombie
 {
     [SerializeField] float fleeingDist;
-    [SerializeField] int faceTargetSpeed;
+    
 
     [SerializeField] bool fleeing;
     public override void Seek(){
+        if (attacking){
+            return;
+        }
         agent.speed = movementSpeed;
         Move();
         VisibilityCheck();
@@ -19,16 +22,14 @@ public class Ranged : BaseZombie
     }
     
 
-    float Distance(){
-        float dist = Vector3.Distance(transform.position, player.transform.position);
-        return dist;
-    }
     
-    void FaceTarget(){
-        Quaternion rot = Quaternion.LookRotation(playerDir);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
-    }
+    
+    
     public override void Attack(){
+        FaceTarget();
+        if (attacking){
+            return;
+        }
         if (Distance() < fleeingDist){
             fleeing = true;
             
@@ -48,11 +49,11 @@ public class Ranged : BaseZombie
         
         
 
-        FaceTarget();
+        
 
         if (!attacking && !fleeing){
             StartCoroutine(Attacking());
-            Debug.Log("Attack");
+            State(enemyState.SEEK);
         }
 
     }

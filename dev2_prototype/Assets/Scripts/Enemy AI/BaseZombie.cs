@@ -30,6 +30,13 @@ public void AttackSPD(int i){
     attackSpeed = i;
 }
 
+public float AttackCD(){
+    return attackCooldown;
+}
+public void AttackCD(float i){
+    attackCooldown = i;
+}
+
 public int MoveSPD(){
     return movementSpeed;
 }
@@ -100,6 +107,9 @@ virtual public void Flee(){}
 
 
 
+
+
+
 protected Color colorOrig;
 [SerializeField] protected Color colorPrimed;
 
@@ -108,12 +118,16 @@ protected Renderer render;
 [SerializeField] protected bool attacking;
 
 void Start(){
+    agent.speed = movementSpeed;
     player = HordeManager.instance.Player();
     render = GetComponent<Renderer>();
     colorOrig = render.material.color;
     origStoppingDistance = agent.stoppingDistance;
 }
 void Update(){
+    if (!attacking){
+        movePosition = player.transform.position;
+    }
     switch (state){
         case enemyState.NORMAL:
         Normal();
@@ -136,11 +150,15 @@ protected IEnumerator Attacking(){
     attacking = true;
     render.material.color = colorPrimed;
     yield return new WaitForSeconds(AttackSPD());
-    attacking = false;
+    AttackLogic();
     render.material.color = colorOrig;
-    state = enemyState.SEEK;
+    yield return new WaitForSeconds(AttackCD());
+    attacking = false;
+  
 }
 
+protected virtual void AttackLogic(){}
+    
 
 }
 
