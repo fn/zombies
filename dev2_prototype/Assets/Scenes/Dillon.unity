@@ -123,42 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &96539631 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7176301370458012267, guid: 2fba25d5fffe5a64bbb32d90451eac00, type: 3}
-  m_PrefabInstance: {fileID: 8073129999494495021}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &96539632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 96539631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f040e24aacf5b044bba6ac7908ca53d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allWaves:
-  - name: Enemy
-    capsulePrefab: {fileID: 2793103676934300709, guid: 1a55c865530d9fc4fa102c12d9b52d90, type: 3}
-    enemyCount: 1
-    spawnRate: 1
-  - name: Enemy 2.0
-    capsulePrefab: {fileID: 2793103676934300709, guid: 1a55c865530d9fc4fa102c12d9b52d90, type: 3}
-    enemyCount: 2
-    spawnRate: 1.5
-  - name: Enemy 3.0
-    capsulePrefab: {fileID: 2793103676934300709, guid: 1a55c865530d9fc4fa102c12d9b52d90, type: 3}
-    enemyCount: 3
-    spawnRate: 2
-  points:
-  - {fileID: 975384014}
-  - {fileID: 930116903}
-  - {fileID: 1945508625}
-  waitTime: 5
-  spawnState: 2
 --- !u!1001 &133413626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -587,6 +551,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 96539632, guid: 2fba25d5fffe5a64bbb32d90451eac00, type: 3}
+      propertyPath: points.Array.data[0]
+      value: 
+      objectReference: {fileID: 975384014}
+    - target: {fileID: 96539632, guid: 2fba25d5fffe5a64bbb32d90451eac00, type: 3}
+      propertyPath: points.Array.data[1]
+      value: 
+      objectReference: {fileID: 930116903}
+    - target: {fileID: 96539632, guid: 2fba25d5fffe5a64bbb32d90451eac00, type: 3}
+      propertyPath: points.Array.data[2]
+      value: 
+      objectReference: {fileID: 1945508625}
     - target: {fileID: 7176301370458012267, guid: 2fba25d5fffe5a64bbb32d90451eac00, type: 3}
       propertyPath: m_Name
       value: Spawner

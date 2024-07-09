@@ -29,9 +29,10 @@ public class SpawnerScript : MonoBehaviour
 
     public StateOfSpawn spawnState = StateOfSpawn.COUNTING;
 
+    public bool isActive;
+
     void Start()
     {
-
         if (points.Length == 0)
         {
             Debug.LogError("No Spawn Points");
@@ -123,7 +124,7 @@ public class SpawnerScript : MonoBehaviour
 
         for (int i = 0; i < _wave.enemyCount; i++) // loop through how many enemies we want to spawn
         {
-            SpawnEnemy(_wave.capsulePrefab); // call spawn method
+            SpawnEnemy(_wave); // call spawn method
             yield return new WaitForSeconds(1f / _wave.spawnRate); // wait time before spawn
         }
 
@@ -133,12 +134,22 @@ public class SpawnerScript : MonoBehaviour
         yield break;
     }
 
-    void SpawnEnemy(Transform _enemy)
+    void SpawnEnemy(Wave _wave)
     {
-        Debug.Log("Spawning Enemy:" + _enemy.name); // write to console spawning enemy
-        Transform randomPoint = points[Random.Range(0, points.Length)]; // 
+            Debug.Log("Spawning Enemy:" + _wave.capsulePrefab.name); // write to console spawning enemy
 
-        Instantiate(_enemy, randomPoint.position, randomPoint.rotation);
+        var wavePoints = new List<Transform>();
+
+        for(int i = 0; i < points.Length; i++)
+        {
+            if (points[i].gameObject.CompareTag(_wave.name))
+            {
+                wavePoints.Add(points[i]);
+            }
+        }
+            Transform randomPoint = wavePoints[Random.Range(0, wavePoints.Count)]; // 
+
+            Instantiate(_wave.capsulePrefab, randomPoint.position, randomPoint.rotation);
     }
 
 }
