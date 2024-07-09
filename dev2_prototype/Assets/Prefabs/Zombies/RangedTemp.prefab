@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b80a6b87834e464e95d2bedbec369df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faceTargetSpeed: 3
   agent: {fileID: 428340237826088461}
   seesPlayer: 0
   nearPlayer: 0
@@ -55,7 +56,7 @@ MonoBehaviour:
   player: {fileID: 0}
   hp: 2
   attackDamage: 5
-  attackSpeed: 1
+  attackDelay: 1
   attackCooldown: 2
   movementSpeed: 5
   destructionPower: 0
@@ -63,8 +64,9 @@ MonoBehaviour:
   state: 1
   colorPrimed: {r: 1, g: 0.9831489, b: 0, a: 0}
   attacking: 0
+  fireRate: 0
   fleeingDist: 5
-  faceTargetSpeed: 3
+  weapon: {fileID: 0}
   fleeing: 0
 --- !u!33 &428340237826088457
 MeshFilter:

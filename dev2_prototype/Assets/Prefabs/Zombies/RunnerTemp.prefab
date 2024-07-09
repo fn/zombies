@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4912dd7f9cbfb424eb165c0fcbebc3aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faceTargetSpeed: 0
   agent: {fileID: 617166675004446992}
   seesPlayer: 0
   nearPlayer: 0
@@ -119,8 +120,8 @@ MonoBehaviour:
   player: {fileID: 0}
   hp: 3
   attackDamage: 1
-  attackSpeed: 0.5
-  attackCooldown: 1
+  attackDelay: 1
+  attackCooldown: 0.5
   movementSpeed: 10
   destructionPower: 1
   cost: 1

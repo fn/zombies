@@ -56,6 +56,12 @@ public class WeaponComponent : MonoBehaviour
         // Instantiate the bullet
         GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
 
+        if (bullet == null){
+            return;
+        }
+
+        
+
         // Transfer the damage value to the bullet
         damage bulletDamage = bullet.GetComponent<damage>();
         if (bulletDamage != null)
