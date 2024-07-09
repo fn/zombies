@@ -78,17 +78,11 @@ namespace Zombies
 
         void UpdateViewModelRecoil()
         {
-            // TODO: Replace all this crap with an animator.
-            // TODO: Check against the weapon itself. This will add recoil regardless if we really shot.
             if (Input.GetButtonDown("Fire1"))
-            {
                 animator.SetTrigger("Fire");
-            }
 
-            if(Input.GetButtonDown("Reload"))
-            {
+            if (Input.GetButtonDown("Reload"))
                 animator.SetTrigger("Reload");
-            }
         }
     }
 }

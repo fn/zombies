@@ -45,7 +45,6 @@ namespace Zombies
             {
                 var shootTransform = View.viewCamera.transform;
                 HeldWeapon.Shoot(shootTransform.position, shootTransform.forward);
-
             }
 
             if (Input.GetButtonDown("Reload"))
@@ -58,10 +57,9 @@ namespace Zombies
 
         void UpdateAiming()
         {
-            IsAiming = false;
-            if (Input.GetButton("Fire2"))
-                IsAiming = true;
-
+            IsAiming = Input.GetButton("Fire2");
+            
+            // This code below is kind of trash.
             float fovOffset = IsAiming ? 25f : 0f;
             View.SetFov(90f - fovOffset, Time.deltaTime * 2f);
 
