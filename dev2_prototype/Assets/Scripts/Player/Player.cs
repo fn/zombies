@@ -13,7 +13,7 @@ namespace Zombies
         [SerializeField] Transform WeaponPivot;
 
         int HeldWeaponIndex;
-        WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; set => value = Weapons[HeldWeaponIndex]; }
+        public WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; set => value = Weapons[HeldWeaponIndex]; }
 
         Vector3 origAimPosition;
 
@@ -36,18 +36,16 @@ namespace Zombies
 
         void UpdateWeapons()
         {
-            // Update held weapon index.
-            //for (int i = 0; i < Weapons.Count; i++)
-            //    if (Input.GetButtonDown($"Slot{i + 1}"))
-            //        HeldWeaponIndex = i;
-
             if (HeldWeapon == null)
                 return;
+
+            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.currentAmmo}/{HeldWeapon.ammoCapacity}");
 
             if (Input.GetButtonDown("Fire1"))
             {
                 var shootTransform = View.viewCamera.transform;
                 HeldWeapon.Shoot(shootTransform.position, shootTransform.forward);
+
             }
 
             if (Input.GetButtonDown("Reload"))
