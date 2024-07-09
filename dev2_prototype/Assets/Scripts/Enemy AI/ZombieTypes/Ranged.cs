@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Ranged : BaseZombie
 {
+    [SerializeField] float fireRate;
 
     void Start(){
         weapon.damage = AttackDMG();
+        weapon.rateOfFire = fireRate;
         agent.speed = movementSpeed;
         player = HordeManager.instance.Player();
         render = GetComponent<Renderer>();
@@ -19,9 +21,10 @@ public class Ranged : BaseZombie
 
     [SerializeField] bool fleeing;
     public override void Seek(){
-        if (attacking){
-            return;
+        if (nearPlayer){
+            FaceTarget();
         }
+        
         agent.speed = movementSpeed;
         Move();
         VisibilityCheck();
@@ -81,5 +84,10 @@ public class Ranged : BaseZombie
             State(enemyState.SEEK);
         }
 
+    }
+
+    protected override void AttackLogic(){
+        UpdatePlayerDir();
+        weapon.Shoot(transform.position, playerDir);
     }
 }

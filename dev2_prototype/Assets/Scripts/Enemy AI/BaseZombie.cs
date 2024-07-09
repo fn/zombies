@@ -147,7 +147,7 @@ void Update(){
 public void takeDamage(int amount){
     hp -= amount;
     if (hp <= 0){
-        Destroy(this);
+        Destroy(gameObject);
     }
     StartCoroutine(FlashDamage() ); 
 }

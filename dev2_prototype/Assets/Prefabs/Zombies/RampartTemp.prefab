@@ -195,7 +195,7 @@ MonoBehaviour:
   player: {fileID: 0}
   hp: 10
   attackDamage: 5
-  attackSpeed: 2.5
+  attackDelay: 2.5
   attackCooldown: 2.5
   movementSpeed: 3
   destructionPower: 10
