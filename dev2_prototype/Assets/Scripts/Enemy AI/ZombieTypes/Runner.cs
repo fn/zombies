@@ -32,10 +32,15 @@ public class Runner : BaseZombie
     
     public override void Attack(){
         Attacking();
-        State(enemyState.SEEK);
+       
     }
 
     protected override void AttackLogic(){
+        if (nearPlayer)
+        {
+            IDamage dmg = player.GetComponent<IDamage>();
 
+            dmg.takeDamage(AttackDMG());
+        }
     }
 }

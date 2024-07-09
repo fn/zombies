@@ -104,14 +104,16 @@ virtual public void Flee(){}
 [SerializeField] protected int destructionPower;
 [SerializeField] protected int cost;
 [SerializeField] protected enemyState state;
-    protected float lastAttackTime;
+    protected float attackTimer;
+    protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
+
+    [SerializeField] protected attackPhase phase;
 
 
 
 
 
-
-protected Color colorOrig;
+    protected Color colorOrig;
 [SerializeField] protected Color colorPrimed;
 
 protected Renderer render;
@@ -125,27 +127,30 @@ void Start(){
     colorOrig = render.material.color;
     origStoppingDistance = agent.stoppingDistance;
 }
-void Update(){
+    void Update(){
+        
+        if (attackTimer > 0) { }
+            attackTimer -= Time.deltaTime;
     
-    if (!attacking){
-        movePosition = player.transform.position;
-    }
-    switch (state){
+        if (!attacking){
+            movePosition = player.transform.position;
+        }
+        switch (state){
         case enemyState.NORMAL:
-        Normal();
-        break;
+            Normal();
+            break;
         case enemyState.SEEK:
-        Seek();
-        break;
+            Seek();
+            break;
         case enemyState.ATTACK:
-        Attack();
-        break;
+            Attack();
+            break;
         case enemyState.FLEE:
-        Flee();
-        break;
+            Flee();
+            break;
     }
-    FaceTarget();
-}
+        FaceTarget();
+    }
 
     public void takeDamage(int amount)
     {
@@ -166,28 +171,58 @@ private IEnumerator FlashDamage(){
 
 
 protected void Attacking(){
-     if (!attacking)
-     {
-         lastAttackTime = Time.time;
-     }
-     FaceTarget();
-     attacking = true;
-      render.material.color = colorPrimed;
+        //  //if (!attacking)
+        //  //{
+        //  //    lastAttackTime = Time.time;
+        //  //}
+        //  FaceTarget();
+        //  attacking = true;
+        //   render.material.color = colorPrimed;
 
-        //new WaitForSeconds(AttackDelay());
-    if (!Wait(AttackDelay(), ref lastAttackTime))
-        return;
-    
+        //     //new WaitForSeconds(AttackDelay());
+        // //if (!Wait(AttackDelay(), ref lastAttackTime))
+        // //    return;
+
+
+
+        // AttackLogic();
+        // render.material.color = colorOrig;
+        //// return new WaitForSeconds(AttackCD());
+        ////if (!Wait(AttackCD(), ref lastAttackTime))
+        ////     return;
+        // attacking = false;
+
         
-    
-    AttackLogic();
-    render.material.color = colorOrig;
-   // return new WaitForSeconds(AttackCD());
-   if (!Wait(AttackCD(), ref lastAttackTime))
-        return;
-    attacking = false;
-  
-}
+        switch (phase)
+        {
+            case attackPhase.IDLE:
+                phase++;
+                return;
+            case attackPhase.PRIMED:
+                attacking = true;
+                attackTimer = AttackDelay();
+                phase++;
+                break;
+            case attackPhase.ATTACK:
+                if (attackTimer < 0) {
+                    phase++;
+                    AttackLogic();
+                    
+                    attackTimer = AttackCD();
+                }
+                break;
+            case attackPhase.RECOVERY:
+                if (attackTimer < 0)
+                {
+                    attacking = false;
+                    phase = attackPhase.IDLE;
+                    state = enemyState.SEEK;
+                }
+                break;
+
+        }
+
+    }
 
 protected virtual void AttackLogic(){}
     

@@ -201,9 +201,11 @@ MonoBehaviour:
   destructionPower: 10
   cost: 5
   state: 1
+  phase: 0
   colorPrimed: {r: 0.83410656, g: 1, b: 0.023584902, a: 0}
   attacking: 0
   affected: []
+  colli: {fileID: 4209100633997749509}
 --- !u!195 &2169662090270192752
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -218,7 +220,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -238,9 +240,9 @@ GameObject:
   - component: {fileID: 2229579711414837340}
   - component: {fileID: 4209100633997749509}
   - component: {fileID: 8160504758689386704}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: AttackArea
-  m_TagString: Untagged
+  m_TagString: AttackArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

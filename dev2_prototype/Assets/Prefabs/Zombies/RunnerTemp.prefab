@@ -126,6 +126,7 @@ MonoBehaviour:
   destructionPower: 1
   cost: 1
   state: 1
+  phase: 0
   colorPrimed: {r: 1, g: 0.880132, b: 0, a: 0}
   attacking: 0
 --- !u!195 &617166675004446992

@@ -46,10 +46,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 25
   rateOfFire: 300
-  ammoCapacity: 500
+  ammoCapacity: 200
   currentAmmo: 30
+  magSize: 8
   specialGun: 0
+  infAmmo: 0
+  layer: Player Bullet
   Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}
+  remainingAmmo: 0
 --- !u!1 &6287104669277701476
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +224,8 @@ MonoBehaviour:
   Weapons:
   - {fileID: 6287104668597722680}
   WeaponPivot: {fileID: 5821730586257332875}
+  Health: 0
+  MaxHealth: 0
 --- !u!114 &6287104669802105547
 MonoBehaviour:
   m_ObjectHideFlags: 0

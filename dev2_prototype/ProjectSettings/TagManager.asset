@@ -8,10 +8,14 @@ TagManager:
   - Obstacle
   - Barricade
   - BarricadeSpawner
+<<<<<<< Updated upstream
   - Wave1
   - Wave2
   - Wave3
   - Final Wave
+=======
+  - AttackArea
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
@@ -24,7 +28,7 @@ TagManager:
   - Enemy Bullet
   - Obstacle
   - ViewModel
-  - 
+  - AttackArea
   - 
   - 
   - 

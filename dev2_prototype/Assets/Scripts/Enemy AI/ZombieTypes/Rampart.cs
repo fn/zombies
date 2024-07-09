@@ -5,7 +5,9 @@ using UnityEngine;
 public class Rampart : BaseZombie
 {
     [SerializeField] public List<GameObject> affected = new List<GameObject>();
+    [SerializeField] Collider colli;
     public override void  Seek(){
+        colli.enabled = false;
         StartCoroutine(TargetCheck());
         VisibilityCheck();
         if (attacking){
@@ -24,8 +26,8 @@ public class Rampart : BaseZombie
     }
 
     public override void Attack(){
-         Attacking();
-         State(enemyState.SEEK);
+        colli.enabled=true;
+        Attacking();
 
     }
 
@@ -44,7 +46,6 @@ public class Rampart : BaseZombie
                 continue;
             }
             dmg.takeDamage(AttackDMG());
-            Debug.Log("Attacking " + obj.name);
         }
     }
 }
