@@ -8,9 +8,14 @@ public class WeaponComponent : MonoBehaviour
     public float rateOfFire;
     public int ammoCapacity;
     public int currentAmmo;
+    public int magSize;
     public bool specialGun;
     public bool infAmmo;
+    public string layer;
     [SerializeField] GameObject Bullet_Standard;
+    int usedAmmo;
+    int remainingAmmo;
+    
 
     private float lastShotTime;
 
@@ -19,6 +24,7 @@ public class WeaponComponent : MonoBehaviour
     {
         // Initialize ammo count
         currentAmmo = ammoCapacity;
+        remainingAmmo = ammoCapacity;
         lastShotTime = 0f;
     }
 
@@ -52,38 +58,46 @@ public class WeaponComponent : MonoBehaviour
         if (!infAmmo)
         {
             currentAmmo--;
+            usedAmmo++;
         }
         // Instantiate the bullet
         GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
-
-        if (bullet == null){
+        if (bullet == null)
+        {
             return;
         }
 
-        
-
+        bullet.layer = LayerMask.NameToLayer(layer);
         // Transfer the damage value to the bullet
         damage bulletDamage = bullet.GetComponent<damage>();
-        if (bulletDamage != null)
+        bulletDamage.SetDamage(damage);
+
+        // Apply velocity to the bullet
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            bulletDamage.SetDamage(damage);
-
-            // Apply velocity to the bullet
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.velocity = direction * bulletDamage.speed;
-            }
-
-            // Destroy the bullet after a certain time
-            Destroy(bullet, bulletDamage.destroyTime);
+            rb.velocity = direction * bulletDamage.speed;
         }
+
+        // Destroy the bullet after a certain time
+        Destroy(bullet, bulletDamage.destroyTime);
     }
 
     public void Reload()
     {
         // Reload logic here
-        currentAmmo = ammoCapacity;
-        Debug.Log("Reloading!");
+
+        remainingAmmo -= usedAmmo;
+        usedAmmo = 0;
+
+        if(magSize <= remainingAmmo)
+        {
+            currentAmmo = magSize;
+        }
+        else
+        {
+            currentAmmo = remainingAmmo;
+        }
+
     }
 }

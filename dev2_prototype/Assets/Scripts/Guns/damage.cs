@@ -9,7 +9,7 @@ public class damage : MonoBehaviour
     public damageType type;
     public Rigidbody rb;
     public int speed;
-    public int destroyTime;  
+    public int destroyTime;
 
     bool hasDamaged;
 
@@ -46,4 +46,27 @@ public class damage : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.isTrigger)
+        {
+            return;
+        }
+        IDamage dmg = other.GetComponent<IDamage>();
+        if (type == damageType.stationary)
+        {
+            if (dmg != null)
+            {
+                dmg.takeDamage(damageAmount);
+                StartCoroutine(waitTime());
+            }
+        }
+    }
+
+    IEnumerator waitTime()
+    {
+        yield return new WaitForSeconds(0.3f);
+    }
+
 }
