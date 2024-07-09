@@ -180,6 +180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dff6da75615e1d2449339b32ad7aae55, type: 3}
+--- !u!4 &446592548 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4769975969673593491, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+  m_PrefabInstance: {fileID: 724751570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &466921119
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,6 +279,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &565299510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4769975968758382561, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+  m_PrefabInstance: {fileID: 724751570}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &565299511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565299510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f040e24aacf5b044bba6ac7908ca53d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allWaves:
+  - name: Wave 1
+    capsulePrefab: {fileID: 617166675004447007, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+    enemyCount: 50
+    spawnRate: 4
+  points:
+  - {fileID: 446592548}
+  - {fileID: 866278389}
+  waitTime: 5
+  spawnState: 2
+  isActive: 0
 --- !u!1001 &724751570
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -359,6 +392,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+--- !u!4 &866278389 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4769975968828472969, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+  m_PrefabInstance: {fileID: 724751570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1358698235
 PrefabInstance:
   m_ObjectHideFlags: 0
