@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 4769975968828472968}
   m_Layer: 0
   m_Name: Spawner2
-  m_TagString: Untagged
+  m_TagString: Wave1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 4769975968855432500}
   m_Layer: 0
   m_Name: Spawner4
-  m_TagString: Untagged
+  m_TagString: Wave3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 4769975969514925603}
   m_Layer: 0
   m_Name: Spawner3
-  m_TagString: Untagged
+  m_TagString: Wave2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 4769975969673593490}
   m_Layer: 0
   m_Name: Spawner1
-  m_TagString: Untagged
+  m_TagString: Wave1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 4769975969987632529}
   m_Layer: 0
   m_Name: Spawner5
-  m_TagString: Untagged
+  m_TagString: Wave3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 4769975970318234254}
   m_Layer: 0
   m_Name: Spawner6
-  m_TagString: Untagged
+  m_TagString: Final Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

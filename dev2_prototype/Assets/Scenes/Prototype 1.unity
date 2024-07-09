@@ -329,6 +329,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawners
       objectReference: {fileID: 0}
+    - target: {fileID: 4769975968758382561, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975968828472970, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975968855432502, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975969514925605, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975969673593492, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975969987632531, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975970318234240, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Final Wave
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
 --- !u!1001 &1358698235
@@ -479,6 +507,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6100472346393443933, guid: 77e29f8b1c744b5418c1fa2ea54f6c53, type: 3}
+      propertyPath: m_TagString
+      value: Final Wave
+      objectReference: {fileID: 0}
     - target: {fileID: 6100472346608502828, guid: 77e29f8b1c744b5418c1fa2ea54f6c53, type: 3}
       propertyPath: m_Name
       value: Waves(InvisibleWalls)
@@ -526,6 +558,14 @@ PrefabInstance:
     - target: {fileID: 6100472346608502829, guid: 77e29f8b1c744b5418c1fa2ea54f6c53, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6100472347623798272, guid: 77e29f8b1c744b5418c1fa2ea54f6c53, type: 3}
+      propertyPath: m_TagString
+      value: Wave2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6100472347920536267, guid: 77e29f8b1c744b5418c1fa2ea54f6c53, type: 3}
+      propertyPath: m_TagString
+      value: Wave3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77e29f8b1c744b5418c1fa2ea54f6c53, type: 3}
@@ -583,6 +623,50 @@ PrefabInstance:
     - target: {fileID: 7983619593160478575, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593316699959, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_Name
+      value: Spawner5Barracades
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593316699959, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_TagString
+      value: Wave3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593373625893, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_Name
+      value: Spawner3Barricade
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593373625893, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_TagString
+      value: Wave2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593516890211, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_Name
+      value: Spawner2Barricade
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593516890211, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_TagString
+      value: Wave1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593585608258, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_Name
+      value: Spawner1Barrcade
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619593585608258, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_TagString
+      value: Wave1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619594556368431, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_Name
+      value: Spawner4Barricade
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619594556368431, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_TagString
+      value: Wave3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983619594826649014, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
+      propertyPath: m_TagString
+      value: Final Wave
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77d9e9f5e44cdf64586d4ba1f78d3f15, type: 3}
