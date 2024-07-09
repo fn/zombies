@@ -42,7 +42,7 @@ namespace Zombies
             if (HeldWeapon == null)
                 return;
 
-            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.currentAmmo}/{HeldWeapon.ammoCapacity}");
+            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.currentAmmo}/{HeldWeapon.remainingAmmo}");
 
             if (Input.GetButtonDown("Fire1"))
             {
