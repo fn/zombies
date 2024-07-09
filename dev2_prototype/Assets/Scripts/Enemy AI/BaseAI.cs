@@ -55,7 +55,7 @@ public class BaseAI : MonoBehaviour
         yield return new WaitForSeconds(delay);
     }
     
-    protected void FaceTarget(float faceSpeed = 1){
+    protected void FaceTarget(){
         Quaternion rot = Quaternion.LookRotation(playerDir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
@@ -67,6 +67,17 @@ public class BaseAI : MonoBehaviour
     protected void Move(){
         agent.stoppingDistance = origStoppingDistance;
         agent.SetDestination(movePosition);
+    }
+
+    protected bool Wait(float waitTime, ref float lastWaitTime)
+    {
+        if (Time.time - lastWaitTime < waitTime)
+                return false;
+
+        lastWaitTime = Time.time;
+        return true;
+
+
     }
 }
 

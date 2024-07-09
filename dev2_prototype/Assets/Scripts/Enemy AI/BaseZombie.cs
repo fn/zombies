@@ -104,6 +104,7 @@ virtual public void Flee(){}
 [SerializeField] protected int destructionPower;
 [SerializeField] protected int cost;
 [SerializeField] protected enemyState state;
+    protected float lastAttackTime;
 
 
 
@@ -125,6 +126,7 @@ void Start(){
     origStoppingDistance = agent.stoppingDistance;
 }
 void Update(){
+    
     if (!attacking){
         movePosition = player.transform.position;
     }
@@ -142,6 +144,7 @@ void Update(){
         Flee();
         break;
     }
+    FaceTarget();
 }
 
 public void takeDamage(int amount){
@@ -158,13 +161,28 @@ private IEnumerator FlashDamage(){
     yield return new WaitForSeconds(.5f);
     render.material.color = colorOrig;
 }
-protected IEnumerator Attacking(){
-    attacking = true;
-    render.material.color = colorPrimed;
-    yield return new WaitForSeconds(AttackDelay());
+
+
+protected void Attacking(){
+     if (!attacking)
+     {
+         lastAttackTime = Time.time;
+     }
+     FaceTarget();
+     attacking = true;
+      render.material.color = colorPrimed;
+
+        //new WaitForSeconds(AttackDelay());
+    if (!Wait(AttackDelay(), ref lastAttackTime))
+        return;
+    
+        
+    
     AttackLogic();
     render.material.color = colorOrig;
-    yield return new WaitForSeconds(AttackCD());
+   // return new WaitForSeconds(AttackCD());
+   if (!Wait(AttackCD(), ref lastAttackTime))
+        return;
     attacking = false;
   
 }

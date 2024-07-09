@@ -24,13 +24,8 @@ public class Rampart : BaseZombie
     }
 
     public override void Attack(){
-        if (!attacking){
-            
-            attacking = true;
-            StartCoroutine(Attacking());
-            State(enemyState.SEEK);
-            return;
-        }
+         Attacking();
+         State(enemyState.SEEK);
 
     }
 

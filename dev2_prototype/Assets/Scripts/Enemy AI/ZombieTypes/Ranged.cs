@@ -21,15 +21,13 @@ public class Ranged : BaseZombie
 
     [SerializeField] bool fleeing;
     public override void Seek(){
-        if (nearPlayer){
-            FaceTarget();
-        }
+        
         
         agent.speed = movementSpeed;
         Move();
         VisibilityCheck();
         StartCoroutine(TargetCheck());
-        if (nearPlayer){
+        if (nearPlayer && seesPlayer){
             State(enemyState.ATTACK);
         }
     }
@@ -39,8 +37,9 @@ public class Ranged : BaseZombie
     
     
     public override void Attack(){
-        FaceTarget();
+        
         if (attacking){
+
             return;
         }
         if (Distance() < fleeingDist){
@@ -64,8 +63,8 @@ public class Ranged : BaseZombie
 
         
 
-        if (!attacking && !fleeing){
-            StartCoroutine(Attacking());
+        if (!fleeing){
+            Attacking();
             State(enemyState.SEEK);
         }
 
@@ -87,6 +86,7 @@ public class Ranged : BaseZombie
     }
 
     protected override void AttackLogic(){
+        
         UpdatePlayerDir();
         weapon.Shoot(transform.position, playerDir);
     }

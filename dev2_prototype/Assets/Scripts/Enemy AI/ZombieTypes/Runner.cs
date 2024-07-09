@@ -31,11 +31,8 @@ public class Runner : BaseZombie
 
     
     public override void Attack(){
-        if (!attacking){
-            StartCoroutine(Attacking());
-            State(enemyState.SEEK);
-            return;
-        }
+        Attacking();
+        State(enemyState.SEEK);
     }
 
     protected override void AttackLogic(){
