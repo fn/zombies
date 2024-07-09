@@ -503,6 +503,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawners
       objectReference: {fileID: 0}
+    - target: {fileID: 4769975968828472970, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975968855432502, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975969514925605, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975969673593492, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975969987632531, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Wave3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769975970318234240, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
+      propertyPath: m_TagString
+      value: Final Wave
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 019e1c8afea896444af384cf20db6c33, type: 3}
 --- !u!1001 &5251045163043397404
