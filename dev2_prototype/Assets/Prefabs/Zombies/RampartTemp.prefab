@@ -88,9 +88,9 @@ GameObject:
   - component: {fileID: 2169662090270192754}
   - component: {fileID: 2169662090270192753}
   - component: {fileID: 2169662090270192752}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RampartTemp
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

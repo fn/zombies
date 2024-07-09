@@ -10,7 +10,7 @@ public class Ranged : BaseZombie
         weapon.damage = AttackDMG();
         weapon.rateOfFire = fireRate;
         agent.speed = movementSpeed;
-        player = HordeManager.instance.Player();
+        player = GameObject.FindWithTag("Player"); // HordeManager.instance.Player();
         render = GetComponent<Renderer>();
         colorOrig = render.material.color;
         origStoppingDistance = agent.stoppingDistance;

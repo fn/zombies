@@ -12,10 +12,12 @@ public class SpawnerScript : MonoBehaviour
     public class Wave
     {
         public string name;
-        public Transform capsulePrefab;
+        public GameObject spawnedEnityPrefab;
         public int enemyCount;
         public float spawnRate;
     }
+
+    public GameObject[] possibleSpawnEntities;
 
     public Wave[] allWaves;
     private int nextWave = 0;
@@ -68,6 +70,9 @@ public class SpawnerScript : MonoBehaviour
             countDown = 1f;
             if (spawnState != StateOfSpawn.SPAWNING)
             {
+                if (nextWave < 0 || nextWave >= allWaves.Length)
+                    nextWave = 0;
+
                 // start spawning wave
                 StartCoroutine(SpawnAWave(allWaves[nextWave]));
             }
@@ -136,20 +141,17 @@ public class SpawnerScript : MonoBehaviour
 
     void SpawnEnemy(Wave _wave)
     {
-            Debug.Log("Spawning Enemy:" + _wave.capsulePrefab.name); // write to console spawning enemy
+        // Debug.Log("Spawning Enemy:" + _wave.spawnedEnityPrefab.name); // write to console spawning enemy
 
         var wavePoints = new List<Transform>();
 
-        for(int i = 0; i < points.Length; i++)
+        for (int i = 0; i < points.Length; i++)
         {
             if (points[i].gameObject.CompareTag(_wave.name))
-            {
                 wavePoints.Add(points[i]);
-            }
         }
-            Transform randomPoint = wavePoints[Random.Range(0, wavePoints.Count)]; // 
 
-            Instantiate(_wave.capsulePrefab, randomPoint.position, randomPoint.rotation);
+        Transform randomPoint = wavePoints[Random.Range(0, wavePoints.Count)];
+        Instantiate(possibleSpawnEntities[Random.Range(0, possibleSpawnEntities.Length)], randomPoint.position, randomPoint.rotation);
     }
-
 }

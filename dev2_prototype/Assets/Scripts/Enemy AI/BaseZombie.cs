@@ -120,7 +120,7 @@ protected Renderer render;
 
 void Start(){
     agent.speed = movementSpeed;
-    player = HordeManager.instance.Player();
+    player = GameObject.FindWithTag("Player"); // HordeManager.instance.Player();
     render = GetComponent<Renderer>();
     colorOrig = render.material.color;
     origStoppingDistance = agent.stoppingDistance;
@@ -147,14 +147,16 @@ void Update(){
     FaceTarget();
 }
 
-public void takeDamage(int amount){
-    hp -= amount;
-    if (hp <= 0){
-        Destroy(gameObject);
-    }
-    StartCoroutine(FlashDamage() ); 
-}
+    public void takeDamage(int amount)
+    {
+        hp -= amount;
+        if (hp <= 0)
+        {
+            Destroy(gameObject);
+        }
 
+        StartCoroutine(FlashDamage());
+    }
 
 private IEnumerator FlashDamage(){
     render.material.color = Color.red;

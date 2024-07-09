@@ -20,7 +20,7 @@ public class BaseAI : MonoBehaviour
 
 
     void Start(){
-        player = HordeManager.instance.Player();
+        player = GameObject.FindWithTag("Player"); // HordeManager.instance.Player();
     }
 
     protected void UpdatePlayerDir(){
