@@ -8,10 +8,14 @@ public class WeaponComponent : MonoBehaviour
     public float rateOfFire;
     public int ammoCapacity;
     public int currentAmmo;
+    public int magSize;
     public bool specialGun;
     public bool infAmmo;
     public string layer;
     [SerializeField] GameObject Bullet_Standard;
+    int usedAmmo;
+    int remainingAmmo;
+    
 
     private float lastShotTime;
 
@@ -20,6 +24,7 @@ public class WeaponComponent : MonoBehaviour
     {
         // Initialize ammo count
         currentAmmo = ammoCapacity;
+        remainingAmmo = ammoCapacity;
         lastShotTime = 0f;
     }
 
@@ -53,6 +58,7 @@ public class WeaponComponent : MonoBehaviour
         if (!infAmmo)
         {
             currentAmmo--;
+            usedAmmo++;
         }
         // Instantiate the bullet
         GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
@@ -80,7 +86,18 @@ public class WeaponComponent : MonoBehaviour
     public void Reload()
     {
         // Reload logic here
-        currentAmmo = ammoCapacity;
-        Debug.Log("Reloading!");
+
+        remainingAmmo -= usedAmmo;
+        usedAmmo = 0;
+
+        if(magSize <= remainingAmmo)
+        {
+            currentAmmo = magSize;
+        }
+        else
+        {
+            currentAmmo = remainingAmmo;
+        }
+
     }
 }
