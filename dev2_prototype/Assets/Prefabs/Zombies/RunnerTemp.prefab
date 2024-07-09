@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617166675004446998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.2, y: 49.71, z: -77.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -117,12 +117,11 @@ MonoBehaviour:
   seesPlayer: 0
   nearPlayer: 0
   detectionRange: 20
-  player: {fileID: 0}
-  hp: 3
+  hp: 100
   attackDamage: 1
   attackDelay: 1
   attackCooldown: 0.5
-  movementSpeed: 10
+  movementSpeed: 4
   destructionPower: 1
   cost: 1
   state: 1

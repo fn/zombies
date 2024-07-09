@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using Zombies;
+using UnityEditor.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,21 +11,23 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuPause;
     [SerializeField] GameObject MenuWin;
     [SerializeField] GameObject MenuLose;
-
+    
+    public TMP_Text WaveHudText;
     public TMP_Text AmmoHudText;
     public GameObject HurtScreen;
-
-    public Player LocalPlayer;
     
     public bool IsPaused;
-
     float origTimescale;
-
     int enemyCount;
-    // Start is called before the first frame update
+    
+    public Player LocalPlayer;
+    public HordeManager Horde;
+
     void Awake()
     {
         Instance = this;
+
+        Horde = gameObject.AddComponent<HordeManager>();
         LocalPlayer = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         origTimescale = Time.timeScale;

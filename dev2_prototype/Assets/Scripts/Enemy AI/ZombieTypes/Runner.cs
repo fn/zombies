@@ -4,43 +4,49 @@ using UnityEngine;
 
 public class Runner : BaseZombie
 {
-
-    public override void Seek(){
+    public override void Seek()
+    {
         Move();
-        
+
         StartCoroutine(TargetCheck(0.1f));
         VisibilityCheck();
-        
+
         int tempSpeed = movementSpeed;
-        if (agent.remainingDistance < detectionRange){
-            if (SeesPlayer()){
+        if (agent.remainingDistance < detectionRange)
+        {
+            if (SeesPlayer)
+            {
                 tempSpeed = movementSpeed * 2;
             }
-            
+
         }
-        
+
         agent.speed = tempSpeed;
 
-        if (attacking){
+        if (attacking)
+        {
             return;
         }
-        if (nearPlayer){
-            State(enemyState.ATTACK);
+        if (nearPlayer)
+        {
+            State = enemyState.ATTACK;
         }
     }
 
-    
-    public override void Attack(){
+    public override void Attack()
+    {
         Attacking();
-       
     }
 
-    protected override void AttackLogic(){
+    protected override void AttackLogic()
+    {
         if (nearPlayer)
         {
-            IDamage dmg = player.GetComponent<IDamage>();
-
-            dmg.takeDamage(AttackDMG());
+            IDamage dmg = targetPlayer.GetComponent<IDamage>();
+            if (dmg != null)
+            {
+                dmg.takeDamage(AttackDMG);
+            }
         }
     }
 }

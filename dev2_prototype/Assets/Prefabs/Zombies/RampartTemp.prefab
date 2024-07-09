@@ -50,7 +50,6 @@ MonoBehaviour:
   seesPlayer: 0
   nearPlayer: 0
   detectionRange: 200
-  player: {fileID: 0}
   placeFound: 0
 --- !u!195 &2169662089823677159
 NavMeshAgent:
@@ -103,7 +102,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2169662090270192759}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.33, y: 49.8, z: -55.28}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.8318796, y: 3.1315014, z: 0.9760394}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -192,8 +191,7 @@ MonoBehaviour:
   seesPlayer: 0
   nearPlayer: 0
   detectionRange: 20
-  player: {fileID: 0}
-  hp: 10
+  hp: 200
   attackDamage: 5
   attackDelay: 2.5
   attackCooldown: 2.5

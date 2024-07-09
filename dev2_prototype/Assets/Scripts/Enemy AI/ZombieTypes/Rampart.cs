@@ -6,33 +6,34 @@ public class Rampart : BaseZombie
 {
     [SerializeField] public List<GameObject> affected = new List<GameObject>();
     [SerializeField] Collider colli;
-    public override void  Seek(){
+    public override void Seek()
+    {
         colli.enabled = false;
         StartCoroutine(TargetCheck());
         VisibilityCheck();
-        if (attacking){
+        if (attacking)
+        {
             return;
         }
-        if (nearPlayer){
+        if (nearPlayer)
+        {
             FaceTarget();
         }
-        
-        if (nearPlayer && seesPlayer){
-            State(enemyState.ATTACK);
+
+        if (nearPlayer && seesPlayer)
+        {
+            State = enemyState.ATTACK;
             return;
         }
-        agent.SetDestination(player.transform.position);
-        
+        agent.SetDestination(targetPlayer.transform.position);
     }
 
-    public override void Attack(){
-        colli.enabled=true;
+    public override void Attack()
+    {
+        colli.enabled = true;
         Attacking();
-
     }
 
-
-    
     protected override void AttackLogic(){
         Debug.Log("Rampart Attack");
 
@@ -45,7 +46,7 @@ public class Rampart : BaseZombie
             if (dmg == null){
                 continue;
             }
-            dmg.takeDamage(AttackDMG());
+            dmg.takeDamage(AttackDMG);
         }
     }
 }

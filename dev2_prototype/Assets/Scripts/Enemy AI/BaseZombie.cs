@@ -1,154 +1,92 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class BaseZombie : BaseAI, ZombieStates, IDamage
 {
-public enum enemyState {NORMAL, SEEK, ATTACK, FLEE};
-//get and set
-public int HP(){
-    return hp;
-}
-public void HP(int i){
-    hp = i;
-}
+    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE };
 
-public int AttackDMG(){
-    return attackDamage;
-}
-public void AttackDMG(int i){
-    attackDamage = i;
-}
+    public int HP { get => hp; set => hp = value; }
+    public int AttackDMG { get => attackDamage; set => attackDamage = value; }
+    public float AttackDelay { get => attackDelay; set => attackDelay = value; }
+    public float AttackCD { get => attackCooldown; set => attackCooldown = value; }
+    public float MoveSPD { get => movementSpeed; set => movementSpeed = (int)value; }
+    public int DestructionPWR { get => destructionPower; set => destructionPower = value; }
+    public int Cost { get => cost; set => cost = value; }
+    public bool IsAttacking { get => attacking; set => attacking = value; }
 
-public float AttackDelay(){
-    return attackDelay;
-}
+    void IsAttackingToggle()
+    {
+        attacking = !attacking;
+    }
 
-public void AttackDelay(float i){
-    attackDelay = i;
-}
+    public bool SeesPlayer { get => seesPlayer; set => seesPlayer = value; }
+    public enemyState State { get => state; set => state = value; }
 
-public float AttackCD(){
-    return attackCooldown;
-}
-public void AttackCD(float i){
-    attackCooldown = i;
-}
+    //states DO NOT TOUCH THESE ISTFG
+    virtual public void Normal() { }
+    virtual public void Seek() { }
+    virtual public void Attack() { }
+    virtual public void Flee() { }
 
-public int MoveSPD(){
-    return movementSpeed;
-}
-public void MoveSPD(int i){
-    movementSpeed = i;
-}
+    //everything below this is protected or privated by the class and wont be able to accessed by other classes
 
-public int DestructionPWR(){
-    return destructionPower;
-}
-public void DestructionPWR(int i){
-    destructionPower = i;
-}
-
-public int Cost(){
-    return cost;
-}
-public void Cost(int i){
-    cost = i;
-}
-
-public bool IsAttacking(){
-    return attacking;
-}
-void IsAttacking(bool i){
-    attacking = i;
-}
-void IsAttackingToggle(){
-    attacking = !attacking;
-}
-
-public bool SeesPlayer(){
-    return seesPlayer;
-}
-public void SeesPlayer(bool input){
-    seesPlayer = input;
-}
-public enemyState State(){
-    return state;
-}
-public void State(int i){
-    state = (enemyState)i;
-}
-public void State(enemyState i){
-    state = i;
-}
-
-
-//states DO NOT TOUCH THESE ISTFG
-virtual public void Normal(){}
-virtual public void Seek(){}
-virtual public void Attack(){}
-virtual public void Flee(){}
-
-
-//everything below this is protected or privated by the class and wont be able to accessed by other classes
-
-
-
-[SerializeField] protected int hp;
-[SerializeField] protected int attackDamage;
-[SerializeField] protected float attackDelay;
-[SerializeField] protected float attackCooldown;
-[SerializeField] protected int movementSpeed;
-[SerializeField] protected int destructionPower;
-[SerializeField] protected int cost;
-[SerializeField] protected enemyState state;
+    [SerializeField] protected int hp;
+    [SerializeField] protected int attackDamage;
+    [SerializeField] protected float attackDelay;
+    [SerializeField] protected float attackCooldown;
+    [SerializeField] protected int movementSpeed;
+    [SerializeField] protected int destructionPower;
+    [SerializeField] protected int cost;
+    [SerializeField] protected enemyState state;
     protected float attackTimer;
     protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
 
     [SerializeField] protected attackPhase phase;
 
+    protected Color origColor;
+    [SerializeField] protected Color colorPrimed;
 
+    protected Renderer renderer;
 
+    [SerializeField] protected bool attacking;
 
+    void Start()
+    {
+        agent.speed = movementSpeed;
 
-    protected Color colorOrig;
-[SerializeField] protected Color colorPrimed;
+        targetPlayer = GameManager.Instance.LocalPlayer;
 
-protected Renderer render;
-
-[SerializeField] protected bool attacking;
-
-void Start(){
-    agent.speed = movementSpeed;
-    player = GameObject.FindWithTag("Player"); // HordeManager.instance.Player();
-    render = GetComponent<Renderer>();
-    colorOrig = render.material.color;
-    origStoppingDistance = agent.stoppingDistance;
-}
-    void Update(){
-        
-        if (attackTimer > 0) { }
-            attackTimer -= Time.deltaTime;
-    
-        if (!attacking){
-            movePosition = player.transform.position;
-        }
-        switch (state){
-        case enemyState.NORMAL:
-            Normal();
-            break;
-        case enemyState.SEEK:
-            Seek();
-            break;
-        case enemyState.ATTACK:
-            Attack();
-            break;
-        case enemyState.FLEE:
-            Flee();
-            break;
+        renderer = GetComponent<Renderer>();
+        origColor = renderer.material.color;
+        origStoppingDistance = agent.stoppingDistance;
     }
+
+    void Update()
+    {
+        if (attackTimer > 0)
+        {
+            attackTimer -= Time.deltaTime;
+        }
+
+        if (!attacking)
+        {
+            movePosition = targetPlayer.transform.position;
+        }
+        switch (state)
+        {
+            case enemyState.NORMAL:
+                Normal();
+                break;
+            case enemyState.SEEK:
+                Seek();
+                break;
+            case enemyState.ATTACK:
+                Attack();
+                break;
+            case enemyState.FLEE:
+                Flee();
+                break;
+        }
         FaceTarget();
     }
 
@@ -163,14 +101,15 @@ void Start(){
         StartCoroutine(FlashDamage());
     }
 
-private IEnumerator FlashDamage(){
-    render.material.color = Color.red;
-    yield return new WaitForSeconds(.5f);
-    render.material.color = colorOrig;
-}
+    private IEnumerator FlashDamage()
+    {
+        renderer.material.color = Color.red;
+        yield return new WaitForSeconds(.5f);
+        renderer.material.color = origColor;
+    }
 
-
-protected void Attacking(){
+    protected void Attacking()
+    {
         //  //if (!attacking)
         //  //{
         //  //    lastAttackTime = Time.time;
@@ -192,7 +131,6 @@ protected void Attacking(){
         ////     return;
         // attacking = false;
 
-        
         switch (phase)
         {
             case attackPhase.IDLE:
@@ -200,15 +138,15 @@ protected void Attacking(){
                 return;
             case attackPhase.PRIMED:
                 attacking = true;
-                attackTimer = AttackDelay();
+                attackTimer = AttackDelay;
                 phase++;
                 break;
             case attackPhase.ATTACK:
-                if (attackTimer < 0) {
+                if (attackTimer < 0)
+                {
                     phase++;
                     AttackLogic();
-                    
-                    attackTimer = AttackCD();
+                    attackTimer = AttackCD;
                 }
                 break;
             case attackPhase.RECOVERY:
@@ -219,13 +157,8 @@ protected void Attacking(){
                     state = enemyState.SEEK;
                 }
                 break;
-
         }
-
     }
 
-protected virtual void AttackLogic(){}
-    
-
+    protected virtual void AttackLogic() { }
 }
-
