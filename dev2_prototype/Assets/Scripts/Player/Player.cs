@@ -76,10 +76,21 @@ namespace Zombies
         {
             Health -= damage;
 
+            StartCoroutine(FlashHurtScreen());
+
             if (Health <= 0)
             {
                 GameManager.Instance.StateLose();
             }
+
+
+        }
+
+        IEnumerator FlashHurtScreen()
+        {
+            GameManager.Instance.HurtScreen.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            GameManager.Instance.HurtScreen.SetActive(false);
         }
     }
 }

@@ -11,6 +11,8 @@ public class damage : MonoBehaviour
     public int speed;
     public int destroyTime;
 
+    private float lastHitTime;
+
     bool hasDamaged;
 
     // Start is called before the first frame update
@@ -58,15 +60,12 @@ public class damage : MonoBehaviour
         {
             if (dmg != null)
             {
-                dmg.takeDamage(damageAmount);
-                StartCoroutine(waitTime());
+                if( Time.time - lastHitTime > 0.3f)
+                {
+                    dmg.takeDamage(damageAmount);
+                    lastHitTime = Time.time;    
+                }
             }
         }
     }
-
-    IEnumerator waitTime()
-    {
-        yield return new WaitForSeconds(0.3f);
-    }
-
 }

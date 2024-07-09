@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuLose;
 
     public TMP_Text AmmoHudText;
+    public GameObject HurtScreen;
 
     public Player LocalPlayer;
     
