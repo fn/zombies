@@ -23,7 +23,7 @@ public class WeaponComponent : MonoBehaviour
     void Start()
     {
         // Initialize ammo count
-        currentAmmo = ammoCapacity;
+        currentAmmo = magSize;
         remainingAmmo = ammoCapacity;
         lastShotTime = 0f;
     }
