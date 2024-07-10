@@ -8,7 +8,7 @@ public class Rampart : BaseZombie
     [SerializeField] Collider colli;
     public override void Seek()
     {
-        colli.enabled = false;
+       
         StartCoroutine(TargetCheck());
         VisibilityCheck();
         if (attacking)
@@ -18,6 +18,10 @@ public class Rampart : BaseZombie
         if (nearPlayer)
         {
             FaceTarget();
+        }
+        else
+        {
+            colli.enabled = false;
         }
 
         if (nearPlayer && seesPlayer)
