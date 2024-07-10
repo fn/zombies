@@ -178,10 +178,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RampartTemp
       objectReference: {fileID: 0}
-    - target: {fileID: 3581811003686848442, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
-      propertyPath: m_Layer
-      value: 12
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
 --- !u!1001 &952806436
