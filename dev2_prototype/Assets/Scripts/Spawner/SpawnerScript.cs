@@ -17,6 +17,7 @@ public class SpawnerScript : MonoBehaviour
         public int enemyCount;
     }
 
+    [SerializeField] int MaxWaveNumber;
     public GameObject[] possibleSpawnEntities;
     public WaveConfiguration waveConfig;
 
@@ -58,53 +59,61 @@ public class SpawnerScript : MonoBehaviour
     {
         bool noEnemies = NoEnemiesAlive();
 
-        GameManager.Instance.WaveHudText.text = $"Wave {waveConfig.waveNumber}";
-
-        if (spawnState == StateOfSpawn.COUNTING)
+        if (currentWaveNumber <= MaxWaveNumber)
         {
-            if (countDown <= 0) // not at zero yet so subtracting one second til zero from 5 then checking if a wave is spawned
-            {
-                countDown = 1f;
-                spawnState = StateOfSpawn.WAITING;
-            }
-            else
-            {
-                // timer relivant to time not frames
-                countDown -= Time.deltaTime;
-            }
-        }
+            GameManager.Instance.WaveHudText.text = $"Wave {waveConfig.waveNumber}";
 
-        if (spawnState == StateOfSpawn.WAITING)
-        {
-            if (noEnemies)
+            if (spawnState == StateOfSpawn.COUNTING)
             {
-                NewRound();
-                // Spawn the wave.
-                // SpawnWave(waveConfig);
-
-                spawnState = StateOfSpawn.SPAWNING;
-            }
-        }
-
-        if (spawnState == StateOfSpawn.SPAWNING)
-        {
-            Debug.Log($"Spawning wave: {waveConfig.waveNumber}");
-            if (enemiesLeftToSpawn > 0)
-            {
-                float spawnTime = 1f / waveConfig.spawnRate;
-
-                if (Time.time - lastSpawnTime > spawnTime)
+                if (countDown <= 0) // not at zero yet so subtracting one second til zero from 5 then checking if a wave is spawned
                 {
-                    SpawnEnemy(waveConfig);
-
-                    lastSpawnTime = Time.time;
-                    enemiesLeftToSpawn--;
+                    countDown = 1f;
+                    spawnState = StateOfSpawn.WAITING;
+                }
+                else
+                {
+                    // timer relivant to time not frames
+                    countDown -= Time.deltaTime;
                 }
             }
-            else
+
+            if (spawnState == StateOfSpawn.WAITING)
             {
-                spawnState = StateOfSpawn.WAITING;
+                if (noEnemies)
+                {
+                    NewRound();
+                    // Spawn the wave.
+                    // SpawnWave(waveConfig);
+
+                    spawnState = StateOfSpawn.SPAWNING;
+                }
             }
+
+            if (spawnState == StateOfSpawn.SPAWNING)
+            {
+                Debug.Log($"Spawning wave: {waveConfig.waveNumber}");
+                if (enemiesLeftToSpawn > 0)
+                {
+                    float spawnTime = 1f / waveConfig.spawnRate;
+
+                    if (Time.time - lastSpawnTime > spawnTime)
+                    {
+                        SpawnEnemy(waveConfig);
+
+                        lastSpawnTime = Time.time;
+                        enemiesLeftToSpawn--;
+                    }
+                }
+                else
+                {
+                    spawnState = StateOfSpawn.WAITING;
+                }
+            }
+        }
+        else
+        {
+            //GameManager.Instance.StateWin();
+            Debug.Log("All Waves Completed, You win!");
         }
     }
 

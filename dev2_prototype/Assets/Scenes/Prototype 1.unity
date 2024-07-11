@@ -135,6 +135,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5251045163570196771, guid: dff6da75615e1d2449339b32ad7aae55, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5251045164256610692, guid: dff6da75615e1d2449339b32ad7aae55, type: 3}
       propertyPath: m_Name
       value: Carnival Map
