@@ -63,6 +63,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
 
     void Update()
     {
+        
         if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
@@ -87,7 +88,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
                 Flee();
                 break;
         }
-        FaceTarget();
+        if (State == enemyState.SEEK)
+            FaceTarget();
     }
 
     public void takeDamage(int amount)
@@ -110,27 +112,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
 
     protected void Attacking()
     {
-        //  //if (!attacking)
-        //  //{
-        //  //    lastAttackTime = Time.time;
-        //  //}
-        //  FaceTarget();
-        //  attacking = true;
-        //   render.material.color = colorPrimed;
-
-        //     //new WaitForSeconds(AttackDelay());
-        // //if (!Wait(AttackDelay(), ref lastAttackTime))
-        // //    return;
-
-
-
-        // AttackLogic();
-        // render.material.color = colorOrig;
-        //// return new WaitForSeconds(AttackCD());
-        ////if (!Wait(AttackCD(), ref lastAttackTime))
-        ////     return;
-        // attacking = false;
-
+        seesPlayer = false;
+        agent.ResetPath();
         switch (phase)
         {
             case attackPhase.IDLE:
@@ -140,6 +123,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
                 attacking = true;
                 attackTimer = AttackDelay;
                 phase++;
+                
                 break;
             case attackPhase.ATTACK:
                 if (attackTimer < 0)

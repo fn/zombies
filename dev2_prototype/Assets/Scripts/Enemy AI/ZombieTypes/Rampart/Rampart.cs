@@ -11,7 +11,9 @@ public class Rampart : BaseZombie
     [SerializeField] float hideFactor;
     [SerializeField] public List<GameObject> affected = new List<GameObject>();
     [SerializeField] Collider colli;
-    private Collider[] hideSpots = new Collider[10];
+    [SerializeField] private Collider[] hideSpots = new Collider[10];
+    [SerializeField] bool rushing;
+    [SerializeField] Vector3 oRotation;
     public override void Seek()
     {
         agent.stoppingDistance = origStoppingDistance;
@@ -50,20 +52,37 @@ public class Rampart : BaseZombie
 
     public override void Attack()
     {
-        agent.stoppingDistance = 0;
-        colli.enabled = true;
-        if (GetDistanceToPlayer() >= 2)
-        {
+        Debug.Log((transform.forward - oRotation).sqrMagnitude);
+        colli.enabled = agent.velocity.sqrMagnitude >= 25;
+        rushing = agent.velocity.sqrMagnitude >= 25;
+        if (rushing) {
+            if (agent.velocity.sqrMagnitude < 25 || (transform.forward - oRotation).sqrMagnitude > 1)
+            {
+                Attacking();
+                return;
+            }
             AttackLogic();
         }
         else
         {
-            Attacking();
+            FaceTarget();
         }
+        
+        
+        
+
+        if (phase != attackPhase.IDLE)
+        {
+            rushing = false;
+            Attacking();
+            return;
+        }
+            
+
+        agent.SetDestination(targetPlayer.transform.position);
     }
 
     protected override void AttackLogic(){
-
         if (affected.Count == 0){
             return;
         }
@@ -75,6 +94,8 @@ public class Rampart : BaseZombie
             }
             dmg.takeDamage(AttackDMG);
         }
+
+        affected.Clear();
     }
 
     void MoveLogic()
@@ -87,8 +108,9 @@ public class Rampart : BaseZombie
         }
         else
         {
+            oRotation = transform.forward;
             agent.speed = movementSpeed * 10;
-            agent.SetDestination(targetPlayer.transform.position - targetPlayer.transform.forward);
+            
             State = enemyState.ATTACK;
         }
     }

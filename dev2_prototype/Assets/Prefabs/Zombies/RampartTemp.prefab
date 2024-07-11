@@ -211,6 +211,19 @@ MonoBehaviour:
   hideFactor: 0
   affected: []
   colli: {fileID: 4209100633997749509}
+  hideSpots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  rushing: 0
+  oRotation: {x: 0, y: 0, z: 0}
 --- !u!195 &2169662090270192752
 NavMeshAgent:
   m_ObjectHideFlags: 0

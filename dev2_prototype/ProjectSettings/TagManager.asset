@@ -12,7 +12,7 @@ TagManager:
   - BarricadeSpawner
   - Wave4
   - Obstacle
-  - Final Wave
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -27,7 +27,7 @@ TagManager:
   - Barricade
   - Obstacle
   - AttackArea
-  - SearchArea
+  - FindArea
   - 
   - 
   - 
