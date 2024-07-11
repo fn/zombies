@@ -13,6 +13,7 @@ TagManager:
   - Wave4
   - Obstacle
   - Final Wave
+  - Pickup
   layers:
   - Default
   - TransparentFX
