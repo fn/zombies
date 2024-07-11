@@ -4,31 +4,26 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
-  - Obstacle
-  - Barricade
-  - BarricadeSpawner
-<<<<<<< Updated upstream
   - Wave1
-  - Wave2
   - Wave3
-  - Final Wave
-=======
+  - Wave2
+  - Enemy
   - AttackArea
->>>>>>> Stashed changes
+  - BarricadeSpawner
+  - Wave4
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
-  - Player Bullet
+  - Player
   - Enemy
+  - Player Bullet
   - Enemy Bullet
+  - Barricade
   - Obstacle
-  - ViewModel
-  - AttackArea
   - 
   - 
   - 

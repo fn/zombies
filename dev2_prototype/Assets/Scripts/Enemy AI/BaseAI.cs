@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BaseAI : MonoBehaviour
 {
-
     [SerializeField] int faceTargetSpeed;
     protected float origStoppingDistance;
     [SerializeField] protected UnityEngine.AI.NavMeshAgent agent;
@@ -16,72 +15,51 @@ public class BaseAI : MonoBehaviour
 
     protected Vector3 movePosition;
 
-    [SerializeField] protected GameObject player;
+    protected Zombies.Player targetPlayer;
 
-    int layerMask;
-
-
-    void Start(){
-        layerMask = LayerMask.NameToLayer("AttackArea");
-        player = HordeManager.instance.Player();
+    void Start()
+    {
+        targetPlayer = GameManager.Instance.LocalPlayer;
     }
 
-    protected void UpdatePlayerDir(){
-        playerDir = player.transform.position - transform.position;
+    protected void UpdatePlayerDir()
+    {
+        playerDir = targetPlayer.View.transform.position - transform.position;
     }
 
-    protected void VisibilityCheck(){
+    protected void VisibilityCheck()
+    {
         UpdatePlayerDir();
         RaycastHit vis;
-        if (Physics.Raycast(transform.position, playerDir, out vis, detectionRange, ~layerMask)){
+        if (Physics.Raycast(transform.position, playerDir, out vis, detectionRange))
+        {
             Debug.DrawRay(transform.position, playerDir, Color.green);
-            if (vis.collider.CompareTag("Player") && !vis.collider.CompareTag("Obstacle")){
-                seesPlayer = true;
-            }
-            else{
-                seesPlayer = false;
-            }
+
+            seesPlayer = vis.collider.gameObject.CompareTag("Player");
         }
     }
-    
 
-    protected IEnumerator TargetCheck(float delay = 0.1f){
+    protected IEnumerator TargetCheck(float delay = 0.1f)
+    {
         yield return new WaitForSeconds(delay);
-
-        if (Distance() <=  origStoppingDistance) {
-            nearPlayer = true;
-        }
-        else {
-            nearPlayer = false;
-        }
-
+        nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
         yield return new WaitForSeconds(delay);
     }
-    
-    protected void FaceTarget(){
+
+    protected void FaceTarget()
+    {
         Quaternion rot = Quaternion.LookRotation(playerDir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
-    protected float Distance(){
-        float dist = Vector3.Distance(transform.position, player.transform.position);
-        return dist;
+    protected float GetDistanceToPlayer()
+    {
+        return Vector3.Distance(transform.position, targetPlayer.transform.position);
     }
-    protected void Move(){
+
+    protected void Move()
+    {
         agent.stoppingDistance = origStoppingDistance;
         agent.SetDestination(movePosition);
     }
-
-    protected bool Wait(float waitTime, ref float lastWaitTime)
-    {
-        if (Time.time - lastWaitTime < waitTime)
-                return false;
-
-        lastWaitTime = Time.time;
-        return true;
-
-
-    }
 }
-
-

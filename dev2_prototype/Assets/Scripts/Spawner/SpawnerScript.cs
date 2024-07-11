@@ -9,23 +9,27 @@ public class SpawnerScript : MonoBehaviour
 
     [System.Serializable] // allows to change values of instances of
                           // class in Unity Inspector
-    public class Wave
+    public class WaveConfiguration
     {
-        public string name;
-        public Transform capsulePrefab;
-        public int enemyCount;
+        public int setupWaves; // Waves that open up the map and such.
         public float spawnRate;
+        public int waveNumber;
+        public int enemyCount;
     }
 
-    public Wave[] allWaves;
-    private int nextWave = 0;
+    public GameObject[] possibleSpawnEntities;
+    public WaveConfiguration waveConfig;
 
-    public Transform[] points;
+    private int currentWaveNumber = 1;
+
+    public Transform[] spawnPointLocations;
 
     public float waitTime = 5f;
     private float countDown;
 
-    private float findTagCountDown = 1;
+    private int enemiesLeftToSpawn;
+
+    private float lastSpawnTime;
 
     public StateOfSpawn spawnState = StateOfSpawn.COUNTING;
 
@@ -33,123 +37,102 @@ public class SpawnerScript : MonoBehaviour
 
     void Start()
     {
-        if (points.Length == 0)
+        if (spawnPointLocations.Length == 0)
         {
             Debug.LogError("No Spawn Points");
         }
 
         countDown = waitTime;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {   // make sure spawner spawns capsules
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Instantiate(capsulePrefab, transform.position, Quaternion.identity);
-        //}
-
-        if (spawnState == StateOfSpawn.WAITING)
-        {
-            //  check if enemies are still alive
-            if (EnemyIsAlive())
-            {
-                NewRound();
-            }
-            else
-            {
-                return; // let player finish killing enemies so return
-            }
-
-        }
-
-        if (countDown <= 0) // not at zero yet so subtracting one second til zero from 5 then checking if a wave is spawned
-        {
-            countDown = 1f;
-            if (spawnState != StateOfSpawn.SPAWNING)
-            {
-                // start spawning wave
-                StartCoroutine(SpawnAWave(allWaves[nextWave]));
-            }
-
-        }
-        else
-        {
-            // timer relivant to time not frames
-            countDown -= Time.deltaTime;
-        }
-
+        currentWaveNumber = 1;
     }
 
     void NewRound()
     {
-        // begin a new round
-        Debug.Log("Wave Completed");
-
-        spawnState = StateOfSpawn.COUNTING;
-        countDown = waitTime;
-
-        if (nextWave + 1 > allWaves.Length - 1) // if next wave spawn is bigger than the number of waves
-        {
-            nextWave = 0;
-            Debug.Log("Waves Complete Looping...");
-            // Add win screen here
-        }
-        else
-        {
-            nextWave++; // if not complete then continue to next wave
-        }
+        waveConfig.waveNumber = currentWaveNumber++;
+        waveConfig.enemyCount = 7 * waveConfig.waveNumber + (5 / waveConfig.waveNumber);
+        enemiesLeftToSpawn = waveConfig.enemyCount;
     }
 
-    bool EnemyIsAlive()
+    // Update is called once per frame
+    void Update()
     {
-        findTagCountDown -= Time.deltaTime;
-        if (findTagCountDown <= 0)
+        bool noEnemies = NoEnemiesAlive();
+
+        GameManager.Instance.WaveHudText.text = $"Wave {waveConfig.waveNumber}";
+
+        if (spawnState == StateOfSpawn.COUNTING)
         {
-            if (GameObject.FindGameObjectWithTag("Enemy") == null) // check if there is no enemy left
+            if (countDown <= 0) // not at zero yet so subtracting one second til zero from 5 then checking if a wave is spawned
             {
-                return false; // if not
+                countDown = 1f;
+                spawnState = StateOfSpawn.WAITING;
+            }
+            else
+            {
+                // timer relivant to time not frames
+                countDown -= Time.deltaTime;
             }
         }
-        return true; // if so
-    }
 
-    IEnumerator SpawnAWave(Wave _wave)
-    {
-        Debug.Log("Spawning A Wave: " + _wave.name);
-
-        spawnState = StateOfSpawn.SPAWNING;
-
-        // spawn a bunch of things
-
-        for (int i = 0; i < _wave.enemyCount; i++) // loop through how many enemies we want to spawn
+        if (spawnState == StateOfSpawn.WAITING)
         {
-            SpawnEnemy(_wave); // call spawn method
-            yield return new WaitForSeconds(1f / _wave.spawnRate); // wait time before spawn
+            if (noEnemies)
+            {
+                NewRound();
+                // Spawn the wave.
+                // SpawnWave(waveConfig);
+
+                spawnState = StateOfSpawn.SPAWNING;
+            }
         }
 
-        spawnState = StateOfSpawn.WAITING;
+        if (spawnState == StateOfSpawn.SPAWNING)
+        {
+            Debug.Log($"Spawning wave: {waveConfig.waveNumber}");
+            if (enemiesLeftToSpawn > 0)
+            {
+                float spawnTime = 1f / waveConfig.spawnRate;
 
+                if (Time.time - lastSpawnTime > spawnTime)
+                {
+                    SpawnEnemy(waveConfig);
 
-        yield break;
+                    lastSpawnTime = Time.time;
+                    enemiesLeftToSpawn--;
+                }
+            }
+            else
+            {
+                spawnState = StateOfSpawn.WAITING;
+            }
+        }
     }
 
-    void SpawnEnemy(Wave _wave)
+    bool NoEnemiesAlive()
     {
-            Debug.Log("Spawning Enemy:" + _wave.capsulePrefab.name); // write to console spawning enemy
+        // This is a bad check honestly. The spawner should put entities in a list and then we remove them from when they die.
+        return GameObject.FindGameObjectWithTag("Enemy") == null;
+    }
 
+    void SpawnEnemy(WaveConfiguration waveCfg)
+    {
         var wavePoints = new List<Transform>();
 
-        for(int i = 0; i < points.Length; i++)
+        // These initial points are for opening up the map.
+        if (waveCfg.waveNumber < waveCfg.setupWaves)
         {
-            if (points[i].gameObject.CompareTag(_wave.name))
+            for (int i = 0; i < spawnPointLocations.Length; i++)
             {
-                wavePoints.Add(points[i]);
+                if (spawnPointLocations[i].gameObject.CompareTag($"Wave{waveCfg.waveNumber}"))
+                    wavePoints.Add(spawnPointLocations[i]);
             }
         }
-            Transform randomPoint = wavePoints[Random.Range(0, wavePoints.Count)]; // 
+        else // If we are past that we can spawn from any spawn point.
+        {
+            wavePoints.AddRange(spawnPointLocations);
+        }
 
-            Instantiate(_wave.capsulePrefab, randomPoint.position, randomPoint.rotation);
+        Transform randomPoint = wavePoints[Random.Range(0, wavePoints.Count)];
+        Instantiate(possibleSpawnEntities[Random.Range(0, possibleSpawnEntities.Length)], randomPoint.position, randomPoint.rotation);
     }
-
 }

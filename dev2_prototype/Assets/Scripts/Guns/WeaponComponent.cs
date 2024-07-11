@@ -48,39 +48,42 @@ public class WeaponComponent : MonoBehaviour
     {
         float shotCooldown = 1f / rateOfFire;
 
-        if (Time.time - lastShotTime < shotCooldown || currentAmmo <= 0)
-        {
+        if (currentAmmo <= 0 && !infAmmo)
             return;
-        }
 
-        // Update the last shot time and decrease ammo count
-        lastShotTime = Time.time;
-        if (!infAmmo)
+        if (Time.time - lastShotTime >= shotCooldown)
         {
-            currentAmmo--;
-            usedAmmo++;
-        }
-        // Instantiate the bullet
-        GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
-        if (bullet == null)
-        {
-            return;
-        }
+            // Update the last shot time and decrease ammo count
+            if (!infAmmo)
+            {
+                currentAmmo--;
+                usedAmmo++;
+            }
+            // Instantiate the bullet
+            GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
+            if (bullet == null)
+            {
+                return;
+            }
 
-        bullet.layer = LayerMask.NameToLayer(layer);
-        // Transfer the damage value to the bullet
-        damage bulletDamage = bullet.GetComponent<damage>();
-        bulletDamage.SetDamage(damage);
+            bullet.layer = LayerMask.NameToLayer(layer);
 
-        // Apply velocity to the bullet
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.velocity = direction * bulletDamage.speed;
+            // Transfer the damage value to the bullet
+            damage bulletDamage = bullet.GetComponent<damage>();
+            bulletDamage.SetDamage(damage);
+
+            // Apply velocity to the bullet
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.velocity = direction * bulletDamage.speed;
+            }
+
+            // Destroy the bullet after a certain time
+            Destroy(bullet, bulletDamage.destroyTime);
+
+            lastShotTime = Time.time;
         }
-
-        // Destroy the bullet after a certain time
-        Destroy(bullet, bulletDamage.destroyTime);
     }
 
     public void Reload()

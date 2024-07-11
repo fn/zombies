@@ -6,8 +6,8 @@ namespace Zombies
 {
     public class Player : MonoBehaviour, IDamage
     {
-        [SerializeField] MovementComponent Movement;
-        [SerializeField] ViewComponent View;
+        public MovementComponent Movement;
+        public ViewComponent View;
         [SerializeField] List<WeaponComponent> Weapons;
 
         [SerializeField] Transform WeaponPivot;

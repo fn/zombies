@@ -78,7 +78,7 @@ namespace Zombies
 
         void UpdateViewModelRecoil()
         {
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && GameManager.Instance.LocalPlayer.HeldWeapon.currentAmmo > 0)
                 animator.SetTrigger("Fire");
 
             if (Input.GetButtonDown("Reload"))

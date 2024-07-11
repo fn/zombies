@@ -6,7 +6,6 @@ public class RampartMove : BaseAI
 {
     [SerializeField] bool placeFound;
     
-
     void Update(){
         if (!placeFound){
             FindPosition();
