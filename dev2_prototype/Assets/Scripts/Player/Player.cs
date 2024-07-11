@@ -15,6 +15,7 @@ namespace Zombies
         int HeldWeaponIndex;
 
         public int Health, MaxHealth;
+        float attackTime;
 
         public WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; set => value = Weapons[HeldWeaponIndex]; }
 
@@ -35,6 +36,7 @@ namespace Zombies
         void Update()
         {
             UpdateWeapons();
+            passiveHealthRegen();
         }
 
         void UpdateWeapons()
@@ -75,13 +77,34 @@ namespace Zombies
         public void takeDamage(int damage)
         {
             Health -= damage;
-
+            attackTime = 3;
             StartCoroutine(FlashHurtScreen());
 
             if (Health <= 0)
             {
                 GameManager.Instance.StateLose();
             }
+        }
+
+        public void passiveHealthRegen()
+        {
+            //If 3 seconds have passed
+            if (attackTime <0)
+            {
+                //If the player has taken damage
+                if (Health < MaxHealth)
+                {
+                    //increases health by percentage of max health in case we want to add health gain options.
+                    Health += MaxHealth / 20;
+                    //then reduces the health to be at a maximum of 100;
+                    Health= Mathf.Clamp(Health, 0 , MaxHealth);
+                }
+                //Increases the time again to not be gaining health every frame.
+                attackTime++;
+            }
+            else
+                //Lowers the time until the next health regen.
+                    attackTime -= Time.deltaTime;
         }
 
         IEnumerator FlashHurtScreen()
