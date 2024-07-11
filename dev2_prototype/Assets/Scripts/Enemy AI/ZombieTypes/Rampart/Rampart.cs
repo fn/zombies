@@ -14,7 +14,7 @@ public class Rampart : BaseZombie
     private Collider[] hideSpots = new Collider[10];
     public override void Seek()
     {
-       
+        agent.stoppingDistance = origStoppingDistance;
         StartCoroutine(TargetCheck());
         VisibilityCheck();
         if (attacking)
@@ -39,14 +39,30 @@ public class Rampart : BaseZombie
         MoveLogic();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (agent.velocity.magnitude >= agent.speed / 2 &&
+            State == enemyState.ATTACK)
+        {
+
+        }
+    }
+
     public override void Attack()
     {
+        agent.stoppingDistance = 0;
         colli.enabled = true;
-        Attacking();
+        if (GetDistanceToPlayer() >= 2)
+        {
+            AttackLogic();
+        }
+        else
+        {
+            Attacking();
+        }
     }
 
     protected override void AttackLogic(){
-        Debug.Log("Rampart Attack");
 
         if (affected.Count == 0){
             return;
@@ -65,7 +81,15 @@ public class Rampart : BaseZombie
     {
         if (!seesPlayer)
         {
+            agent.speed = movementSpeed;
             Hide();
+            
+        }
+        else
+        {
+            agent.speed = movementSpeed * 10;
+            agent.SetDestination(targetPlayer.transform.position - targetPlayer.transform.forward);
+            State = enemyState.ATTACK;
         }
     }
 
@@ -81,7 +105,7 @@ public class Rampart : BaseZombie
                 //finds nearest navmesh point within range
                 if (NavMesh.SamplePosition(hideSpots[i].transform.position, out NavMeshHit hit, 2f, agent.areaMask))
                 {
-                    //error check recommended in the vid
+                    //error check
                     if (!NavMesh.FindClosestEdge(hit.position, out hit, agent.areaMask))
                     {
                         Debug.LogError($"Cant find hide spot at {hit.position}");
