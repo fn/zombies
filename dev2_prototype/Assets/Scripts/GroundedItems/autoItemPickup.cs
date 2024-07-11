@@ -9,13 +9,15 @@ public class autoItemPickup : MonoBehaviour
     [SerializeField] pickupType type;
 
     [SerializeField] int restoreAmount;
-    public WeaponComponent weapon;
-    public Player player;
+    //public WeaponComponent weapon;
+    //public Player player;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other == player)
+        if (other.CompareTag("Player"))
         {
+            var player = other.gameObject.GetComponent<Player>();
+
             if (type == pickupType.Health)
             {
                 Destroy(gameObject);
@@ -25,8 +27,9 @@ public class autoItemPickup : MonoBehaviour
             if (type == pickupType.Ammo)
             {
                 Destroy(gameObject);
-                weapon.currentAmmo += restoreAmount;
+                player.HeldWeapon.remainingAmmo += restoreAmount;
             }
         }
     }
+
 }
