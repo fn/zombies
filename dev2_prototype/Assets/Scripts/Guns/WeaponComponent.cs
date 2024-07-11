@@ -31,17 +31,7 @@ public class WeaponComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Handle shooting input
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Shoot(transform.position, transform.forward);
-        }
-
-        // Handle reload input
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reload();
-        }
+        
     }
 
     public void Shoot(Vector3 origin, Vector3 direction)
