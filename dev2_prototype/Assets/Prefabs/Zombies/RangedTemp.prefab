@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 2349761625740995042}
   - component: {fileID: 6085894060492415887}
   - component: {fileID: -6950293119309361311}
+  - component: {fileID: 3421188648383591762}
   m_Layer: 7
   m_Name: RangedTemp
   m_TagString: Enemy
@@ -227,3 +228,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3421188648383591762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6475530878062941317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8204b7edd4a6e144b8623086cfd4b80e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  droppableItems:
+  - {fileID: 7856614685524448234, guid: 20d7e2536a1201e4dad4e5205d87b4a5, type: 3}

@@ -29,8 +29,9 @@ public class ItemDropper : MonoBehaviour
     void Update()
     {
         // test code
-        //if(Input.GetKeyDown(KeyCode.P)) {
-        //    DropItem();
-        //}
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            DropItem();
+        }
     }
 }

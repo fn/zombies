@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 617166675004446995}
   - component: {fileID: 617166675004446992}
   - component: {fileID: 3994592407605718444}
+  - component: {fileID: -6028396360769588985}
   m_Layer: 7
   m_Name: RunnerTemp
   m_TagString: Enemy
@@ -167,3 +168,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-6028396360769588985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617166675004446998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8204b7edd4a6e144b8623086cfd4b80e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  droppableItems:
+  - {fileID: 7856614685524448234, guid: 20d7e2536a1201e4dad4e5205d87b4a5, type: 3}
