@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 2349761625740995042}
   - component: {fileID: 6085894060492415887}
   - component: {fileID: -6950293119309361311}
-  - component: {fileID: 3421188648383591762}
+  - component: {fileID: -3109347203830223348}
   m_Layer: 7
   m_Name: RangedTemp
   m_TagString: Enemy
@@ -228,7 +228,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3421188648383591762
+--- !u!114 &-3109347203830223348
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

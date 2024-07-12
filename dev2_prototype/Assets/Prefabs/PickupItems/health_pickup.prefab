@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4442196487086083507}
   - component: {fileID: 4442196487086083506}
   - component: {fileID: 4442196487086083505}
-  - component: {fileID: 4442196487086083504}
+  - component: {fileID: 5185794556675043725}
   m_Layer: 0
   m_Name: health_pickup
   m_TagString: Pickup
@@ -98,7 +98,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4442196487086083504
+--- !u!114 &5185794556675043725
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4442196487086083471}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6655f6df29ccf9a4fbc5cb8e1f926f13, type: 3}
+  m_Script: {fileID: 11500000, guid: 65b544187f2c4154892781b9aa920a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  restoreAmount: 5
+  restoreAmount: 10

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Zombies;
 
 public class ItemDropper : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class ItemDropper : MonoBehaviour
         // make drop based on random range
         GameObject drop = droppableItems[Random.Range(0, droppableItems.Length)];
 
-        // instantiate on condition
+        // instantiate at position and rotation of object calling DropItem
         Instantiate(drop, position, rotation);
     }
 
@@ -21,8 +21,7 @@ public class ItemDropper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-
+        
     }
 
     // Update is called once per frame

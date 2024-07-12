@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 617166675004446995}
   - component: {fileID: 617166675004446992}
   - component: {fileID: 3994592407605718444}
-  - component: {fileID: -6028396360769588985}
+  - component: {fileID: -6043086646946241960}
   m_Layer: 7
   m_Name: RunnerTemp
   m_TagString: Enemy
@@ -168,7 +168,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-6028396360769588985
+--- !u!114 &-6043086646946241960
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,4 +181,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   droppableItems:
-  - {fileID: 7856614685524448234, guid: 20d7e2536a1201e4dad4e5205d87b4a5, type: 3}
+  - {fileID: 4442196487086083471, guid: dd983b4f0eb4217468b03ee7ba1713f9, type: 3}

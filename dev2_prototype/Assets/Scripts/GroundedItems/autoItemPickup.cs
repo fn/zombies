@@ -3,31 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zombies;
 
-public class autoItemPickup : MonoBehaviour
+// abstract base class for pickup items to derive from, they dont need IPickup as long as they derive from here
+public abstract class autoItemPickup : MonoBehaviour, IPickup
 {
-    [SerializeField] enum pickupType { Health, Ammo }
-    [SerializeField] pickupType type;
-
-    [SerializeField] int restoreAmount;
-
+    // no need to check ontriggerenter for every item
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        // checks and returns the player if true
+        if (other.TryGetComponent(out Player player))
         {
-            var player = other.gameObject.GetComponent<Player>();
-
-            if (type == pickupType.Health)
-            {
-                Destroy(gameObject);
-                player.Health += restoreAmount;
-
-            }
-            if (type == pickupType.Ammo)
-            {
-                Destroy(gameObject);
-                player.HeldWeapon.remainingAmmo += restoreAmount;
-            }
+            ApplyAmount(player);
         }
+    }
+
+    public abstract void ApplyAmount(Player player);
+
+    private void Start()
+    {
+        // destory the gameobject after a set time
+        Object.Destroy(gameObject, 10f);
     }
 
 }

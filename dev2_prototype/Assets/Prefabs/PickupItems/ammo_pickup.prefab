@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7856614685524448238}
   - component: {fileID: 7856614685524448237}
   - component: {fileID: 7856614685524448236}
-  - component: {fileID: 7856614685524448235}
+  - component: {fileID: 7356020642148800458}
   m_Layer: 0
   m_Name: ammo_pickup
   m_TagString: Pickup
@@ -98,7 +98,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7856614685524448235
+--- !u!114 &7356020642148800458
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7856614685524448234}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6655f6df29ccf9a4fbc5cb8e1f926f13, type: 3}
+  m_Script: {fileID: 11500000, guid: 02fafa8e5c716be46bb8349039725480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
-  restoreAmount: 5
+  restoreAmount: 10
