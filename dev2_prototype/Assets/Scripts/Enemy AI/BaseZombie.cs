@@ -98,7 +98,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
         if (hp <= 0)
         {
             ItemDropper itemToDrop = GetComponent<ItemDropper>();
-            itemToDrop.DropItem();
+            itemToDrop.DropItem(transform.position, transform.rotation);
             Destroy(gameObject);
         }
 

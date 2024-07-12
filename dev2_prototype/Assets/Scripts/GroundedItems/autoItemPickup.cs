@@ -9,8 +9,6 @@ public class autoItemPickup : MonoBehaviour
     [SerializeField] pickupType type;
 
     [SerializeField] int restoreAmount;
-    //public WeaponComponent weapon;
-    //public Player player;
 
     private void OnTriggerEnter(Collider other)
     {
