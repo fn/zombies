@@ -97,8 +97,16 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
         hp -= amount;
         if (hp <= 0)
         {
-            ItemDropper itemToDrop = GetComponent<ItemDropper>();
-            itemToDrop.DropItem(transform.position, transform.rotation);
+            // 25% drop chance
+            if (Random.Range(0, 101) <= 25)
+            {
+                // check if this object does have ItemDropper
+                if (TryGetComponent<ItemDropper>(out ItemDropper item))
+                {
+                    // pass this items location and rotation to DropItem
+                    item.DropItem(transform.position, transform.rotation);
+                }
+            }
             Destroy(gameObject);
         }
 
