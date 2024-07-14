@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Barricade : MonoBehaviour
+public class Barricade : MonoBehaviour, IDamage
 {
     // repair logic called every Invoke
-    [SerializeField] float repairHealthAmount;
+    [SerializeField] int repairHealthAmount;
     [SerializeField] float repairRateInterval;
-    [SerializeField] float repairRateCost;
+    [SerializeField] int repairRateCost;
     private bool isRepairing = false;
 
-    public float PLACEHOLDERMONEY = 10f;
+    public int PLACEHOLDERMONEY = 10;
 
     // health logic
-    [SerializeField] float maxHealth;
-    private float currentHealth;
+    [SerializeField] int maxHealth;
+    private int currentHealth;
 
     // Health variable is the point of interaction for all other game components
-    public float Health
+    public int Health
     {
         get { return currentHealth; }
         set {
@@ -61,7 +61,7 @@ public class Barricade : MonoBehaviour
         model.material.color = defaultColor;
     }
 
-    public void TakeDamage(float amount)
+    public void takeDamage(int amount)
     {
         Health -= amount;
         Debug.Log("TakeDamage barricade");
@@ -74,7 +74,7 @@ public class Barricade : MonoBehaviour
         }
     }
 
-    public void Repair(float amount)
+    public void Repair(int amount)
     {
         Health += amount;
         

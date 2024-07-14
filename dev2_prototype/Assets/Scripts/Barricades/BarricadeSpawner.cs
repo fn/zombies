@@ -7,8 +7,8 @@ public class BarricadeSpawner : MonoBehaviour
     // object to spawn
     [SerializeField] GameObject barricadeToSpawn;
     // cost
-    [SerializeField] float purchaseCost;
-    public float PLACEHOLDERMONEY = 5.0f;
+    [SerializeField] int purchaseCost;
+    public int PLACEHOLDERMONEY = 5;
 
     // checking for range
     private bool playerInRange = false;
