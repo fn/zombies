@@ -350,6 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f040e24aacf5b044bba6ac7908ca53d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxWaveNumber: 1000
   possibleSpawnEntities:
   - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
   - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
@@ -861,9 +862,73 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6287104669277701479, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669277701479, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.9990214
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669277701479, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.04422977
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669277701479, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669277701479, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: AirCap
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: Friction
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: MaxSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: JumpPower
+      value: 6.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
       propertyPath: MoveSpeed
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: WalkSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: SprintSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: Acceleration
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: Deceleration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: ClampAirSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: GravityAmount
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6287104669802105547, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
+      propertyPath: AirAcceleration
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6287104669802105549, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
       propertyPath: m_Name
@@ -887,7 +952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6287104669802105557, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.96
+      value: 1.438
       objectReference: {fileID: 0}
     - target: {fileID: 6287104669802105557, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
       propertyPath: m_LocalPosition.z

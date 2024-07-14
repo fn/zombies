@@ -239,11 +239,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller: {fileID: 6287104669802105550}
-  MoveSpeed: 10
-  AirMoveSpeedReduction: 0.5
-  JumpPower: 4
   CrouchHeight: 1
   StandHeight: 2
+  GravityAmount: 20
+  Friction: 6
+  Acceleration: 14
+  Deceleration: 10
+  AirAcceleration: 12
+  CrouchFriction: 0
+  CrouchAcceleration: 0
+  CrouchDeceleration: 0
+  SprintSpeed: 12
+  WalkSpeed: 7
+  CrouchSpeed: 0
+  JumpPower: 6.5
+  ClampAirSpeed: 1
+  MaxSpeed: 6
 --- !u!114 &6287104669802105546
 MonoBehaviour:
   m_ObjectHideFlags: 0
