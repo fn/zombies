@@ -8,4 +8,5 @@ public interface ZombieStates //reading up on interfaces. will probably switch t
     void Seek();
     void Attack();
     void Flee();
+    void Gather();
 }

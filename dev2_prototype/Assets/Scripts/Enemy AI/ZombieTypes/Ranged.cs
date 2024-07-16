@@ -8,7 +8,6 @@ public class Ranged : BaseZombie
     [SerializeField] Transform ShootPos;
 
     [SerializeField] float fireRate;
-    [SerializeField] bool fleeing;
     [SerializeField] float fleeingDist;
     
     public override void Seek()
@@ -49,21 +48,6 @@ public class Ranged : BaseZombie
         Attacking();
     }
 
-    public override void Flee()
-    {
-        agent.speed = 2 * movementSpeed;
-        UpdatePlayerDir();
-        Vector3 newPos = (transform.position - playerDir);
-        //Debug.Log("New:" + newPos);
-        //Debug.Log("Old: " + transform.position);
-        agent.stoppingDistance = 0;
-        agent.SetDestination(newPos);
-        if (GetDistanceToPlayer() >= detectionRange)
-        {
-            fleeing = false;
-            State = enemyState.SEEK;
-        }
-    }
 
     protected override void AttackLogic(){
         

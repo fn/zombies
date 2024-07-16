@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BaseZombie : BaseAI, ZombieStates, IDamage
 {
-    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION };
+    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER };
 
     public int HP { get => hp; set => hp = value; }
     public int AttackDMG { get => attackDamage; set => attackDamage = value; }
@@ -13,6 +13,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
     public int DestructionPWR { get => destructionPower; set => destructionPower = value; }
     public int Cost { get => cost; set => cost = value; }
     public bool IsAttacking { get => attacking; set => attacking = value; }
+    public bool CommandComplete { get => commandComplete; set => commandComplete = value; }
 
     void IsAttackingToggle()
     {
@@ -21,12 +22,38 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
 
     public bool SeesPlayer { get => seesPlayer; set => seesPlayer = value; }
     public enemyState State { get => state; set => state = value; }
+    public Commander commander;
+    public GameObject currentTarget;
+
+
 
     //states DO NOT TOUCH THESE ISTFG
     virtual public void Normal() { }
     virtual public void Seek() { }
     virtual public void Attack() { }
-    virtual public void Flee() { }
+    virtual public void Flee() {
+        agent.speed = 2 * movementSpeed;
+        UpdatePlayerDir();
+        Vector3 newPos = (transform.position - playerDir);
+        //Debug.Log("New:" + newPos);
+        //Debug.Log("Old: " + transform.position);
+        agent.stoppingDistance = 0;
+        agent.SetDestination(newPos);
+        if (GetDistanceToPlayer() >= detectionRange)
+        {
+            fleeing = false;
+            State = enemyState.SEEK;
+        }
+    }
+    virtual public void Gather() {
+        agent.speed = movementSpeed;
+        if (agent.remainingDistance < 5)
+        {
+            State = enemyState.NORMAL;
+            commandComplete = true;
+        }
+            
+    }
 
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
 
@@ -38,8 +65,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
     [SerializeField] protected int destructionPower;
     [SerializeField] protected int cost;
     [SerializeField] protected enemyState state;
+    protected bool fleeing;
     protected float attackTimer;
-    protected GameObject currentTarget;
+    protected bool commandComplete;
+    
     protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
 
     [SerializeField] protected attackPhase phase;
@@ -50,12 +79,15 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
     protected Renderer model;
 
     [SerializeField] protected bool attacking;
+    [SerializeField] protected Vector3 maxDistance;
+
 
     void Start()
     {
         agent.speed = movementSpeed;
 
         targetPlayer = GameManager.Instance.LocalPlayer;
+        currentTarget = targetPlayer.gameObject;
 
         model = GetComponent<Renderer>();
         origColor = GetComponent<Renderer>().material.color;
@@ -175,7 +207,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
         }
     }
 
-    protected void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "BarricadeSpawner")
         {

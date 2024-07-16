@@ -9,7 +9,7 @@ public class Rampart : BaseZombie
     [SerializeField] LayerMask HideLayers;
     [Range(-1f, 1f)]
     [SerializeField] float hideFactor;
-    [SerializeField] public List<GameObject> affected = new List<GameObject>();
+    [SerializeField] protected AttackArea attackArea;
     [SerializeField] Collider colli;
     [SerializeField] private Collider[] hideSpots = new Collider[10];
     [SerializeField] bool rushing;
@@ -74,11 +74,11 @@ public class Rampart : BaseZombie
     }
 
     protected override void AttackLogic(){
-        if (affected.Count == 0){
+        if (attackArea.affected.Count == 0){
             return;
         }
 
-        foreach (GameObject obj in affected){
+        foreach (GameObject obj in attackArea.affected){
             IDamage dmg = obj.GetComponent<IDamage>();
             if (dmg == null){
                 continue;
@@ -86,7 +86,7 @@ public class Rampart : BaseZombie
             dmg.takeDamage(AttackDMG);
         }
 
-        affected.Clear();
+        attackArea.affected.Clear();
     }
 
     void MoveLogic()
