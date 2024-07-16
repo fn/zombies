@@ -41,15 +41,6 @@ public class Rampart : BaseZombie
         MoveLogic();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (agent.velocity.magnitude >= agent.speed / 2 &&
-            State == enemyState.ATTACK)
-        {
-
-        }
-    }
-
     public override void Attack()
     {
         Debug.Log((transform.forward - oRotation).sqrMagnitude);

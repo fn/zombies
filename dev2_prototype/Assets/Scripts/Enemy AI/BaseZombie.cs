@@ -154,5 +154,15 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
         }
     }
 
+    protected void OnTriggerEnter(Collider other)
+    {
+        if (other.SearchByTag("Barricade"))
+        {
+            BreakBarricade();
+        }
+    }
+
     protected virtual void AttackLogic() { }
+    protected virtual void BreakBarricade() { }
+
 }
