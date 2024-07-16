@@ -34,6 +34,7 @@ public class Rampart : BaseZombie
 
         if (nearPlayer && seesPlayer)
         {
+            currentTarget = targetPlayer.gameObject;
             State = enemyState.ATTACK;
             return;
         }
@@ -43,7 +44,6 @@ public class Rampart : BaseZombie
 
     public override void Attack()
     {
-        Debug.Log((transform.forward - oRotation).sqrMagnitude);
         colli.enabled = agent.velocity.sqrMagnitude >= 25;
         rushing = agent.velocity.sqrMagnitude >= 25;
         if (rushing) {
