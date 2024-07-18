@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using Zombies;
 using UnityEditor.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     
     public TMP_Text WaveHudText;
     public TMP_Text AmmoHudText;
-    public GameObject HurtScreen;
+    public Image HurtScreen;
     
     public bool IsPaused;
     float origTimescale;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
             else if (MenuActive == MenuPause)
                 StateRun();
         }
+        
     }
 
     public void StatePause()

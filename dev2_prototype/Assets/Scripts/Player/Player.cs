@@ -30,6 +30,8 @@ namespace Zombies
             HeldWeaponIndex = 0;
 
             origAimPosition = WeaponPivot.localPosition;
+
+            GameManager.Instance.HurtScreen.enabled = false;
         }
 
         // Update is called once per frame
@@ -37,6 +39,7 @@ namespace Zombies
         {
             UpdateWeapons();
             passiveHealthRegen();
+            HealthDisplay();
         }
 
         void UpdateWeapons()
@@ -78,8 +81,6 @@ namespace Zombies
         {
             Health -= damage;
             attackTime = 3;
-            StartCoroutine(FlashHurtScreen());
-
             if (Health <= 0)
             {
                 GameManager.Instance.StateLose();
@@ -109,9 +110,24 @@ namespace Zombies
 
         IEnumerator FlashHurtScreen()
         {
-            GameManager.Instance.HurtScreen.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
-            GameManager.Instance.HurtScreen.SetActive(false);
+            GameManager.Instance.HurtScreen.enabled = true;
+            float waitTime = 10f * (1- (float)Health / MaxHealth);
+            yield return new WaitForSeconds(waitTime);
+            GameManager.Instance.HurtScreen.enabled = false;
+        }
+
+        void HealthDisplay()
+        {
+            float healthPercentage = 1 - (float)Health / MaxHealth;
+            if (healthPercentage > .10)
+            {
+                GameManager.Instance.HurtScreen.enabled = true;
+                Color hpAlpha = GameManager.Instance.HurtScreen.color;
+                hpAlpha.a = healthPercentage;
+                GameManager.Instance.HurtScreen.color = hpAlpha;
+            }
+            else
+                GameManager.Instance.HurtScreen.enabled= false;
         }
     }
 }

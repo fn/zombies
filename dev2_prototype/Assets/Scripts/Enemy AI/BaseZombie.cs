@@ -27,7 +27,6 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
 
 
 
-    //states DO NOT TOUCH THESE ISTFG
     virtual public void Normal() { }
     virtual public void Seek() { }
     virtual public void Attack() { }
@@ -47,12 +46,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
     }
     virtual public void Gather() {
         agent.speed = movementSpeed;
-        if (agent.remainingDistance < 5)
-        {
-            State = enemyState.NORMAL;
-            commandComplete = true;
-        }
-            
+        agent.SetDestination(commander.transform.position);
     }
 
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
@@ -125,10 +119,17 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
             case enemyState.DEMOLITION:
                 Attacking();
                 break;
+            case enemyState.GATHER:
+                Gather();
+                break;
         }
             
     }
 
+    public void DestinationCommand(Vector3 destination)
+    {
+        agent.SetDestination(destination);
+    }
     public void takeDamage(int amount)
     {
         //check originally to snap zombies out of breaking barricades if attacked, but that just lets them phase right through the barricade (plus defeats the point of barricades anyway)
