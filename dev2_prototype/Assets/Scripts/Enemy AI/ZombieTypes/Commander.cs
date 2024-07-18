@@ -58,14 +58,37 @@ public class Commander : BaseZombie
         State = enemyState.NORMAL;
     }
 
+    public override void Normal()
+    {
+        UpdatePlayerDir();
+        FaceTarget();
+        VisibilityCheck();
+        if (seesPlayer) State = enemyState.ATTACK;
+    }
+
+    public override void Attack()
+    {
+        SendCommand(enemyState.SEEK);
+        SendCommand(currentTarget);
+        if (seesPlayer) State = enemyState.NORMAL;
+    }
+    //change state
     void SendCommand(enemyState state)
     {
-        if (!commandSent)
-            return;
-        commandSent = true;
         foreach (var z in commandedZombies)
         {
             z.State = state;
         }
+    }
+    //gives info about player
+    void SendCommand(GameObject target)
+    {
+        foreach (var z in commandedZombies)
+        {
+            z.currentTarget = target;
+            z.SeesPlayer = true;
+            z.DestinationCommand(target.transform.position);
+        }
+            
     }
 }

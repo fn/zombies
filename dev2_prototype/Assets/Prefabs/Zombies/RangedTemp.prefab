@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: -3109347203830223348}
   m_Layer: 7
   m_Name: RangedTemp
-  m_TagString: Enemy
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -88,6 +88,8 @@ MonoBehaviour:
   seesPlayer: 0
   nearPlayer: 0
   detectionRange: 30
+  commander: {fileID: 0}
+  currentTarget: {fileID: 0}
   hp: 50
   attackDamage: 30
   attackDelay: 1
@@ -99,10 +101,10 @@ MonoBehaviour:
   phase: 0
   colorPrimed: {r: 1, g: 0.9831489, b: 0, a: 0}
   attacking: 0
+  maxDistance: {x: 0, y: 0, z: 0}
   Weapon: {fileID: 3531114841441890552}
   ShootPos: {fileID: 4115172015313537170}
   fireRate: 300
-  fleeing: 0
   fleeingDist: 5
 --- !u!114 &3531114841441890552
 MonoBehaviour:

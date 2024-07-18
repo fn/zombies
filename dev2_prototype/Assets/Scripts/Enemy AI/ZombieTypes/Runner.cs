@@ -12,14 +12,11 @@ public class Runner : BaseZombie
         VisibilityCheck();
 
         int tempSpeed = movementSpeed;
-        if (agent.remainingDistance < detectionRange)
+        if (SeesPlayer)
         {
-            if (SeesPlayer)
-            {
-                tempSpeed = movementSpeed * 2;
-            }
-
+            tempSpeed = movementSpeed * 2;
         }
+        
 
         agent.speed = tempSpeed;
 
