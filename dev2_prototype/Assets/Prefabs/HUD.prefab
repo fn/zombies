@@ -1062,7 +1062,7 @@ MonoBehaviour:
   MenuLose: {fileID: 1938458157773319695}
   WaveHudText: {fileID: 1745168797505517178}
   AmmoHudText: {fileID: 1938458157833880325}
-  HurtScreen: {fileID: 5946732091429987103}
+  HurtScreen: {fileID: 5703946918181968086}
   IsPaused: 0
   LocalPlayer: {fileID: 0}
   Horde: {fileID: 0}
@@ -2723,7 +2723,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4292294506264863504
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2759,7 +2759,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5946732091429987103}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
