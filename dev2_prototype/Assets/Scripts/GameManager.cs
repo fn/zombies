@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public Player LocalPlayer;
     public HordeManager Horde;
 
+    public bool ItemInHand;
+
     void Awake()
     {
         Instance = this;

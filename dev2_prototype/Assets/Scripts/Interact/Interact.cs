@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Zombies;
@@ -10,13 +11,14 @@ using Zombies;
 public class Interact : MonoBehaviour
 {
 
-    public GameObject ExplosiveBarrel;
+    public GameObject Barrel;
     public Transform ItemParent;
 
     // Start is called before the first frame update
     void Start()
     {
-        ExplosiveBarrel.GetComponent<Rigidbody>().isKinematic = true;
+        Barrel.GetComponent<Rigidbody>().isKinematic = true;
+        GameManager.Instance.ItemInHand = false;
     }
 
     // Update is called once per frame
@@ -40,24 +42,29 @@ public class Interact : MonoBehaviour
 
     void drop()
     {
-        ItemParent.DetachChildren();
-        ExplosiveBarrel.transform.eulerAngles = new Vector3(ExplosiveBarrel.transform.position.x, ExplosiveBarrel.transform.position.z, ExplosiveBarrel.transform.position.y);
-        ExplosiveBarrel.GetComponent<Rigidbody>().isKinematic = false;
-        ExplosiveBarrel.GetComponent<MeshCollider>().enabled = true;
+        if (GameManager.Instance.ItemInHand)
+        {
+            GameManager.Instance.ItemInHand = false;
+            ItemParent.DetachChildren();
+            Barrel.transform.eulerAngles = new Vector3(Barrel.transform.position.x, Barrel.transform.position.z, Barrel.transform.position.y);
+            Barrel.GetComponent<Rigidbody>().isKinematic = false;
+            Barrel.GetComponent<MeshCollider>().enabled = true;
+        }
     }
 
     void Pickup()
     {
-        ExplosiveBarrel.GetComponent<Rigidbody>().isKinematic = true;
+        GameManager.Instance.ItemInHand = true;
+        Barrel.GetComponent<Rigidbody>().isKinematic = true;
 
-        ExplosiveBarrel.transform.position = ItemParent.transform.position;
-        ExplosiveBarrel.transform.rotation = ItemParent.transform.rotation;
-        ExplosiveBarrel.GetComponent<MeshCollider>().enabled = false;
-        ExplosiveBarrel.transform.SetParent(ItemParent);
+        Barrel.transform.position = ItemParent.transform.position;
+        Barrel.transform.rotation = ItemParent.transform.rotation;
+        Barrel.GetComponent<MeshCollider>().enabled = false;
+        Barrel.transform.SetParent(ItemParent);
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && !GameManager.Instance.ItemInHand)
         {
             if (Input.GetKey(KeyCode.E))
             {
