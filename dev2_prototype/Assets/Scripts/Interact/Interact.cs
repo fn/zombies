@@ -14,6 +14,8 @@ public class Interact : MonoBehaviour
     public GameObject Barrel;
     public Transform ItemParent;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +26,13 @@ public class Interact : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Q))
+        if (GameManager.Instance.ItemInHand)
         {
-            drop();
+            GameManager.Instance.DropPrompt.SetActive(true);
+            if (Input.GetKey(KeyCode.Q))
+            {
+                drop();
+            }
         }
     }
 
@@ -42,14 +48,12 @@ public class Interact : MonoBehaviour
 
     void drop()
     {
-        if (GameManager.Instance.ItemInHand)
-        {
+            GameManager.Instance.DropPrompt.SetActive(false);
             GameManager.Instance.ItemInHand = false;
-            ItemParent.DetachChildren();
-            Barrel.transform.eulerAngles = new Vector3(Barrel.transform.position.x, Barrel.transform.position.z, Barrel.transform.position.y);
-            Barrel.GetComponent<Rigidbody>().isKinematic = false;
-            Barrel.GetComponent<MeshCollider>().enabled = true;
-        }
+            transform.SetParent(null);
+            transform.eulerAngles = new Vector3(Barrel.transform.position.x, Barrel.transform.position.z, Barrel.transform.position.y);
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<MeshCollider>().enabled = true;
     }
 
     void Pickup()
@@ -66,10 +70,19 @@ public class Interact : MonoBehaviour
     {
         if (other.gameObject.tag == "Player" && !GameManager.Instance.ItemInHand)
         {
+            GameManager.Instance.PickupPrompt.SetActive(true);
             if (Input.GetKey(KeyCode.E))
             {
                 Pickup();
+                GameManager.Instance.PickupPrompt.SetActive(false);
             }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.tag == "Player")
+        {
+            GameManager.Instance.PickupPrompt.SetActive(false);
         }
     }
 }

@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c309d0fcda02914eb977478760cd9d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Barrel: {fileID: 0}
+  Barrel: {fileID: 1157940953095880675}
   ItemParent: {fileID: 0}
 --- !u!33 &1157940953095880696
 MeshFilter:

@@ -12,19 +12,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuPause;
     [SerializeField] GameObject MenuWin;
     [SerializeField] GameObject MenuLose;
+    public GameObject PickupPrompt;
+    public GameObject DropPrompt;
     
     public TMP_Text WaveHudText;
     public TMP_Text AmmoHudText;
     public Image HurtScreen;
-    
+
+    public bool ItemInHand;
     public bool IsPaused;
     float origTimescale;
     int enemyCount;
     
     public Player LocalPlayer;
     public HordeManager Horde;
-
-    public bool ItemInHand;
 
     void Awake()
     {
