@@ -1,4 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Zombies;
 
 public class Interact : MonoBehaviour
@@ -6,6 +13,8 @@ public class Interact : MonoBehaviour
 
     public GameObject Barrel;
     public Transform ItemParent;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -41,10 +50,10 @@ public class Interact : MonoBehaviour
     {
             GameManager.Instance.DropPrompt.SetActive(false);
             GameManager.Instance.ItemInHand = false;
-            transform.SetParent(null);
-            transform.eulerAngles = new Vector3(Barrel.transform.position.x, Barrel.transform.position.z, Barrel.transform.position.y);
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<MeshCollider>().enabled = true;
+            ItemParent.DetachChildren();
+            Barrel.transform.eulerAngles = new Vector3(Barrel.transform.position.x, Barrel.transform.position.z, Barrel.transform.position.y);
+            Barrel.GetComponent<Rigidbody>().isKinematic = false;
+            Barrel.GetComponent<MeshCollider>().enabled = true;
     }
 
     void Pickup()
