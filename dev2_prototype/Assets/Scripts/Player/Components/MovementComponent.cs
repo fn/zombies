@@ -35,6 +35,9 @@ namespace Zombies
         [SerializeField] bool ClampAirSpeed;
         [SerializeField] float MaxSpeed;
 
+        public bool IsSprinting { get; private set; }
+        public bool IsCrouching { get; private set; } 
+        public bool IsJumping { get; private set; }
 
         struct MovementData
         {
@@ -63,7 +66,6 @@ namespace Zombies
 
         // Helpful to view in the editor.
         bool isGrounded;
-        bool isJumping;
 
         void Start()
         {
@@ -155,7 +157,7 @@ namespace Zombies
 
             // If our y velocity is now zero we are no longer jumping.
             if (data.Velocity.y <= 0f)
-                isJumping = false;
+                IsJumping = false;
 
             // Apply gravity.
             if (!isGrounded)
@@ -183,8 +185,11 @@ namespace Zombies
             if (data.InDuck)
                 speed = CrouchSpeed;
 
+            IsCrouching = data.InDuck;
+            IsSprinting = data.Sprinting;
+
             // Apply friction and jump
-            if (data.InJump && !isJumping)
+            if (data.InJump && !IsJumping)
             {
                 ApplyFriction(0.0f, true);
                 HandleJump();
@@ -277,7 +282,7 @@ namespace Zombies
 
             // Apply our jump power to our Y velocity.
             data.Velocity.y += JumpPower;
-            isJumping = !data.InJump;
+            IsJumping = !data.InJump;
         }
 
         // This is a rewritten version of Quake's air acceleration.

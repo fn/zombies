@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BaseZombie : BaseAI, ZombieStates, IDamage
+public class BaseZombie : BaseAI, ZombieStates, IDamageable
 {
     public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER };
 
@@ -30,7 +30,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
     virtual public void Normal() { }
     virtual public void Seek() { }
     virtual public void Attack() { }
-    virtual public void Flee() {
+    virtual public void Flee()
+    {
         agent.speed = 2 * movementSpeed;
         UpdatePlayerDir();
         Vector3 newPos = (transform.position - playerDir);
@@ -44,7 +45,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
             State = enemyState.SEEK;
         }
     }
-    virtual public void Gather() {
+    virtual public void Gather()
+    {
         agent.speed = movementSpeed;
         agent.SetDestination(commander.transform.position);
     }
@@ -62,7 +64,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
     protected bool fleeing;
     protected float attackTimer;
     protected bool commandComplete;
-    
+
     protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
 
     [SerializeField] protected attackPhase phase;
@@ -90,7 +92,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
 
     void Update()
     {
-        
+
         if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
@@ -123,14 +125,14 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
                 Gather();
                 break;
         }
-            
+
     }
 
     public void DestinationCommand(Vector3 destination)
     {
         agent.SetDestination(destination);
     }
-    public void takeDamage(int amount)
+    public void TakeDamage(int amount)
     {
         //check originally to snap zombies out of breaking barricades if attacked, but that just lets them phase right through the barricade (plus defeats the point of barricades anyway)
         //if (State == enemyState.DEMOLITION || State == enemyState.NORMAL)
@@ -174,19 +176,19 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
                 attacking = true;
                 attackTimer = AttackDelay;
                 phase++;
-                
+
                 break;
             case attackPhase.ATTACK:
                 if (attackTimer < 0)
                 {
                     phase++;
 
-                    if (currentTarget.tag == "BarricadeSpawner")
+                    if (currentTarget.CompareTag("BarricadeSpawner"))
                     {
                         GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
-                        IDamage dmg = barrChild.GetComponent<IDamage>();
-                        if (dmg != null)
-                            dmg.takeDamage(destructionPower);
+
+                        if (barrChild.TryGetComponent(out IDamageable dmg))
+                            dmg.TakeDamage(destructionPower);
                         if (!barrChild.activeSelf)
                             State = enemyState.ATTACK;
                     }
@@ -210,7 +212,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "BarricadeSpawner")
+        if (other.gameObject.CompareTag("BarricadeSpawner"))
         {
             //checks if barricadeSpawner's child is active
             if (!other.gameObject.transform.GetChild(0).gameObject.activeSelf)
@@ -221,5 +223,4 @@ public class BaseZombie : BaseAI, ZombieStates, IDamage
     }
 
     protected virtual void AttackLogic() { }
-
 }

@@ -1,11 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
-using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Zombies;
 
 public class Interact : MonoBehaviour
@@ -13,8 +6,6 @@ public class Interact : MonoBehaviour
 
     public GameObject Barrel;
     public Transform ItemParent;
-
-    
 
     // Start is called before the first frame update
     void Start()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Barricade : MonoBehaviour, IDamage
+public class Barricade : MonoBehaviour, IDamageable
 {
     // repair logic called every Invoke
     [SerializeField] int repairHealthAmount;
@@ -61,7 +61,7 @@ public class Barricade : MonoBehaviour, IDamage
         model.material.color = defaultColor;
     }
 
-    public void takeDamage(int amount)
+    public void TakeDamage(int amount)
     {
         Health -= amount;
         Debug.Log("TakeDamage barricade");

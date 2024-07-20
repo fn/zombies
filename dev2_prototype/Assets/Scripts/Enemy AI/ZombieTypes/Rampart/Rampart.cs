@@ -46,7 +46,8 @@ public class Rampart : BaseZombie
     {
         colli.enabled = agent.velocity.sqrMagnitude >= 25;
         rushing = agent.velocity.sqrMagnitude >= 25;
-        if (rushing) {
+        if (rushing)
+        {
             if (agent.velocity.sqrMagnitude < 25 || (transform.forward - oRotation).sqrMagnitude > 1)
             {
                 Attacking();
@@ -58,9 +59,9 @@ public class Rampart : BaseZombie
         {
             FaceTarget();
         }
-        
-        
-        
+
+
+
 
         if (phase != attackPhase.IDLE)
         {
@@ -68,22 +69,24 @@ public class Rampart : BaseZombie
             Attacking();
             return;
         }
-            
+
 
         agent.SetDestination(targetPlayer.transform.position);
     }
 
-    protected override void AttackLogic(){
-        if (attackArea.affected.Count == 0){
+    protected override void AttackLogic()
+    {
+        if (attackArea.affected.Count == 0)
+        {
             return;
         }
 
-        foreach (GameObject obj in attackArea.affected){
-            IDamage dmg = obj.GetComponent<IDamage>();
-            if (dmg == null){
-                continue;
+        foreach (GameObject obj in attackArea.affected)
+        {
+            if (obj.TryGetComponent(out IDamageable dmg))
+            {
+                dmg.TakeDamage(AttackDMG);
             }
-            dmg.takeDamage(AttackDMG);
         }
 
         attackArea.affected.Clear();
@@ -95,13 +98,13 @@ public class Rampart : BaseZombie
         {
             agent.speed = movementSpeed;
             Hide();
-            
+
         }
         else
         {
             oRotation = transform.forward;
             agent.speed = movementSpeed * 10;
-            
+
             State = enemyState.ATTACK;
         }
     }
@@ -110,7 +113,7 @@ public class Rampart : BaseZombie
     {
         //gives a number of objects within a certain distance of the object that one can hide behind
         int hits = Physics.OverlapSphereNonAlloc(transform.position, findSpots.radius, hideSpots, HideLayers);
-        
+
         for (int i = 0; i < hits; i++)
         {
             float dist = Vector3.Distance(transform.position, hideSpots[i].transform.position);

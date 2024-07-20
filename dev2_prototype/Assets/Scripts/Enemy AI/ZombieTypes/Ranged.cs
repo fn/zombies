@@ -33,7 +33,7 @@ public class Ranged : BaseZombie
         }
 
         fleeing = GetDistanceToPlayer() < fleeingDist;
-        if (fleeing){
+        if (fleeing) {
             State = enemyState.FLEE;
             return;
         }

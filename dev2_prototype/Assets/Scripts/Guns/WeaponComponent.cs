@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class WeaponComponent : MonoBehaviour
@@ -15,7 +16,9 @@ public class WeaponComponent : MonoBehaviour
     [SerializeField] GameObject Bullet_Standard;
     int usedAmmo;
     public int remainingAmmo;
-    
+
+    public bool HasAmmo { get => currentAmmo > 0; }
+    public bool CanReload { get => currentAmmo != magSize; }
 
     private float lastShotTime;
 
@@ -31,13 +34,12 @@ public class WeaponComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Shoot(Vector3 origin, Vector3 direction)
     {
         float shotCooldown = 1f / rateOfFire;
-
         if (currentAmmo <= 0 && !infAmmo)
             return;
 
@@ -59,7 +61,7 @@ public class WeaponComponent : MonoBehaviour
             bullet.layer = LayerMask.NameToLayer(layer);
 
             // Transfer the damage value to the bullet
-            damage bulletDamage = bullet.GetComponent<damage>();
+            DamageSource bulletDamage = bullet.GetComponent<DamageSource>();
             bulletDamage.SetDamage(damage);
 
             // Apply velocity to the bullet
@@ -78,19 +80,9 @@ public class WeaponComponent : MonoBehaviour
 
     public void Reload()
     {
-        // Reload logic here
-
         remainingAmmo -= usedAmmo;
         usedAmmo = 0;
 
-        if(magSize <= remainingAmmo)
-        {
-            currentAmmo = magSize;
-        }
-        else
-        {
-            currentAmmo = remainingAmmo;
-        }
-
+        currentAmmo = magSize <= remainingAmmo ? magSize : remainingAmmo;
     }
 }
