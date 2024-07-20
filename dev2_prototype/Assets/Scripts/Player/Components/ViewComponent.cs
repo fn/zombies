@@ -17,12 +17,8 @@ namespace Zombies
         // Our current camera attached to our view.
         [SerializeField] public Camera viewCamera;
 
-        [SerializeField] public Transform currentViewModel;
-
         // We don't need to clamp the yaw like we do the pitch. Although it should just reset between (0 & 360) or (180 & -180)
         private const float MAX_PITCH = 89f;
-
-        [SerializeField] public Animator animator;
 
         // X = pitch, Y = yaw
         Vector2 lookAngles;
@@ -41,9 +37,6 @@ namespace Zombies
         {
             // Update the view camera's rotation.
             UpdateCameraRotation();
-
-            // Update our recoil animation.
-            UpdateViewModelRecoil();
         }
 
         // Locks the cursor to the window.
@@ -74,15 +67,6 @@ namespace Zombies
 
             // Rotate the player on the y-axis.
             transform.Rotate(Vector3.up * lookAngles.y);
-        }
-
-        void UpdateViewModelRecoil()
-        {
-            if (Input.GetButtonDown("Fire1") && GameManager.Instance.LocalPlayer.HeldWeapon.currentAmmo > 0)
-                animator.SetTrigger("Fire");
-
-            if (Input.GetButtonDown("Reload"))
-                animator.SetTrigger("Reload");
         }
     }
 }
