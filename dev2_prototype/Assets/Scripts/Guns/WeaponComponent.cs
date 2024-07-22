@@ -82,11 +82,12 @@ public class WeaponComponent : MonoBehaviour
 
         // How much ammo we need to reload.
         int neededAmmo = magSize - currentAmmo;
-        
+        int oldAmmo = currentAmmo;
+
         // Reload that ammo.
-        currentAmmo += neededAmmo;
-        
+        currentAmmo += neededAmmo > remainingAmmo ? remainingAmmo : neededAmmo;
+
         // Remove it from our stockpile.
-        remainingAmmo -= neededAmmo;
+        remainingAmmo -= (currentAmmo - oldAmmo);
     }
 }
