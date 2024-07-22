@@ -14,11 +14,11 @@ public class WeaponComponent : MonoBehaviour
     public bool infAmmo;
     public string layer;
     [SerializeField] GameObject Bullet_Standard;
-    int usedAmmo;
+
     public int remainingAmmo;
 
     public bool HasAmmo { get => currentAmmo > 0; }
-    public bool CanReload { get => currentAmmo != magSize; }
+    public bool CanReload { get => currentAmmo != magSize && remainingAmmo > 0; }
 
     private float lastShotTime;
 
@@ -49,7 +49,6 @@ public class WeaponComponent : MonoBehaviour
             if (!infAmmo)
             {
                 currentAmmo--;
-                usedAmmo++;
             }
             // Instantiate the bullet
             GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
@@ -80,9 +79,17 @@ public class WeaponComponent : MonoBehaviour
 
     public void Reload()
     {
-        remainingAmmo -= usedAmmo;
-        usedAmmo = 0;
+        // No more ammos :C
+        if (remainingAmmo < 0)
+            return;
 
-        currentAmmo = magSize <= remainingAmmo ? magSize : remainingAmmo;
+        // How much ammo we need to reload.
+        int neededAmmo = magSize - currentAmmo;
+        
+        // Reload that ammo.
+        currentAmmo += neededAmmo;
+        
+        // Remove it from our stockpile.
+        remainingAmmo -= neededAmmo;
     }
 }

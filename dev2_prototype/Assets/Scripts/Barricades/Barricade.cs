@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Barricade : MonoBehaviour, IDamageable
 {
@@ -11,6 +12,8 @@ public class Barricade : MonoBehaviour, IDamageable
     private bool isRepairing = false;
 
     public int PLACEHOLDERMONEY = 10;
+
+    public bool IsBroken { get; private set; }
 
     // health logic
     [SerializeField] int maxHealth;
@@ -64,22 +67,22 @@ public class Barricade : MonoBehaviour, IDamageable
     public void TakeDamage(int amount)
     {
         Health -= amount;
-       // Debug.Log("TakeDamage barricade");
+        // Debug.Log("TakeDamage barricade");
 
-        if(gameObject.activeSelf)
+        if (gameObject.activeSelf)
             StartCoroutine(FlashDamage());
 
         if (Health <= 0)
         {
             gameObject.SetActive(false);
-            //Debug.Log("barricade SetActive(false)");
+            IsBroken = true;
         }
     }
 
     public void Repair(int amount)
     {
         Health += amount;
-        
+        IsBroken = false;
     }
 
     private void RepairBarricade()

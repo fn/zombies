@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2008780026319952905}
   - component: {fileID: 2008780026319952910}
   - component: {fileID: 2008780026319952911}
-  - component: {fileID: 2008780026319952908}
   - component: {fileID: 2008780026319953138}
   - component: {fileID: -1008923869425934846}
   m_Layer: 8
@@ -69,14 +68,6 @@ MonoBehaviour:
   rb: {fileID: 2008780026319952910}
   speed: 100
   destroyTime: 3
---- !u!33 &2008780026319952908
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008780026319953136}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!135 &2008780026319953138
 SphereCollider:
   m_ObjectHideFlags: 0

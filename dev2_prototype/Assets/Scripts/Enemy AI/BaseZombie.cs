@@ -215,8 +215,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         if (other.tag.Contains("Barricade"))
         {
             //checks if barricadeSpawner's child is active
-            if (!other.gameObject.transform.GetChild(0).gameObject.activeSelf)
+
+            if (other.gameObject.TryGetComponent(out Barricade barricade) && barricade.IsBroken)
                 return;
+
             currentTarget = other.gameObject;
             State = enemyState.DEMOLITION;
         }
