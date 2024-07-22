@@ -55,7 +55,7 @@ namespace Zombies
 
             GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.currentAmmo}/{HeldWeapon.remainingAmmo}");
 
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && HeldWeapon.HasAmmo)
             {
                 HeldWeapon.Shoot(WeaponPivot.transform.position, View.viewCamera.transform.forward);
                 ViewModelAnimator.SetTrigger("Shoot");

@@ -183,7 +183,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 {
                     phase++;
 
-                    if (currentTarget.CompareTag("BarricadeSpawner"))
+                    if (currentTarget.tag.Contains("Barricade"))
                     {
                         GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
 
@@ -212,7 +212,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("BarricadeSpawner"))
+        if (other.tag.Contains("Barricade"))
         {
             //checks if barricadeSpawner's child is active
             if (!other.gameObject.transform.GetChild(0).gameObject.activeSelf)
