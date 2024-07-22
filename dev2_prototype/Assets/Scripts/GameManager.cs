@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using Zombies;
-using UnityEditor.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
