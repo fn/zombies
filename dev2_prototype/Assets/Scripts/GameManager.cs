@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuLose;
     public GameObject PickupPrompt;
     public GameObject DropPrompt;
+    public GameObject DoorPrompt;
+    public GameObject ChestPrompt;
     
     public TMP_Text WaveHudText;
     public TMP_Text AmmoHudText;

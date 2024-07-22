@@ -6,16 +6,16 @@ public class InteractChest : MonoBehaviour
 {
 
     public GameObject ItemDropped;
-    public GameObject InteractPrompt;
-    private void OnTriggerEnter(Collider other)
+    public GameObject DropLocation;
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player)")
+        if (other.gameObject.tag == "Player")
         {
-            InteractPrompt.SetActive(true);
+            GameManager.Instance.ChestPrompt.SetActive(true);
             if (Input.GetKey(KeyCode.E))
             {
-                Instantiate(ItemDropped, transform.position, transform.rotation);
-
+                Instantiate(ItemDropped, DropLocation.transform.position, transform.rotation);
+                GameManager.Instance.ChestPrompt.SetActive(false);
             }
         }
     }
@@ -23,7 +23,8 @@ public class InteractChest : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            InteractPrompt.SetActive(false);
+            GameManager.Instance.ChestPrompt.SetActive(false);
         }
     }
+
 }
