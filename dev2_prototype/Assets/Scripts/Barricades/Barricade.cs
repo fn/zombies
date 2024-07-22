@@ -64,13 +64,15 @@ public class Barricade : MonoBehaviour, IDamageable
     public void TakeDamage(int amount)
     {
         Health -= amount;
-        Debug.Log("TakeDamage barricade");
+       // Debug.Log("TakeDamage barricade");
 
-        StartCoroutine(FlashDamage());
+        if(gameObject.activeSelf)
+            StartCoroutine(FlashDamage());
+
         if (Health <= 0)
         {
             gameObject.SetActive(false);
-            Debug.Log("barricade SetActive(false)");
+            //Debug.Log("barricade SetActive(false)");
         }
     }
 
@@ -98,7 +100,7 @@ public class Barricade : MonoBehaviour, IDamageable
 
             // how often the barricade is repaired, based on Time.timeScale
             InvokeRepeating(nameof(RepairBarricade), repairRateInterval, repairRateInterval);
-            Debug.Log("RepairBarricade InvokeRepeating");
+            //Debug.Log("RepairBarricade InvokeRepeating");
         }
     }
 
@@ -108,19 +110,14 @@ public class Barricade : MonoBehaviour, IDamageable
         {
             isRepairing = false;
             CancelInvoke(nameof(RepairBarricade));
-            Debug.Log("RepairBarricade CancelInvoke");
+            //Debug.Log("RepairBarricade CancelInvoke");
         }
     }
 
     public void ResetHealth()
     {
         Health = maxHealth;
-        Debug.Log("ResetHealth barricade");
+        //Debug.Log("ResetHealth barricade");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
