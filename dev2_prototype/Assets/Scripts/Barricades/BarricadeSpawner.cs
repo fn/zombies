@@ -8,7 +8,6 @@ public class BarricadeSpawner : MonoBehaviour
     [SerializeField] GameObject barricadeToSpawn;
     // cost
     [SerializeField] int purchaseCost;
-    public int PLACEHOLDERMONEY = 5;
 
     // checking for range
     private bool playerInRange = false;
@@ -76,7 +75,7 @@ public class BarricadeSpawner : MonoBehaviour
         if (playerInRange)
         {
             // purchase barricade
-            if (PLACEHOLDERMONEY >= purchaseCost)
+            if (GameManager.Instance.LocalPlayer.Money >= purchaseCost)
             {
                 // is the child active or not
                 if (!barricadeToSpawn.activeSelf)
@@ -85,7 +84,7 @@ public class BarricadeSpawner : MonoBehaviour
                     SpawnBarricade();
 
                     // reduce player money by cost
-                    PLACEHOLDERMONEY -= purchaseCost;
+                    GameManager.Instance.LocalPlayer.Money -= purchaseCost;
                 }
                 //else
                     //Debug.Log("barricadeToSpawn is spawned");

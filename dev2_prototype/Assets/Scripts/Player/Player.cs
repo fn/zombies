@@ -16,6 +16,7 @@ namespace Zombies
         // The starting weapon we want the player to have.
         [SerializeField] GameObject StartingWeapon;
 
+        public int Money;
 
         public int Health, MaxHealth;
         float attackTime;
@@ -32,6 +33,7 @@ namespace Zombies
         void Start()
         {
             HeldWeaponIndex = 0;
+            Money = 0;
 
             GameManager.Instance.HurtScreen.enabled = false;
 

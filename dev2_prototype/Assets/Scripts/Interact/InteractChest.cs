@@ -6,18 +6,18 @@ public class InteractChest : MonoBehaviour
 {
     public GameObject ItemDropped;
     public GameObject DropLocation;
+    [SerializeField] int chestCost = 0;
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //GameManager.Instance.ChestPrompt.SetActive(true);
             GameManager.Instance.PromptBackground.SetActive(true);
             GameManager.Instance.PromptText.SetText("'E' Open Chest");
             if (Input.GetKey(KeyCode.E))
             {
                 Instantiate(ItemDropped, DropLocation.transform.position, transform.rotation);
                 GameManager.Instance.PromptBackground.SetActive(false);
-                //GameManager.Instance.ChestPrompt.SetActive(false);
+                GameManager.Instance.LocalPlayer.Money -= chestCost;
             }
         }
     }
@@ -26,7 +26,6 @@ public class InteractChest : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             GameManager.Instance.PromptBackground.SetActive(false);
-            //GameManager.Instance.ChestPrompt.SetActive(false);
         }
     }
 }

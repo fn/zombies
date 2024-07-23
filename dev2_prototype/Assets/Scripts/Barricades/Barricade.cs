@@ -11,7 +11,6 @@ public class Barricade : MonoBehaviour, IDamageable
     [SerializeField] int repairRateCost;
     private bool isRepairing = false;
 
-    public int PLACEHOLDERMONEY = 10;
 
     public bool IsBroken { get; private set; }
 
@@ -88,10 +87,10 @@ public class Barricade : MonoBehaviour, IDamageable
     private void RepairBarricade()
     {
         // barricade active && can be afforded && reason to repair
-        if(gameObject.activeSelf && PLACEHOLDERMONEY >= repairRateCost && currentHealth < maxHealth)
+        if(gameObject.activeSelf && GameManager.Instance.LocalPlayer.Money >= repairRateCost && currentHealth < maxHealth)
         {
             Repair(repairHealthAmount);
-            PLACEHOLDERMONEY -= repairRateCost;
+            GameManager.Instance.LocalPlayer.Money -= repairRateCost;
         }
     }
 

@@ -90,21 +90,15 @@ public class Interact : MonoBehaviour
         {
             //create an explosion
             Instantiate(Explosion, Barrel.transform.position, Barrel.transform.rotation, Barrel.transform);
-            //make it visible
             Destroy(gameObject, explosionTime);
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
             GameManager.Instance.PromptBackground.SetActive(false);
             //GameManager.Instance.PickupPrompt.SetActive(false);
         }
     }
-    private IEnumerator explosion()
-    {
-        yield return new WaitForSeconds(0.5f);
-    }
-    
 }

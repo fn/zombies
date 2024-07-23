@@ -16,10 +16,12 @@ public class GameManager : MonoBehaviour
     public GameObject PromptBackground;
     public TMP_Text PromptText;
 
-    public GameObject PickupPrompt;
-    public GameObject DropPrompt;
-    public GameObject DoorPrompt;
-    public GameObject ChestPrompt;
+    public TMP_Text MoneyText;
+
+    //public GameObject PickupPrompt;
+    //public GameObject DropPrompt;
+    //public GameObject DoorPrompt;
+    //public GameObject ChestPrompt;
 
     public TMP_Text WaveHudText;
     public TMP_Text AmmoHudText;
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour
             else if (MenuActive == MenuPause)
                 StateRun();
         }
+        MoneyText.SetText($"{LocalPlayer.Money}");
         
     }
 
