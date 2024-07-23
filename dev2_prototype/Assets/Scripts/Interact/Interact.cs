@@ -91,7 +91,9 @@ public class Interact : MonoBehaviour
         {
             //create an explosion
             Instantiate(Explosion, Barrel.transform.position, Barrel.transform.rotation, Barrel.transform);
+            Barrel.GetComponent<Collider>().enabled = false;
             Destroy(gameObject, explosionTime);
+            GameManager.Instance.PromptBackground.SetActive(false);
         }
     }
     private void OnTriggerExit(Collider other)
