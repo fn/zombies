@@ -23,7 +23,7 @@ public class InteractWeapon : MonoBehaviour
             GameManager.Instance.PromptBackground.SetActive(true);
 
             // convert to scriptableobject name
-            GameManager.Instance.PromptText.SetText($"'E' To Purchase {Weapon.name}");
+            GameManager.Instance.PromptText.SetText($"'E' To Purchase {Weapon.name} Cost: {weaponCost}");
             if (Input.GetKey(KeyCode.E))
             {
                 if (Weapon.TryGetComponent(out WeaponComponent weaponComp))

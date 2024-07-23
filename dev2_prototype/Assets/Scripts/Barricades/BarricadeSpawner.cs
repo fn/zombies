@@ -35,7 +35,7 @@ public class BarricadeSpawner : MonoBehaviour
             } else
             {
                 GameManager.Instance.PromptBackground.SetActive(true);
-                GameManager.Instance.PromptText.SetText("Spawn Barricade 'E'");
+                GameManager.Instance.PromptText.SetText($"Spawn Barricade 'E' Cost: {purchaseCost}");
             }
         }
     }

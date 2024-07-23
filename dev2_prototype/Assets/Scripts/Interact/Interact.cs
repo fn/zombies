@@ -37,7 +37,6 @@ public class Interact : MonoBehaviour
             if (Input.GetKey(KeyCode.Q))
             {
                 drop();
-                GameManager.Instance.PromptBackground.SetActive(false);
             }
         }
     }
@@ -60,6 +59,8 @@ public class Interact : MonoBehaviour
             Barrel.transform.eulerAngles = new Vector3(Barrel.transform.position.x, Barrel.transform.position.z, Barrel.transform.position.y);
             Barrel.GetComponent<Rigidbody>().isKinematic = false;
             Barrel.GetComponent<MeshCollider>().enabled = true;
+            GameManager.Instance.PromptBackground.SetActive(false);
+
     }
 
     void Pickup()
@@ -90,7 +91,9 @@ public class Interact : MonoBehaviour
         {
             //create an explosion
             Instantiate(Explosion, Barrel.transform.position, Barrel.transform.rotation, Barrel.transform);
+            Barrel.GetComponent<Collider>().enabled = false;
             Destroy(gameObject, explosionTime);
+            GameManager.Instance.PromptBackground.SetActive(false);
         }
     }
     private void OnTriggerExit(Collider other)
