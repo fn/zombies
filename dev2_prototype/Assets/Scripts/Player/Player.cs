@@ -9,7 +9,6 @@ namespace Zombies
         public MovementComponent Movement;
         public ViewComponent View;
         
-        [SerializeField] List<WeaponComponent> Weapons;
         
         [SerializeField] Transform ViewModel;
         [SerializeField] Animator ViewModelAnimator;
@@ -17,11 +16,12 @@ namespace Zombies
         // The starting weapon we want the player to have.
         [SerializeField] GameObject StartingWeapon;
 
-        int HeldWeaponIndex;
 
         public int Health, MaxHealth;
         float attackTime;
 
+        public int HeldWeaponIndex;
+        public List<WeaponComponent> Weapons;
         public WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; }
 
         public bool IsAiming { get; private set; }
@@ -47,26 +47,27 @@ namespace Zombies
         void Update()
         {
             UpdateWeapons();
-            passiveHealthRegen();
+            PassiveHealthRegen();
             HealthDisplay();
 
             UpdateViewModel();
         }
 
-        void LoadViewModel()
+        public void LoadViewModel()
         {
             // Destory current view model.
             if (ViewModel.childCount > 0)
             {
                 for (int i = 0; i < ViewModel.childCount; i++)
-                    Destroy(ViewModel.GetChild(i));
+                    Destroy(ViewModel.GetChild(i).gameObject);
             }
 
             var viewModel = Instantiate(HeldWeapon.Model, ViewModel);
 
+            // I don't really like this... But with the way we have done our bullets it makes it look bad for them to come from the camera.
             ShotOrigin = viewModel.transform.Find("Model/ShootPos");
 
-            HeldWeapon.ResetWeapon();
+            //HeldWeapon.ResetWeapon();
         }
 
         void UpdateViewModel()
@@ -84,7 +85,7 @@ namespace Zombies
 
         void SwapWeapon(  )
         {
-            // Instantiate(, ViewModel)
+            LoadViewModel();
         }
 
         void UpdateWeapons()
@@ -103,6 +104,17 @@ namespace Zombies
             if (Input.GetButtonDown("Reload") && HeldWeapon.CanReload)
             {
                 ViewModelAnimator.SetTrigger("Reload");
+            }
+
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f && HeldWeaponIndex < Weapons.Count - 1)
+            {
+                HeldWeaponIndex++;
+                SwapWeapon();
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f && HeldWeaponIndex > 0)
+            {
+                HeldWeaponIndex--;
+                SwapWeapon();
             }
         }
 
@@ -128,7 +140,7 @@ namespace Zombies
             }
         }
 
-        public void passiveHealthRegen()
+        public void PassiveHealthRegen()
         {
             //If 3 seconds have passed
             if (attackTime < 0)
