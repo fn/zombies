@@ -28,14 +28,36 @@ public class Runner : BaseZombie
         Attacking();
     }
 
+    void OnAttackHit()
+    {
+        //StartCoroutine(TargetCheck());
+
+        nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
+
+        VisibilityCheck();
+        if (currentTarget.tag.Contains("Barricade"))
+        {
+            GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
+
+            if (barrChild.TryGetComponent(out IDamageable dmg))
+                dmg.TakeDamage(destructionPower);
+            if (!barrChild.activeSelf)
+                State = enemyState.ATTACK;
+        }
+
+        AttackLogic();
+    }
+
     protected override void AttackLogic()
     {
-        if (nearPlayer)
+
+        if (!nearPlayer || !seesPlayer)
+            return;
+        if (targetPlayer.TryGetComponent(out IDamageable dmg))
         {
-            if (targetPlayer.TryGetComponent(out IDamageable dmg))
-            {
-                dmg.TakeDamage(AttackDMG);
-            }
+            dmg.TakeDamage(AttackDMG);
         }
+        
+        
     }
 }

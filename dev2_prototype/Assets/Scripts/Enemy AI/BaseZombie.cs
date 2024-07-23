@@ -77,6 +77,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         free = false;
         // model.material.color = Color.black;
         agent.ResetPath();
+        animator.SetBool("Dead", true);
     }
 
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
@@ -231,6 +232,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         }
         if (hp > 0 && State == enemyState.DEAD)
         {
+            animator.SetBool("Dead", false);
             GameManager.Instance.zombieDead.Remove(this);
             State = enemyState.GATHER;
             free = true;
@@ -259,24 +261,16 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
                 break;
             case attackPhase.ATTACK:
-                if (attackTimer < 0)
+                attackTimer = AttackCD;
+                phase++;
+                if (animator != null)
                 {
-                    phase++;
-
-                    if (currentTarget.tag.Contains("Barricade"))
-                    {
-                        GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
-
-                        if (barrChild.TryGetComponent(out IDamageable dmg))
-                            dmg.TakeDamage(destructionPower);
-                        if (!barrChild.activeSelf)
-                            State = enemyState.ATTACK;
-                    }
-                    else
-                        AttackLogic();
-
-                    attackTimer = AttackCD;
+                    animator.SetTrigger("Attack");
+                    return;
                 }
+
+                AttackLogic();
+                
                 break;
             case attackPhase.RECOVERY:
                 if (attackTimer < 0)
@@ -304,5 +298,6 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         }
     }
 
+    
     protected virtual void AttackLogic() { }
 }
