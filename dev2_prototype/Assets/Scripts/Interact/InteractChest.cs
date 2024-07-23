@@ -10,11 +10,14 @@ public class InteractChest : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.Instance.ChestPrompt.SetActive(true);
+            //GameManager.Instance.ChestPrompt.SetActive(true);
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText("'E' Open Chest");
             if (Input.GetKey(KeyCode.E))
             {
                 Instantiate(ItemDropped, DropLocation.transform.position, transform.rotation);
-                GameManager.Instance.ChestPrompt.SetActive(false);
+                GameManager.Instance.PromptBackground.SetActive(false);
+                //GameManager.Instance.ChestPrompt.SetActive(false);
             }
         }
     }
@@ -22,7 +25,8 @@ public class InteractChest : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.Instance.ChestPrompt.SetActive(false);
+            GameManager.Instance.PromptBackground.SetActive(false);
+            //GameManager.Instance.ChestPrompt.SetActive(false);
         }
     }
 }

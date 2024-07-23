@@ -20,16 +20,23 @@ public class BarricadeSpawner : MonoBehaviour
         {
             playerInRange = true;
 
+
             // is child active or not
             if (barricadeToSpawn.activeSelf)
             {
+
                 Barricade barricade = barricadeToSpawn.GetComponent<Barricade>();
                 if (barricade != null)
                 {
+
                     barricade.StartRepair();
                 }
                 //else
                    // Debug.Log("barricade = null");
+            } else
+            {
+                GameManager.Instance.PromptBackground.SetActive(true);
+                GameManager.Instance.PromptText.SetText("Spawn Barricade 'E'");
             }
         }
     }
@@ -40,6 +47,7 @@ public class BarricadeSpawner : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            GameManager.Instance.PromptBackground.SetActive(false);
 
             // is child active or not
             if (barricadeToSpawn.activeSelf)
@@ -50,7 +58,7 @@ public class BarricadeSpawner : MonoBehaviour
                     barricade.StopRepair();
                 }
                 //else
-                    //Debug.Log("barricade = null");
+                //Debug.Log("barricade = null");
             } 
         }
     }

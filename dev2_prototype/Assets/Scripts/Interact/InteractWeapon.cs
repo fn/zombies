@@ -19,7 +19,9 @@ public class InteractWeapon : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.Instance.DoorPrompt.SetActive(true);
+            //GameManager.Instance.DoorPrompt.SetActive(true);
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText("'E' To Purchase");
             if (Input.GetKey(KeyCode.E))
             {
                 if (Weapon.TryGetComponent(out WeaponComponent weaponComp))
@@ -30,7 +32,8 @@ public class InteractWeapon : MonoBehaviour
                     GameManager.Instance.LocalPlayer.LoadViewModel();
                 }
 
-                GameManager.Instance.DoorPrompt.SetActive(false);
+                //GameManager.Instance.DoorPrompt.SetActive(false);
+                GameManager.Instance.PromptBackground.SetActive(false); ;
             }
         }
     }
@@ -38,6 +41,7 @@ public class InteractWeapon : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
-            GameManager.Instance.DoorPrompt.SetActive(false);
+            GameManager.Instance.PromptBackground.SetActive(false);
+            //GameManager.Instance.DoorPrompt.SetActive(false);
     }
 }

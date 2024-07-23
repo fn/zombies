@@ -103,6 +103,8 @@ public class Barricade : MonoBehaviour, IDamageable
 
             // how often the barricade is repaired, based on Time.timeScale
             InvokeRepeating(nameof(RepairBarricade), repairRateInterval, repairRateInterval);
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText("Repairing Barricade");
             //Debug.Log("RepairBarricade InvokeRepeating");
         }
     }
@@ -113,6 +115,7 @@ public class Barricade : MonoBehaviour, IDamageable
         {
             isRepairing = false;
             CancelInvoke(nameof(RepairBarricade));
+            GameManager.Instance.PromptBackground.SetActive(false);
             //Debug.Log("RepairBarricade CancelInvoke");
         }
     }
