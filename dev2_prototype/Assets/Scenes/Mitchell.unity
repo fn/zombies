@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.005737311, g: 0.008861774, b: 0.010829868, a: 1}
+  m_IndirectSpecularColor: {r: 0.0057373014, g: 0.008861754, b: 0.010829827, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9335,6 +9335,10 @@ PrefabInstance:
       propertyPath: m_Center.x
       value: -0.5193726
       objectReference: {fileID: 0}
+    - target: {fileID: 5733338203356857741, guid: e5cb4f6dec05f904e9ac10ec8c2079bd, type: 3}
+      propertyPath: DoorCost
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 5733338203356857743, guid: e5cb4f6dec05f904e9ac10ec8c2079bd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -12070,6 +12074,10 @@ PrefabInstance:
     - target: {fileID: 8525642879718419546, guid: 7d3968538fe23ff4aa72e00cf7962877, type: 3}
       propertyPath: damageFlash.r
       value: 0.9622642
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525642879718419546, guid: 7d3968538fe23ff4aa72e00cf7962877, type: 3}
+      propertyPath: repairRateCost
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8525642880432682003, guid: 7d3968538fe23ff4aa72e00cf7962877, type: 3}
       propertyPath: m_RootOrder
@@ -15454,6 +15462,10 @@ PrefabInstance:
       propertyPath: damageFlash.r
       value: 0.9622642
       objectReference: {fileID: 0}
+    - target: {fileID: 8525642879718419546, guid: 7d3968538fe23ff4aa72e00cf7962877, type: 3}
+      propertyPath: repairRateCost
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8525642880432682003, guid: 7d3968538fe23ff4aa72e00cf7962877, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -15712,7 +15724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weapon: {fileID: 6760176807020677831, guid: 8776f679f93a60a43b76ece01483100a, type: 3}
-  weaponCost: 0
+  weaponCost: 500
 --- !u!1 &1943110742
 GameObject:
   m_ObjectHideFlags: 0

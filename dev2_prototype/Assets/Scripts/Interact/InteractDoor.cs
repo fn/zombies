@@ -24,7 +24,7 @@ public class InteractDoor : MonoBehaviour
         {
             GameManager.Instance.PromptBackground.SetActive(true);
             GameManager.Instance.PromptText.SetText($"'E' Open Door Cost: {DoorCost}");
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.E) && GameManager.Instance.LocalPlayer.Money >= DoorCost)
             {
                 openDoor();
                 GameManager.Instance.PromptBackground.SetActive(false);

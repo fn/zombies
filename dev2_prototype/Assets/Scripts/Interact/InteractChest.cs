@@ -13,7 +13,7 @@ public class InteractChest : MonoBehaviour
         {
             GameManager.Instance.PromptBackground.SetActive(true);
             GameManager.Instance.PromptText.SetText("'E' Open Chest");
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.E) && GameManager.Instance.LocalPlayer.Money >= chestCost)
             {
                 Instantiate(ItemDropped, DropLocation.transform.position, transform.rotation);
                 GameManager.Instance.PromptBackground.SetActive(false);
