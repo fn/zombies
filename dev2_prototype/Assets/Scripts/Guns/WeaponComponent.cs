@@ -33,7 +33,7 @@ public class WeaponComponent : MonoBehaviour
     public bool HasAmmo { get => CurrentAmmo > 0; }
     public bool CanReload { get => CurrentAmmo != Info.MagSize && RemainingAmmo > 0 && !IsReloading; }
 
-    public bool IsReloading = false;
+    public bool IsReloading;
     private float lastShotTime;
     private float reloadStartTime;
     // Start is called before the first frame update
@@ -48,7 +48,6 @@ public class WeaponComponent : MonoBehaviour
         CurrentAmmo = Info.MagSize;
         RemainingAmmo = Info.AmmoCapacity;
         lastShotTime = 0f;
-        IsReloading = false;
     }
 
     // Update is called once per frame
