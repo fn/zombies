@@ -39,6 +39,7 @@ namespace Zombies
             {
                 // Add our starting weapon and load the active view model.
                 Weapons.Add(StartingWeapon.GetComponent<WeaponComponent>());
+                Weapons[Weapons.Count - 1].ResetWeapon();
                 LoadViewModel();
             }
         }
@@ -95,7 +96,7 @@ namespace Zombies
 
             GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.CurrentAmmo}/{HeldWeapon.RemainingAmmo}");
 
-            if (Input.GetButtonDown("Fire1") && HeldWeapon.HasAmmo)
+            if (Input.GetButtonDown("Fire1") && HeldWeapon.HasAmmo && !HeldWeapon.IsReloading)
             {
                 HeldWeapon.Shoot(ShotOrigin.transform.position, View.viewCamera.transform.forward);
                 ViewModelAnimator.SetTrigger("Shoot");

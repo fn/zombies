@@ -7,8 +7,7 @@ public class SpawnerScript : MonoBehaviour
 {
     public enum StateOfSpawn { SPAWNING, WAITING, COUNTING };
 
-    [System.Serializable] // allows to change values of instances of
-                          // class in Unity Inspector
+    [System.Serializable] // allows to change values of instances of class in Unity Inspector
     public class WaveConfiguration
     {
         public int setupWaves; // Waves that open up the map and such.
@@ -84,8 +83,11 @@ public class SpawnerScript : MonoBehaviour
                 if (noEnemies)
                 {
                     NewRound();
-                    // Spawn the wave.
-                    // SpawnWave(waveConfig);
+
+                    GameManager.Instance.zombieDead.Clear();
+                    var allZombies = GameObject.FindGameObjectsWithTag("Zombie");
+                    foreach (var zombie in allZombies)
+                        Destroy(zombie);
 
                     spawnState = StateOfSpawn.SPAWNING;
                 }
@@ -122,7 +124,7 @@ public class SpawnerScript : MonoBehaviour
     bool NoEnemiesAlive()
     {
         // This is a bad check honestly. The spawner should put entities in a list and then we remove them from when they die.
-        return GameObject.FindGameObjectWithTag("Enemy") == null;
+        return waveConfig.enemyCount == GameManager.Instance.zombieDead.Count;
     }
 
     void SpawnEnemy(WaveConfiguration waveCfg)

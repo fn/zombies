@@ -53,8 +53,10 @@ MonoBehaviour:
     InfiniteAmmo: 0
     ProjectilesPerShot: 1
     SpreadFactor: 0.025
+    ReloadSpeed: 0
   layer: Player Bullet
   Model: {fileID: 2691974663918893728, guid: f8ed09f29840f364098d17b8e1465b79, type: 3}
   Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}
-  CurrentAmmo: 4
-  RemainingAmmo: 196
+  CurrentAmmo: 10
+  RemainingAmmo: 200
+  IsReloading: 0
