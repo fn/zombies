@@ -15,7 +15,7 @@ public class AmmoPickup : autoItemPickup
 
     public override void ApplyAmount(Player player)
     {
-        player.HeldWeapon.remainingAmmo += restoreAmount;
+        player.HeldWeapon.RemainingAmmo += restoreAmount;
         Destroy(gameObject);
     }
 

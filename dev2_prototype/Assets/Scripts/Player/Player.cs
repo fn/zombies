@@ -10,9 +10,12 @@ namespace Zombies
         public ViewComponent View;
         
         [SerializeField] List<WeaponComponent> Weapons;
-
-        [SerializeField] Transform WeaponPivot;
+        
+        [SerializeField] Transform ViewModel;
         [SerializeField] Animator ViewModelAnimator;
+
+        // The starting weapon we want the player to have.
+        [SerializeField] GameObject StartingWeapon;
 
         int HeldWeaponIndex;
 
@@ -23,12 +26,21 @@ namespace Zombies
 
         public bool IsAiming { get; private set; }
 
+        private Transform ShotOrigin;
+
         // Start is called before the first frame update
         void Start()
         {
             HeldWeaponIndex = 0;
 
             GameManager.Instance.HurtScreen.enabled = false;
+
+            if (StartingWeapon != null)
+            {
+                // Add our starting weapon and load the active view model.
+                Weapons.Add(StartingWeapon.GetComponent<WeaponComponent>());
+                LoadViewModel();
+            }
         }
 
         // Update is called once per frame
@@ -41,6 +53,22 @@ namespace Zombies
             UpdateViewModel();
         }
 
+        void LoadViewModel()
+        {
+            // Destory current view model.
+            if (ViewModel.childCount > 0)
+            {
+                for (int i = 0; i < ViewModel.childCount; i++)
+                    Destroy(ViewModel.GetChild(i));
+            }
+
+            var viewModel = Instantiate(HeldWeapon.Model, ViewModel);
+
+            ShotOrigin = viewModel.transform.Find("Model/ShootPos");
+
+            HeldWeapon.ResetWeapon();
+        }
+
         void UpdateViewModel()
         {
             UpdateAiming();
@@ -48,16 +76,27 @@ namespace Zombies
             ViewModelAnimator.SetBool("Sprinting", Movement.IsSprinting);
         }
 
+        void PickupWeapon(WeaponComponent weapon)
+        {
+            Weapons.Add(weapon);
+            HeldWeaponIndex = Weapons.Count - 1;
+        }
+
+        void SwapWeapon(  )
+        {
+            // Instantiate(, ViewModel)
+        }
+
         void UpdateWeapons()
         {
             if (HeldWeapon == null)
                 return;
 
-            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.currentAmmo}/{HeldWeapon.remainingAmmo}");
+            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.CurrentAmmo}/{HeldWeapon.RemainingAmmo}");
 
             if (Input.GetButtonDown("Fire1") && HeldWeapon.HasAmmo)
             {
-                HeldWeapon.Shoot(WeaponPivot.transform.position, View.viewCamera.transform.forward);
+                HeldWeapon.Shoot(ShotOrigin.transform.position, View.viewCamera.transform.forward);
                 ViewModelAnimator.SetTrigger("Shoot");
             }
 
