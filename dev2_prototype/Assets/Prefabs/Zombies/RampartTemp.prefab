@@ -305,7 +305,7 @@ MonoBehaviour:
   commanderLine: {fileID: 3409569455007674321}
   commanderPoint: {fileID: 5512426843049296789, guid: cffa0d69596fa2345b096b8e63066d21, type: 3}
   model: {fileID: 2100000, guid: d5a1bb4e72cfefe4682a871f676bc07c, type: 2}
-  color: {r: 0, g: 0.4734311, b: 1, a: 1}
+  color: {r: 0, g: 0.4117647, b: 1, a: 1}
 --- !u!120 &3409569455007674321
 LineRenderer:
   m_ObjectHideFlags: 0
