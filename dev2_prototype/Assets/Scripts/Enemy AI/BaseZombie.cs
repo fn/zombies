@@ -13,7 +13,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     public int DestructionPWR { get => destructionPower; set => destructionPower = value; }
     public int Cost { get => cost; set => cost = value; }
     public bool IsAttacking { get => attacking; set => attacking = value; }
-    public bool CommandComplete { get => commandComplete; set => commandComplete = value; }
+    public bool IsInMain { get => inMainGroup; set => inMainGroup = value; }
 
     void IsAttackingToggle()
     {
@@ -48,7 +48,16 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     virtual public void Gather()
     {
         agent.speed = movementSpeed;
-        agent.SetDestination(commander.transform.position);
+        if (inMainGroup)
+            agent.SetDestination(commander.transform.position);
+        else
+            agent.SetDestination(commander.movePos.transform.position);
+
+        if (Vector3.Distance(transform.position, commander.transform.position) <= agent.stoppingDistance + 1)
+        {
+            State = enemyState.NORMAL;
+            commander.readyZombies++;
+        }
     }
 
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
@@ -63,7 +72,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected enemyState state;
     protected bool fleeing;
     protected float attackTimer;
-    protected bool commandComplete;
+    protected bool inMainGroup;
 
     protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
 
@@ -140,6 +149,17 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         hp -= amount;
         if (hp <= 0)
         {
+            GameManager.Instance.zombieDead.Add(this); //adds to the dead pile
+
+            if (commander != null)
+            {
+                if (inMainGroup)
+                    commander.mainGroup.Remove(this);
+                else
+                    commander.flankGroup.Remove(this);
+            }
+
+
             // 25% drop chance
             if (Random.Range(0, 101) <= 25)
             {

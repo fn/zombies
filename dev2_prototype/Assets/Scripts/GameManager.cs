@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Zombies;
@@ -26,13 +28,12 @@ public class GameManager : MonoBehaviour
     int enemyCount;
     
     public Player LocalPlayer;
-    public HordeManager Horde;
+    public List<BaseZombie> zombieDead = new List<BaseZombie>();
 
     void Awake()
     {
         Instance = this;
 
-        Horde = gameObject.AddComponent<HordeManager>();
         LocalPlayer = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         origTimescale = Time.timeScale;

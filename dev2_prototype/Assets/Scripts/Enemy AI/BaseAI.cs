@@ -62,4 +62,6 @@ public class BaseAI : MonoBehaviour
         agent.stoppingDistance = origStoppingDistance;
         agent.SetDestination(movePosition);
     }
+
+    
 }
