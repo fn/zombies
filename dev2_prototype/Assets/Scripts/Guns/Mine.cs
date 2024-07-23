@@ -30,12 +30,12 @@ public class Mine : MonoBehaviour
 
         foreach (var o in aArea.affected)
         {
-            IDamage dmg = o.GetComponent<IDamage>();
+            IDamageable dmg = o.GetComponent<IDamageable>();
             if (dmg == null) continue;
 
             var damagePercent = Vector3.Distance(o.transform.position, transform.position) / range;
             int calculatedDamage = (int)(damageAmount * (1 - damagePercent));
-            dmg.takeDamage(calculatedDamage);
+            dmg.TakeDamage(calculatedDamage);
         }
 
         Destroy(gameObject);
@@ -49,8 +49,8 @@ public class Mine : MonoBehaviour
         }
 
         // Check for bullet
-        var bulletDamage = mineColl.collider.GetComponent<Damage>();
-        if (bulletDamage != null && bulletDamage.type == Damage.DamageType.Bullet)
+        var bulletDamage = mineColl.collider.GetComponent<DamageSource>();
+        if (bulletDamage != null && bulletDamage.DamageSourceType == DamageSource.DamageType.Bullet)
         {
             Detonate();
             return;

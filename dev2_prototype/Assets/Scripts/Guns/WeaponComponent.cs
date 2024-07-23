@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class WeaponComponent : MonoBehaviour
@@ -120,7 +121,7 @@ public class WeaponComponent : MonoBehaviour
             bullet.layer = LayerMask.NameToLayer(layer);
 
             // Transfer the damage value to the bullet
-            Damage bulletDamage = bullet.GetComponent<Damage>();
+            DamageSource bulletDamage = bullet.GetComponent<DamageSource>();
             bulletDamage.SetDamage(damage);
 
             // Apply velocity to the bullet
@@ -128,7 +129,7 @@ public class WeaponComponent : MonoBehaviour
             if (rb != null)
             {
                 rb.velocity = direction * bulletDamage.speed;
-            }
+            }x
 
             // Destroy the bullet after a certain time
             Destroy(bullet, bulletDamage.destroyTime);
@@ -142,7 +143,7 @@ public class WeaponComponent : MonoBehaviour
 
         StartCoroutine(ReloadCoroutine());
     }
-
+    
     private IEnumerator ReloadCoroutine()
     {
         isReloading = true;
@@ -153,7 +154,7 @@ public class WeaponComponent : MonoBehaviour
         // Reload logic here
         // No more ammos :C
         if (remainingAmmo < 0)
-            return;
+            yield break;
 
         // How much ammo we need to reload.
         int neededAmmo = magSize - currentAmmo;
