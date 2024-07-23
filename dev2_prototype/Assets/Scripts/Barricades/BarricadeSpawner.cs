@@ -28,8 +28,8 @@ public class BarricadeSpawner : MonoBehaviour
                 {
                     barricade.StartRepair();
                 }
-                else
-                    Debug.Log("barricade = null");
+                //else
+                   // Debug.Log("barricade = null");
             }
         }
     }
@@ -49,8 +49,8 @@ public class BarricadeSpawner : MonoBehaviour
                 {
                     barricade.StopRepair();
                 }
-                else
-                    Debug.Log("barricade = null");
+                //else
+                    //Debug.Log("barricade = null");
             } 
         }
     }
@@ -79,11 +79,11 @@ public class BarricadeSpawner : MonoBehaviour
                     // reduce player money by cost
                     PLACEHOLDERMONEY -= purchaseCost;
                 }
-                else
-                    Debug.Log("barricadeToSpawn is spawned");
+                //else
+                    //Debug.Log("barricadeToSpawn is spawned");
             }
-            else
-                Debug.Log("player cannot afford");
+            //else
+                //Debug.Log("player cannot afford");
         }
     }
 
@@ -91,15 +91,15 @@ public class BarricadeSpawner : MonoBehaviour
     {
         // set the object to active
         barricadeToSpawn.SetActive(true);
-        Debug.Log("barricade SetActive(true)");
+        //Debug.Log("barricade SetActive(true)");
 
         Barricade barricade = barricadeToSpawn.GetComponent<Barricade>();
         if (barricade != null)
         {
             barricade.ResetHealth();
         }
-        else
-            Debug.Log("barricade = null");
+        //else
+            //Debug.Log("barricade = null");
     }
 
 }

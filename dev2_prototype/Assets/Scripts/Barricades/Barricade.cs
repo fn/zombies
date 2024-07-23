@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class Barricade : MonoBehaviour, IDamage
+public class Barricade : MonoBehaviour, IDamageable
 {
     // repair logic called every Invoke
     [SerializeField] int repairHealthAmount;
@@ -11,6 +12,8 @@ public class Barricade : MonoBehaviour, IDamage
     private bool isRepairing = false;
 
     public int PLACEHOLDERMONEY = 10;
+
+    public bool IsBroken { get; private set; }
 
     // health logic
     [SerializeField] int maxHealth;
@@ -61,23 +64,25 @@ public class Barricade : MonoBehaviour, IDamage
         model.material.color = defaultColor;
     }
 
-    public void takeDamage(int amount)
+    public void TakeDamage(int amount)
     {
         Health -= amount;
-        Debug.Log("TakeDamage barricade");
+        // Debug.Log("TakeDamage barricade");
 
-        StartCoroutine(FlashDamage());
+        if (gameObject.activeSelf)
+            StartCoroutine(FlashDamage());
+
         if (Health <= 0)
         {
             gameObject.SetActive(false);
-            Debug.Log("barricade SetActive(false)");
+            IsBroken = true;
         }
     }
 
     public void Repair(int amount)
     {
         Health += amount;
-        
+        IsBroken = false;
     }
 
     private void RepairBarricade()
@@ -98,7 +103,7 @@ public class Barricade : MonoBehaviour, IDamage
 
             // how often the barricade is repaired, based on Time.timeScale
             InvokeRepeating(nameof(RepairBarricade), repairRateInterval, repairRateInterval);
-            Debug.Log("RepairBarricade InvokeRepeating");
+            //Debug.Log("RepairBarricade InvokeRepeating");
         }
     }
 
@@ -108,19 +113,14 @@ public class Barricade : MonoBehaviour, IDamage
         {
             isRepairing = false;
             CancelInvoke(nameof(RepairBarricade));
-            Debug.Log("RepairBarricade CancelInvoke");
+            //Debug.Log("RepairBarricade CancelInvoke");
         }
     }
 
     public void ResetHealth()
     {
         Health = maxHealth;
-        Debug.Log("ResetHealth barricade");
+        //Debug.Log("ResetHealth barricade");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

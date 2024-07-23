@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class AttackArea : MonoBehaviour
 {
-    [SerializeField] Rampart rampart;
+    [SerializeField] public List<GameObject> affected = new List<GameObject>();
 
     private void OnTriggerEnter(Collider other) {
-        rampart.affected.Add(other.gameObject);
+        affected.Add(other.gameObject);
     }
     private void OnTriggerExit(Collider other) {
-        rampart.affected.Remove(other.gameObject);
+        affected.Remove(other.gameObject);
     }
 }

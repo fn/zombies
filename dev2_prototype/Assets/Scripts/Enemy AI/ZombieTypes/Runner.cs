@@ -11,17 +11,7 @@ public class Runner : BaseZombie
         StartCoroutine(TargetCheck(0.1f));
         VisibilityCheck();
 
-        int tempSpeed = movementSpeed;
-        if (agent.remainingDistance < detectionRange)
-        {
-            if (SeesPlayer)
-            {
-                tempSpeed = movementSpeed * 2;
-            }
-
-        }
-
-        agent.speed = tempSpeed;
+        agent.speed = SeesPlayer ? movementSpeed * 2 : movementSpeed;
 
         if (attacking)
         {
@@ -42,10 +32,9 @@ public class Runner : BaseZombie
     {
         if (nearPlayer)
         {
-            IDamage dmg = targetPlayer.GetComponent<IDamage>();
-            if (dmg != null)
+            if (targetPlayer.TryGetComponent(out IDamageable dmg))
             {
-                dmg.takeDamage(AttackDMG);
+                dmg.TakeDamage(AttackDMG);
             }
         }
     }

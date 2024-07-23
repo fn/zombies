@@ -193,6 +193,8 @@ MonoBehaviour:
   seesPlayer: 0
   nearPlayer: 0
   detectionRange: 20
+  commander: {fileID: 0}
+  currentTarget: {fileID: 0}
   hp: 200
   attackDamage: 100
   attackDelay: 2.5
@@ -204,12 +206,13 @@ MonoBehaviour:
   phase: 0
   colorPrimed: {r: 0.83410656, g: 1, b: 0.023584902, a: 0}
   attacking: 0
+  maxDistance: {x: 0, y: 0, z: 0}
   findSpots: {fileID: 8915369209756082240}
   HideLayers:
     serializedVersion: 2
     m_Bits: 1
   hideFactor: 0
-  affected: []
+  attackArea: {fileID: 8160504758689386704}
   colli: {fileID: 4209100633997749509}
   hideSpots:
   - {fileID: 0}
@@ -363,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de2d77d310ce5b4ea8950b31b40abcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rampart: {fileID: 2169662090270192753}
+  affected: []
 --- !u!1 &5554600998599141159
 GameObject:
   m_ObjectHideFlags: 0

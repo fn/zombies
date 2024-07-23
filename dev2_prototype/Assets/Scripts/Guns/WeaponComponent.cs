@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponComponent : MonoBehaviour
@@ -13,9 +11,11 @@ public class WeaponComponent : MonoBehaviour
     public bool infAmmo;
     public string layer;
     [SerializeField] GameObject Bullet_Standard;
-    int usedAmmo;
+
     public int remainingAmmo;
-    
+
+    public bool HasAmmo { get => currentAmmo > 0; }
+    public bool CanReload { get => currentAmmo != magSize && remainingAmmo > 0; }
 
     private float lastShotTime;
 
@@ -31,13 +31,12 @@ public class WeaponComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Shoot(Vector3 origin, Vector3 direction)
     {
         float shotCooldown = 1f / rateOfFire;
-
         if (currentAmmo <= 0 && !infAmmo)
             return;
 
@@ -47,7 +46,6 @@ public class WeaponComponent : MonoBehaviour
             if (!infAmmo)
             {
                 currentAmmo--;
-                usedAmmo++;
             }
             // Instantiate the bullet
             GameObject bullet = Instantiate(Bullet_Standard, origin, Quaternion.LookRotation(direction));
@@ -59,7 +57,7 @@ public class WeaponComponent : MonoBehaviour
             bullet.layer = LayerMask.NameToLayer(layer);
 
             // Transfer the damage value to the bullet
-            damage bulletDamage = bullet.GetComponent<damage>();
+            DamageSource bulletDamage = bullet.GetComponent<DamageSource>();
             bulletDamage.SetDamage(damage);
 
             // Apply velocity to the bullet
@@ -78,19 +76,18 @@ public class WeaponComponent : MonoBehaviour
 
     public void Reload()
     {
-        // Reload logic here
+        // No more ammos :C
+        if (remainingAmmo < 0)
+            return;
 
-        remainingAmmo -= usedAmmo;
-        usedAmmo = 0;
+        // How much ammo we need to reload.
+        int neededAmmo = magSize - currentAmmo;
+        int oldAmmo = currentAmmo;
 
-        if(magSize <= remainingAmmo)
-        {
-            currentAmmo = magSize;
-        }
-        else
-        {
-            currentAmmo = remainingAmmo;
-        }
+        // Reload that ammo.
+        currentAmmo += neededAmmo > remainingAmmo ? remainingAmmo : neededAmmo;
 
+        // Remove it from our stockpile.
+        remainingAmmo -= (currentAmmo - oldAmmo);
     }
 }
