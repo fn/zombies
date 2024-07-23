@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 5512426843049296793}
   - component: {fileID: 5512426843049296798}
   - component: {fileID: 5512426843049296799}
+  - component: {fileID: -930048327908534442}
   m_Layer: 7
   m_Name: CommanderTemp
   m_TagString: Enemy
@@ -100,7 +101,7 @@ MonoBehaviour:
   colorPrimed: {r: 0, g: 0, b: 0, a: 0}
   attacking: 0
   maxDistance: {x: 0, y: 0, z: 0}
-  animator: {fileID: 0}
+  animator: {fileID: -930048327908534442}
   flankPercent: 50
   flankingDeviation: 20
   movePos: {fileID: 5512426842705590500}
@@ -206,3 +207,24 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!95 &-930048327908534442
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5512426843049296796}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eed427ea5c0292c428132fc77959f8b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

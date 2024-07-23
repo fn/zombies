@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 2169662090270192753}
   - component: {fileID: 2169662090270192752}
   - component: {fileID: 229373872542705589}
+  - component: {fileID: -5998820308655767130}
   m_Layer: 7
   m_Name: RampartTemp
   m_TagString: Enemy
@@ -207,6 +208,7 @@ MonoBehaviour:
   colorPrimed: {r: 0.83410656, g: 1, b: 0.023584902, a: 0}
   attacking: 0
   maxDistance: {x: 0, y: 0, z: 0}
+  animator: {fileID: -5998820308655767130}
   findSpots: {fileID: 8915369209756082240}
   HideLayers:
     serializedVersion: 2
@@ -265,6 +267,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!95 &-5998820308655767130
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169662090270192759}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eed427ea5c0292c428132fc77959f8b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3581811003686848442
 GameObject:
   m_ObjectHideFlags: 0

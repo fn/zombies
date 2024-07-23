@@ -44,19 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d6cbc517b58b4049b6675a4a2c28eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Info:
-    Damage: 25
-    FireRate: 200
-    AmmoCapacity: 200
-    MagSize: 10
-    IsSpecial: 0
-    InfiniteAmmo: 0
-    ProjectilesPerShot: 1
-    SpreadFactor: 0.025
-    ReloadSpeed: 0
+  Info: {fileID: 11400000, guid: 078db083ac92893499158d0c5e724a41, type: 2}
   layer: Player Bullet
   Model: {fileID: 2691974663918893728, guid: f8ed09f29840f364098d17b8e1465b79, type: 3}
   Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}
-  CurrentAmmo: 10
-  RemainingAmmo: 200
+  CurrentAmmo: 0
+  RemainingAmmo: 0
   IsReloading: 0

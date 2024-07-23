@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 6085894060492415887}
   - component: {fileID: -6950293119309361311}
   - component: {fileID: -3109347203830223348}
+  - component: {fileID: -3001200780394974777}
   m_Layer: 7
   m_Name: RangedTemp
   m_TagString: Zombie
@@ -102,6 +103,7 @@ MonoBehaviour:
   colorPrimed: {r: 1, g: 0.9831489, b: 0, a: 0}
   attacking: 0
   maxDistance: {x: 0, y: 0, z: 0}
+  animator: {fileID: -3001200780394974777}
   Weapon: {fileID: 3531114841441890552}
   ShootPos: {fileID: 4115172015313537170}
   fireRate: 300
@@ -118,20 +120,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d6cbc517b58b4049b6675a4a2c28eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Info:
-    Damage: 10
-    FireRate: 100
-    AmmoCapacity: 10000
-    MagSize: 10
-    IsSpecial: 0
-    InfiniteAmmo: 1
-    ProjectilesPerShot: 1
-    SpreadFactor: 0
+  Info: {fileID: 11400000, guid: aab3206c7028d0e4982646afc3401bd2, type: 2}
   layer: Enemy Bullet
   Model: {fileID: 0}
   Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}
   CurrentAmmo: 0
   RemainingAmmo: 0
+  IsReloading: 0
 --- !u!33 &735750950541618683
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -248,3 +243,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   droppableItems:
   - {fileID: 7856614685524448234, guid: 20d7e2536a1201e4dad4e5205d87b4a5, type: 3}
+--- !u!95 &-3001200780394974777
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6475530878062941317}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eed427ea5c0292c428132fc77959f8b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

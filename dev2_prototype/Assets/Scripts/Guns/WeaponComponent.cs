@@ -1,23 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[System.Serializable]
-public class WeaponStats
-{
-    public float Damage;
-
-    // Prevent division by zero.
-    [Range(1f, 10000f)]
-    public float FireRate;
-    public int AmmoCapacity;
-    public int MagSize;
-    public bool IsSpecial;
-    public bool InfiniteAmmo;
-    public int ProjectilesPerShot;
-    public float SpreadFactor;
-    public float ReloadSpeed;
-}
-
 public class WeaponComponent : MonoBehaviour
 {
     public WeaponStats Info;
