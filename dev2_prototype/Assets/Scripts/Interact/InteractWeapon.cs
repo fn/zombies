@@ -3,6 +3,7 @@ using UnityEngine;
 public class InteractWeapon : MonoBehaviour
 {
     [SerializeField] GameObject Weapon;
+    [SerializeField] int weaponCost = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,8 +20,9 @@ public class InteractWeapon : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //GameManager.Instance.DoorPrompt.SetActive(true);
             GameManager.Instance.PromptBackground.SetActive(true);
+
+            // convert to scriptableobject name
             GameManager.Instance.PromptText.SetText($"'E' To Purchase {Weapon.name}");
             if (Input.GetKey(KeyCode.E))
             {
@@ -30,6 +32,9 @@ public class InteractWeapon : MonoBehaviour
                     GameManager.Instance.LocalPlayer.HeldWeaponIndex = GameManager.Instance.LocalPlayer.Weapons.Count - 1;
                     GameManager.Instance.LocalPlayer.HeldWeapon.ResetWeapon();
                     GameManager.Instance.LocalPlayer.LoadViewModel();
+
+                    // conver tto scriptableobject cost
+                    GameManager.Instance.LocalPlayer.Money -= weaponCost;
                 }
 
                 //GameManager.Instance.DoorPrompt.SetActive(false);
