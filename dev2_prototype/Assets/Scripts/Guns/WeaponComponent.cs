@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [System.Serializable]
@@ -14,6 +15,7 @@ public class WeaponStats
     public bool InfiniteAmmo;
     public int ProjectilesPerShot;
     public float SpreadFactor;
+    public float ReloadSpeed;
 }
 
 public class WeaponComponent : MonoBehaviour
@@ -24,15 +26,16 @@ public class WeaponComponent : MonoBehaviour
     public GameObject Model;
 
     [SerializeField] GameObject Bullet_Standard;
-   
+
     public int CurrentAmmo;
     public int RemainingAmmo;
 
     public bool HasAmmo { get => CurrentAmmo > 0; }
-    public bool CanReload { get => CurrentAmmo != Info.MagSize && RemainingAmmo > 0; }
+    public bool CanReload { get => CurrentAmmo != Info.MagSize && RemainingAmmo > 0 && !IsReloading; }
 
+    public bool IsReloading;
     private float lastShotTime;
-
+    private float reloadStartTime;
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +58,9 @@ public class WeaponComponent : MonoBehaviour
 
     public void Shoot(Vector3 origin, Vector3 direction)
     {
+        if (IsReloading)
+            return;
+
         float shotCooldown = 1f / Info.FireRate;
         if (CurrentAmmo <= 0 && !Info.InfiniteAmmo)
             return;
@@ -101,6 +107,7 @@ public class WeaponComponent : MonoBehaviour
 
     public void Reload()
     {
+        // Reload logic here
         // No more ammos :C
         if (RemainingAmmo < 0)
             return;
@@ -114,5 +121,7 @@ public class WeaponComponent : MonoBehaviour
 
         // Remove it from our stockpile.
         RemainingAmmo -= (CurrentAmmo - oldAmmo);
+
+        IsReloading = false;
     }
 }

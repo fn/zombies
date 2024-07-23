@@ -12,7 +12,7 @@ public class DamageSource : MonoBehaviour
     public DamageSourceType Type;
     public Rigidbody rb;
     public int speed;
-    public int destroyTime;
+    public float destroyTime;
 
     private float lastHitTime;
     bool DealtDamage;
