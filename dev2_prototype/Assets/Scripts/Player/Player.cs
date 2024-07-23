@@ -39,6 +39,7 @@ namespace Zombies
             {
                 // Add our starting weapon and load the active view model.
                 Weapons.Add(StartingWeapon.GetComponent<WeaponComponent>());
+                Weapons[Weapons.Count - 1].ResetWeapon();
                 LoadViewModel();
             }
         }

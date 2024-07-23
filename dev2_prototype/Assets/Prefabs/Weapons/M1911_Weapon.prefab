@@ -56,5 +56,5 @@ MonoBehaviour:
   layer: Player Bullet
   Model: {fileID: 2691974663918893728, guid: f8ed09f29840f364098d17b8e1465b79, type: 3}
   Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}
-  CurrentAmmo: 4
-  RemainingAmmo: 196
+  CurrentAmmo: 0
+  RemainingAmmo: 0
