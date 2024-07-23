@@ -23,7 +23,7 @@ public class InteractDoor : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             GameManager.Instance.PromptBackground.SetActive(true);
-            GameManager.Instance.PromptText.SetText("'E' Open Door");
+            GameManager.Instance.PromptText.SetText($"'E' Open Door Cost: {DoorCost}");
             if (Input.GetKey(KeyCode.E))
             {
                 openDoor();
