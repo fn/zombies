@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2008780026319952905}
   - component: {fileID: 2008780026319952910}
-  - component: {fileID: 563811409809481209}
+  - component: {fileID: 859168088576017950}
   - component: {fileID: 2008780026319952908}
   - component: {fileID: 2008780026319952909}
   - component: {fileID: 2008780026319953138}
@@ -53,7 +53,7 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &563811409809481209
+--- !u!114 &859168088576017950
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -62,14 +62,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2008780026319953136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 070ac7c291ad66f47b643d6729e96680, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c4b680ba85ba594495bc13fe0da0650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 0
-  type: 0
+  DamageAmount: 0
+  Type: 0
   rb: {fileID: 2008780026319952910}
   speed: 100
-  destroyTime: 0.15
+  destroyTime: 0.1
 --- !u!33 &2008780026319952908
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ public class Turret : MonoBehaviour
 
         AimAtTarget();
 
-        if (fireCountdown <= 0f && weaponComponent.currentAmmo > 0)
+        if (fireCountdown <= 0f && weaponComponent.CurrentAmmo > 0)
         {
             weaponComponent.Shoot(shootPos.position, (target.position - shootPos.position).normalized);
             fireCountdown = 1f / fireRate;
@@ -32,7 +32,7 @@ public class Turret : MonoBehaviour
 
         fireCountdown -= Time.deltaTime;
 
-        if (weaponComponent.currentAmmo <= 0 && !weaponComponent.infAmmo)
+        if (weaponComponent.CurrentAmmo <= 0 && !weaponComponent.Info.InfiniteAmmo)
         {
             Destroy(gameObject);
         }

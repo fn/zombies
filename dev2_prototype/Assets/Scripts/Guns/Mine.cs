@@ -50,7 +50,7 @@ public class Mine : MonoBehaviour
 
         // Check for bullet
         var bulletDamage = mineColl.collider.GetComponent<DamageSource>();
-        if (bulletDamage != null && bulletDamage.DamageSourceType == DamageSource.DamageType.Bullet)
+        if (bulletDamage != null && bulletDamage.Type == DamageSourceType.Bullet)
         {
             Detonate();
             return;
