@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BaseZombie : BaseAI, ZombieStates, IDamageable
 {
-    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER };
+    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER, FLANK, DEAD };
 
     public int HP { get => hp; set => hp = value; }
     public int AttackDMG { get => attackDamage; set => attackDamage = value; }
@@ -13,7 +13,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     public int DestructionPWR { get => destructionPower; set => destructionPower = value; }
     public int Cost { get => cost; set => cost = value; }
     public bool IsAttacking { get => attacking; set => attacking = value; }
-    public bool CommandComplete { get => commandComplete; set => commandComplete = value; }
+    public bool IsInMain { get => inMainGroup; set => inMainGroup = value; }
+    public bool Free { get => free; set => free = value; }
 
     void IsAttackingToggle()
     {
@@ -43,12 +44,39 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         {
             fleeing = false;
             State = enemyState.SEEK;
+            
         }
     }
     virtual public void Gather()
     {
         agent.speed = movementSpeed;
-        agent.SetDestination(commander.transform.position);
+        if (inMainGroup)
+            agent.SetDestination(commander.transform.position);
+        else
+            agent.SetDestination(commander.movePos.transform.position);
+
+        if (Vector3.Distance(transform.position, commander.transform.position) <= agent.stoppingDistance + 1)
+        {
+            State = enemyState.NORMAL;
+            commander.readyZombies++;
+            free = true;
+        }
+    }
+    virtual public void Flank()
+    {
+        agent.speed = 2 * movementSpeed;
+        FlankTarget(targetPlayer.transform, commander.flankingDeviation);
+        if (Vector3.Distance(transform.position, targetPlayer.transform.position) <= agent.stoppingDistance + commander.flankingDeviation)
+        {
+            State = enemyState.SEEK;
+        }
+    }
+
+    virtual public void Dead()
+    {
+        free = false;
+        model.material.color = Color.black;
+        agent.ResetPath();
     }
 
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
@@ -63,7 +91,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected enemyState state;
     protected bool fleeing;
     protected float attackTimer;
-    protected bool commandComplete;
+    protected bool inMainGroup;
+    protected bool free;
 
     protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
 
@@ -77,9 +106,12 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected bool attacking;
     [SerializeField] protected Vector3 maxDistance;
 
+    int hpOriginal;
 
     void Start()
     {
+        hpOriginal = hp;
+        free = true;
         agent.speed = movementSpeed;
 
         targetPlayer = GameManager.Instance.LocalPlayer;
@@ -102,17 +134,24 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         {
             movePosition = targetPlayer.transform.position;
         }
+        if (seesPlayer)
+        {
+            if (commander != null)
+                commander.PlayerVisible();
+        }
         switch (state)
         {
             case enemyState.NORMAL:
                 Normal();
                 break;
             case enemyState.SEEK:
+                free = false;
                 currentTarget = targetPlayer.gameObject;
                 FaceTarget();
                 Seek();
                 break;
             case enemyState.ATTACK:
+                free = false;
                 Attack();
                 break;
             case enemyState.FLEE:
@@ -123,6 +162,12 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 break;
             case enemyState.GATHER:
                 Gather();
+                break;
+            case enemyState.FLANK:
+                Flank();
+                break;
+            case enemyState.DEAD:
+                Dead();
                 break;
         }
 
@@ -138,8 +183,32 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         //if (State == enemyState.DEMOLITION || State == enemyState.NORMAL)
         //    State = enemyState.SEEK;
         hp -= amount;
-        if (hp <= 0)
+
+        if (amount > 0)
         {
+            StartCoroutine(FlashDamage(false));
+            if (phase == attackPhase.RECOVERY)
+                hp -= amount;
+        }
+        else
+            StartCoroutine(FlashDamage(true));
+
+
+        if (hp > hpOriginal * 2)
+            hp = hpOriginal * 2;
+        if (hp <= 0 && State != enemyState.DEAD)
+        {
+            GameManager.Instance.zombieDead.Add(this); //adds to the dead pile
+
+            //if (commander != null)
+            //{
+            //    if (inMainGroup)
+            //        commander.mainGroup.Remove(this);
+            //    else
+            //        commander.flankGroup.Remove(this);
+            //}
+
+
             // 25% drop chance
             if (Random.Range(0, 101) <= 25)
             {
@@ -150,15 +219,25 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                     item.DropItem(transform.position, transform.rotation);
                 }
             }
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            State = enemyState.DEAD;
+            return;
         }
-
-        StartCoroutine(FlashDamage());
+        if (hp > 0 && State == enemyState.DEAD)
+        {
+            GameManager.Instance.zombieDead.Remove(this);
+            State = enemyState.GATHER;
+            free = true;
+        }
+        
     }
 
-    private IEnumerator FlashDamage()
+    private IEnumerator FlashDamage(bool heal)
     {
-        GetComponent<Renderer>().material.color = Color.red;
+        if (!heal)
+            GetComponent<Renderer>().material.color = Color.red;
+        else
+            GetComponent<Renderer>().material.color = Color.white;
         yield return new WaitForSeconds(.5f);
         GetComponent<Renderer>().material.color = origColor;
     }
@@ -183,7 +262,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 {
                     phase++;
 
-                    if (currentTarget.CompareTag("BarricadeSpawner"))
+                    if (currentTarget.tag.Contains("Barricade"))
                     {
                         GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
 
@@ -212,11 +291,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("BarricadeSpawner"))
+        if (other.tag.Contains("Barricade"))
         {
             //checks if barricadeSpawner's child is active
-            if (!other.gameObject.transform.GetChild(0).gameObject.activeSelf)
+
+            if (other.gameObject.TryGetComponent(out Barricade barricade) && barricade.IsBroken)
                 return;
+
             currentTarget = other.gameObject;
             State = enemyState.DEMOLITION;
         }

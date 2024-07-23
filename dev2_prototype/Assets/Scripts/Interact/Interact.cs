@@ -31,10 +31,13 @@ public class Interact : MonoBehaviour
     {
         if (GameManager.Instance.ItemInHand)
         {
-            GameManager.Instance.DropPrompt.SetActive(true);
+            //GameManager.Instance.DropPrompt.SetActive(true);
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText("'Q' To Drop");
             if (Input.GetKey(KeyCode.Q))
             {
                 drop();
+                GameManager.Instance.PromptBackground.SetActive(false);
             }
         }
     }
@@ -51,7 +54,7 @@ public class Interact : MonoBehaviour
 
     void drop()
     {
-            GameManager.Instance.DropPrompt.SetActive(false);
+            //GameManager.Instance.DropPrompt.SetActive(false);
             GameManager.Instance.ItemInHand = false;
             ItemParent.DetachChildren();
             Barrel.transform.eulerAngles = new Vector3(Barrel.transform.position.x, Barrel.transform.position.z, Barrel.transform.position.y);
@@ -73,11 +76,13 @@ public class Interact : MonoBehaviour
     {
         if (other.gameObject.tag == "Player" && !GameManager.Instance.ItemInHand)
         {
-            GameManager.Instance.PickupPrompt.SetActive(true);
+            //GameManager.Instance.PickupPrompt.SetActive(true);
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText("'E' Pickup Item");
             if (Input.GetKey(KeyCode.E))
             {
                 Pickup();
-                GameManager.Instance.PickupPrompt.SetActive(false);
+                //GameManager.Instance.PickupPrompt.SetActive(false);
             }
         }
         //If a bullet collides with the barrel
@@ -93,7 +98,8 @@ public class Interact : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            GameManager.Instance.PickupPrompt.SetActive(false);
+            GameManager.Instance.PromptBackground.SetActive(false);
+            //GameManager.Instance.PickupPrompt.SetActive(false);
         }
     }
     private IEnumerator explosion()

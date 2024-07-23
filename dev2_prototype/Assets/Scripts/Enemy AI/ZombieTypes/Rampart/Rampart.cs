@@ -123,7 +123,7 @@ public class Rampart : BaseZombie
                 //error check
                 if (!NavMesh.FindClosestEdge(hit.position, out hit, agent.areaMask))
                 {
-                    Debug.LogError($"Cant find hide spot at {hit.position}");
+                    // Debug.LogError($"Cant find hide spot at {hit.position}");
                 }
                 //if diff between hiding spot's "Dot" variable (a part of the hit data) and player is within hideFactor range, do hiding
                 if (Vector3.Dot(hit.normal, (targetPlayer.transform.position - hit.position).normalized) < hideFactor)
@@ -138,7 +138,7 @@ public class Rampart : BaseZombie
                     {
                         if (!NavMesh.FindClosestEdge(hit2.position, out hit2, agent.areaMask))
                         {
-                            Debug.LogError($"Cant find hide spot at {hit2.position}");
+                            // Debug.LogError($"Cant find hide spot at {hit2.position}");
                         }
 
                         if (Vector3.Dot(hit2.normal, (targetPlayer.transform.position - hit2.position).normalized) < hideFactor)
@@ -152,7 +152,7 @@ public class Rampart : BaseZombie
             }
             else
             {
-                Debug.LogError($"Unable to find NavMesh near {hideSpots[i].name} at {hideSpots[i].transform.position}");
+                // Debug.LogError($"Unable to find NavMesh near {hideSpots[i].name} at {hideSpots[i].transform.position}");
             }
         }
     }

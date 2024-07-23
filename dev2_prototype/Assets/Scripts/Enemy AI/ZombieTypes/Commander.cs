@@ -1,12 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 
 public class Commander : BaseZombie
 {
-    List<BaseZombie> commandedZombies = new List<BaseZombie>();
+    
+    [Tooltip("Percentage of zeds being sent to flanking")]
+    [Range(0, 50)]
+    [SerializeField] int flankPercent;
+    [Tooltip("the bigger the number, the further the flanking zeds will be from the player")] 
+    public int flankingDeviation;
+    public GameObject movePos;
+    public List<BaseZombie> mainGroup;
+    public List<BaseZombie> flankGroup;
+    public int readyZombies;
     bool commandSent;
+    bool flanking;
+
     protected override void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Zombie")
@@ -19,14 +31,28 @@ public class Commander : BaseZombie
 
             z.commander = this;
             z.State = enemyState.GATHER;
-            commandedZombies.Add(z);
+
+            int total = mainGroup.Count + flankGroup.Count;
+            float per = (float)flankPercent / 100;
+            float totPer = total * per;
+
+            if (flankGroup.Count >= totPer)
+            {
+                mainGroup.Add(z);
+                z.IsInMain = true;
+            }
+            else
+            {
+                z.IsInMain = false;
+                flankGroup.Add(z);
+            }
+                
         }
 
         if (other.gameObject.tag == "Player")
         {
             agent.ResetPath();
             State = enemyState.GATHER;
-            commandSent = true;
         }
         
     }
@@ -54,41 +80,118 @@ public class Commander : BaseZombie
 
     public override void Gather()
     {
-        SendCommand(enemyState.GATHER);
+        SendCommand(mainGroup, enemyState.GATHER);
+        SendCommand(flankGroup, enemyState.GATHER);
         State = enemyState.NORMAL;
     }
 
     public override void Normal()
     {
+       
+            
         UpdatePlayerDir();
         FaceTarget();
         VisibilityCheck();
-        if (seesPlayer) State = enemyState.ATTACK;
+        if (seesPlayer)
+        {
+            State = enemyState.ATTACK;
+            return;
+        }
+
+        if (readyZombies >= mainGroup.Count / 2)
+        {
+            State = enemyState.FLANK;
+            readyZombies = 0;
+        }
     }
 
     public override void Attack()
     {
-        SendCommand(enemyState.SEEK);
-        SendCommand(currentTarget);
-        if (seesPlayer) State = enemyState.NORMAL;
-    }
-    //change state
-    void SendCommand(enemyState state)
-    {
-        foreach (var z in commandedZombies)
+        SendCommand(mainGroup, enemyState.SEEK);
+        SendCommand(mainGroup, currentTarget);
+        SendCommand(flankGroup, enemyState.SEEK);
+        SendCommand(flankGroup, currentTarget);
+        if (!seesPlayer) State = enemyState.NORMAL;
+        if (attackTimer <= 0)
         {
+            attackTimer = attackCooldown;
+            HealZeds();
+        }
+
+    }
+
+    public override void Flank()
+    {
+        SendCommand(mainGroup, enemyState.SEEK);
+        SendCommand(flankGroup, enemyState.FLANK);
+        State = enemyState.NORMAL;
+    }
+
+    public void HealZeds()
+    {
+        foreach (var z in mainGroup)
+        {
+            IDamageable dmg = z.GetComponent<IDamageable>();
+            if (dmg == null)
+                continue;
+            dmg.TakeDamage(-attackDamage);
+        }
+        foreach (var z in flankGroup)
+        {
+            IDamageable dmg = z.GetComponent<IDamageable>();
+            if (dmg == null)
+                continue;
+            dmg.TakeDamage(-attackDamage);
+        }
+
+    }
+
+    public void PlayerVisible()
+    {
+        seesPlayer = true;
+        State = enemyState.ATTACK;
+    }
+
+    //change state
+    void SendCommand(List<BaseZombie> horde, enemyState state)
+    {
+        readyZombies = 0;
+        foreach (var z in horde)
+        {
+            if (!z.Free)
+                continue;
             z.State = state;
+            z.Free = false;
         }
     }
-    //gives info about player
-    void SendCommand(GameObject target)
+    //gives info about player/location
+    void SendCommand(List<BaseZombie> horde, GameObject target)
     {
-        foreach (var z in commandedZombies)
+        readyZombies = 0;
+        foreach (var z in horde)
         {
+            if (!z.Free)
+                continue;
             z.currentTarget = target;
-            z.SeesPlayer = true;
+            if (!z.SeesPlayer)
+                z.SeesPlayer = SeesPlayer;
             z.DestinationCommand(target.transform.position);
+            z.Free = false;
         }
             
     }
+
+    
+
+
+    ////gives a spot to move to/gather around
+    //void SendCommand(Vector3 destination)
+    //{
+    //    readyZombies = 0;
+    //    foreach (var z in mainGroup)
+    //    {
+    //        z.DestinationCommand(destination);
+    //        z.CommandComplete = false;
+    //    }
+    //}
 }

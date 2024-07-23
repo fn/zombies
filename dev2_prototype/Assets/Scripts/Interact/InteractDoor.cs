@@ -22,11 +22,14 @@ public class InteractDoor : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            GameManager.Instance.DoorPrompt.SetActive(true);
+            //GameManager.Instance.DoorPrompt.SetActive(true);
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText("'E' Open Door");
             if (Input.GetKey(KeyCode.E))
             {
                 openDoor();
-                GameManager.Instance.DoorPrompt.SetActive(false);
+                GameManager.Instance.PromptBackground.SetActive(false);
+                //GameManager.Instance.DoorPrompt.SetActive(false);
             }
         }
     }
@@ -34,7 +37,8 @@ public class InteractDoor : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            GameManager.Instance.DoorPrompt.SetActive(false);
+            GameManager.Instance.PromptBackground?.SetActive(false);
+            //GameManager.Instance.DoorPrompt.SetActive(false);
         }
     }
 

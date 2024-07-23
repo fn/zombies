@@ -7,8 +7,7 @@ public class SpawnerScript : MonoBehaviour
 {
     public enum StateOfSpawn { SPAWNING, WAITING, COUNTING };
 
-    [System.Serializable] // allows to change values of instances of
-                          // class in Unity Inspector
+    [System.Serializable] // allows to change values of instances of class in Unity Inspector
     public class WaveConfiguration
     {
         public int setupWaves; // Waves that open up the map and such.
@@ -17,24 +16,26 @@ public class SpawnerScript : MonoBehaviour
         public int enemyCount;
     }
 
+    [System.Serializable]
+    public class SpawnPoint
+    {
+        public Transform Position;
+        public GameObject[] Entities;
+    }
+
     [SerializeField] int MaxWaveNumber;
-    public GameObject[] possibleSpawnEntities;
     public WaveConfiguration waveConfig;
 
-    private int currentWaveNumber = 1;
-
-    public Transform[] spawnPointLocations;
-
+    public SpawnPoint[] spawnPointLocations;
     public float waitTime = 5f;
-    private float countDown;
-
-    private int enemiesLeftToSpawn;
-
-    private float lastSpawnTime;
-
     public StateOfSpawn spawnState = StateOfSpawn.COUNTING;
-
     public bool isActive;
+    public float spawnerRange;
+
+    private int currentWaveNumber = 1;
+    private float countDown;
+    private int enemiesLeftToSpawn;
+    private float lastSpawnTime;
 
     void Start()
     {
@@ -82,8 +83,11 @@ public class SpawnerScript : MonoBehaviour
                 if (noEnemies)
                 {
                     NewRound();
-                    // Spawn the wave.
-                    // SpawnWave(waveConfig);
+
+                    GameManager.Instance.zombieDead.Clear();
+                    var allZombies = GameObject.FindGameObjectsWithTag("Zombie");
+                    foreach (var zombie in allZombies)
+                        Destroy(zombie);
 
                     spawnState = StateOfSpawn.SPAWNING;
                 }
@@ -106,7 +110,7 @@ public class SpawnerScript : MonoBehaviour
                 }
                 else
                 {
-                    spawnState = StateOfSpawn.WAITING;
+                    spawnState = StateOfSpawn.COUNTING;
                 }
             }
         }
@@ -120,28 +124,35 @@ public class SpawnerScript : MonoBehaviour
     bool NoEnemiesAlive()
     {
         // This is a bad check honestly. The spawner should put entities in a list and then we remove them from when they die.
-        return GameObject.FindGameObjectWithTag("Enemy") == null;
+        return waveConfig.enemyCount == GameManager.Instance.zombieDead.Count;
     }
 
     void SpawnEnemy(WaveConfiguration waveCfg)
     {
-        var wavePoints = new List<Transform>();
+        var availableSpawns = new List<SpawnPoint>();
 
         // These initial points are for opening up the map.
         if (waveCfg.waveNumber < waveCfg.setupWaves)
         {
             for (int i = 0; i < spawnPointLocations.Length; i++)
             {
-                if (spawnPointLocations[i].gameObject.CompareTag($"Wave{waveCfg.waveNumber}"))
-                    wavePoints.Add(spawnPointLocations[i]);
+                var location = spawnPointLocations[i].Position;
+                if (location.gameObject.CompareTag($"Wave{waveCfg.waveNumber}"))
+                    availableSpawns.Add(spawnPointLocations[i]);
             }
         }
-        else // If we are past that we can spawn from any spawn point.
+        else // If we are past that we can spawn from any nearby spawn point.
         {
-            wavePoints.AddRange(spawnPointLocations);
+            foreach (SpawnPoint sp in spawnPointLocations)
+            {
+                if (Vector3.Distance(sp.Position.transform.position, GameManager.Instance.LocalPlayer.transform.position) <= spawnerRange)
+                    availableSpawns.Add(sp);
+            }
         }
 
-        Transform randomPoint = wavePoints[Random.Range(0, wavePoints.Count)];
-        Instantiate(possibleSpawnEntities[Random.Range(0, possibleSpawnEntities.Length)], randomPoint.position, randomPoint.rotation);
+        var curSpawner = availableSpawns[Random.Range(0, availableSpawns.Count)];
+        var curPoint = curSpawner.Position;
+        var curEntities = curSpawner.Entities;
+        Instantiate(curEntities[Random.Range(0, curEntities.Length)], curPoint.position, curPoint.rotation);
     }
 }
