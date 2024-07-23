@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zombies;
 
 public class BaseAI : MonoBehaviour
 {
@@ -61,6 +62,17 @@ public class BaseAI : MonoBehaviour
     {
         agent.stoppingDistance = origStoppingDistance;
         agent.SetDestination(movePosition);
+    }
+
+    protected void FlankTarget(Transform target, float offset)
+    {
+
+         Vector3 dir = target.position - transform.position;
+         Vector3 flank = Vector3.Cross(Vector3.up, dir).normalized;
+
+         Vector3 flankPosition = target.position + flank * offset;
+
+         agent.SetDestination(flankPosition);
     }
 
     

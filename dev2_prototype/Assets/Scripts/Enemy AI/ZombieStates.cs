@@ -9,4 +9,5 @@ public interface ZombieStates //reading up on interfaces. will probably switch t
     void Attack();
     void Flee();
     void Gather();
+    void Flank();
 }

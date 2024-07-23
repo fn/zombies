@@ -11,8 +11,7 @@ public class Commander : BaseZombie
     [Range(0, 50)]
     [SerializeField] int flankPercent;
     [Tooltip("the bigger the number, the further the flanking zeds will be from the player")] 
-    [Range(0f, 1f)]
-    [SerializeField] float flankingDeviation;
+    public int flankingDeviation;
     public GameObject movePos;
     public List<BaseZombie> mainGroup;
     public List<BaseZombie> flankGroup;
@@ -96,14 +95,11 @@ public class Commander : BaseZombie
             State = enemyState.ATTACK;
             return;
         }
-            
-        if (flanking)
-            return;
 
         if (readyZombies >= mainGroup.Count / 2)
         {
-            flanking = true;
-            Flanking();
+            State = enemyState.FLANK;
+            readyZombies = 0;
         }
     }
 
@@ -111,20 +107,23 @@ public class Commander : BaseZombie
     {
         SendCommand(mainGroup, enemyState.SEEK);
         SendCommand(mainGroup, currentTarget);
+        SendCommand(flankGroup, enemyState.SEEK);
+        SendCommand(flankGroup, currentTarget);
         if (!seesPlayer) State = enemyState.NORMAL;
 
     }
 
-    void Flanking()
+    public override void Flank()
     {
-        float dev = 100f * flankingDeviation; 
-        movePos.transform.position = 
-            new Vector3(Random.Range(targetPlayer.transform.position.x - dev, targetPlayer.transform.position.x + dev),
-            targetPlayer.transform.position.y,
-            Random.Range(targetPlayer.transform.position.z - dev, targetPlayer.transform.position.z + dev));
+        SendCommand(mainGroup, enemyState.SEEK);
+        SendCommand(flankGroup, enemyState.FLANK);
+        State = enemyState.NORMAL;
+    }
 
-        SendCommand(flankGroup, enemyState.GATHER);
-        SendCommand(flankGroup, movePos);
+    public void PlayerVisible()
+    {
+        seesPlayer = true;
+        State = enemyState.ATTACK;
     }
 
     //change state
@@ -133,7 +132,10 @@ public class Commander : BaseZombie
         readyZombies = 0;
         foreach (var z in horde)
         {
+            if (!z.Free)
+                continue;
             z.State = state;
+            z.Free = false;
         }
     }
     //gives info about player/location
@@ -142,13 +144,20 @@ public class Commander : BaseZombie
         readyZombies = 0;
         foreach (var z in horde)
         {
+            if (!z.Free)
+                continue;
             z.currentTarget = target;
             if (!z.SeesPlayer)
                 z.SeesPlayer = SeesPlayer;
             z.DestinationCommand(target.transform.position);
+            z.Free = false;
         }
             
     }
+
+    
+
+
     ////gives a spot to move to/gather around
     //void SendCommand(Vector3 destination)
     //{

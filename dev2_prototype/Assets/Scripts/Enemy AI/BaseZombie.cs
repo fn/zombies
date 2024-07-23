@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BaseZombie : BaseAI, ZombieStates, IDamageable
 {
-    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER };
+    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER, FLANK };
 
     public int HP { get => hp; set => hp = value; }
     public int AttackDMG { get => attackDamage; set => attackDamage = value; }
@@ -14,6 +14,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     public int Cost { get => cost; set => cost = value; }
     public bool IsAttacking { get => attacking; set => attacking = value; }
     public bool IsInMain { get => inMainGroup; set => inMainGroup = value; }
+    public bool Free { get => free; set => free = value; }
 
     void IsAttackingToggle()
     {
@@ -43,6 +44,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         {
             fleeing = false;
             State = enemyState.SEEK;
+            
         }
     }
     virtual public void Gather()
@@ -57,6 +59,16 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         {
             State = enemyState.NORMAL;
             commander.readyZombies++;
+            free = true;
+        }
+    }
+    virtual public void Flank()
+    {
+        agent.speed = 2 * movementSpeed;
+        FlankTarget(targetPlayer.transform, commander.flankingDeviation);
+        if (Vector3.Distance(transform.position, targetPlayer.transform.position) <= agent.stoppingDistance + commander.flankingDeviation)
+        {
+            State = enemyState.SEEK;
         }
     }
 
@@ -73,6 +85,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     protected bool fleeing;
     protected float attackTimer;
     protected bool inMainGroup;
+    protected bool free;
 
     protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
 
@@ -89,6 +102,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     void Start()
     {
+        free = true;
         agent.speed = movementSpeed;
 
         targetPlayer = GameManager.Instance.LocalPlayer;
@@ -111,17 +125,24 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         {
             movePosition = targetPlayer.transform.position;
         }
+        if (seesPlayer)
+        {
+            if (commander != null)
+                commander.PlayerVisible();
+        }
         switch (state)
         {
             case enemyState.NORMAL:
                 Normal();
                 break;
             case enemyState.SEEK:
+                free = false;
                 currentTarget = targetPlayer.gameObject;
                 FaceTarget();
                 Seek();
                 break;
             case enemyState.ATTACK:
+                free = false;
                 Attack();
                 break;
             case enemyState.FLEE:
@@ -132,6 +153,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 break;
             case enemyState.GATHER:
                 Gather();
+                break;
+            case enemyState.FLANK:
+                Flank();
                 break;
         }
 
