@@ -208,6 +208,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             //        commander.flankGroup.Remove(this);
             //}
 
+            // Give player money
+            GameManager.Instance.LocalPlayer.Money += 50;
 
             // 25% drop chance
             if (Random.Range(0, 101) <= 25)

@@ -21,7 +21,7 @@ public class InteractWeapon : MonoBehaviour
         {
             //GameManager.Instance.DoorPrompt.SetActive(true);
             GameManager.Instance.PromptBackground.SetActive(true);
-            GameManager.Instance.PromptText.SetText("'E' To Purchase");
+            GameManager.Instance.PromptText.SetText($"'E' To Purchase {Weapon.name}");
             if (Input.GetKey(KeyCode.E))
             {
                 if (Weapon.TryGetComponent(out WeaponComponent weaponComp))
