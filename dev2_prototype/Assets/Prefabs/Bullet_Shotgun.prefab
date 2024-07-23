@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2008780026319953138}
   - component: {fileID: -1008923869425934846}
   m_Layer: 8
-  m_Name: Bullet_Standard
+  m_Name: Bullet_Shotgun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   type: 0
   rb: {fileID: 2008780026319952910}
   speed: 100
-  destroyTime: 3
+  destroyTime: 0.15
 --- !u!33 &2008780026319952908
 MeshFilter:
   m_ObjectHideFlags: 0
