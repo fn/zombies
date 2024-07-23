@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class InteractChest : MonoBehaviour
 {
-
     public GameObject ItemDropped;
     public GameObject DropLocation;
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
             GameManager.Instance.ChestPrompt.SetActive(true);
             if (Input.GetKey(KeyCode.E))
@@ -21,10 +20,9 @@ public class InteractChest : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
             GameManager.Instance.ChestPrompt.SetActive(false);
         }
     }
-
 }

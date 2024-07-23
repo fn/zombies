@@ -66,7 +66,7 @@ MonoBehaviour:
   DamageAmount: 30
   Type: 0
   rb: {fileID: 2008780026319952910}
-  speed: 100
+  speed: 50
   destroyTime: 3
 --- !u!135 &2008780026319953138
 SphereCollider:
@@ -79,7 +79,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!96 &-1008923869425934846
 TrailRenderer:
