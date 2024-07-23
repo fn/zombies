@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
@@ -13,6 +14,8 @@ public class Interact : MonoBehaviour
 
     public GameObject Barrel;
     public Transform ItemParent;
+    public GameObject Explosion;
+    public float explosionTime;
 
     
 
@@ -82,10 +85,17 @@ public class Interact : MonoBehaviour
                 //GameManager.Instance.PickupPrompt.SetActive(false);
             }
         }
+        //If a bullet collides with the barrel
+        else if(other.gameObject.layer == 8 || other.gameObject.layer == 9)
+        {
+            //create an explosion
+            Instantiate(Explosion, Barrel.transform.position, Barrel.transform.rotation, Barrel.transform);
+            Destroy(gameObject, explosionTime);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
             GameManager.Instance.PromptBackground.SetActive(false);
             //GameManager.Instance.PickupPrompt.SetActive(false);

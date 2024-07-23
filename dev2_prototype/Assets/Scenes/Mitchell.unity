@@ -8298,6 +8298,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1635126244, guid: 0d3ad1e9c9b28a04fbb4bf0b1afa8a51, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 1938458158525934959, guid: 0d3ad1e9c9b28a04fbb4bf0b1afa8a51, type: 3}
       propertyPath: DoorPrompt
       value: 
@@ -12086,7 +12090,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8013432517414318968, guid: 14cd4fc0701694e4bbcfc41e69b73c00, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -342.5
+      value: -342.492
       objectReference: {fileID: 0}
     - target: {fileID: 8013432517414318968, guid: 14cd4fc0701694e4bbcfc41e69b73c00, type: 3}
       propertyPath: m_LocalPosition.y
@@ -15220,6 +15224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1900733413}
+  - component: {fileID: 1900733417}
   - component: {fileID: 1900733416}
   - component: {fileID: 1900733415}
   - component: {fileID: 1900733414}
@@ -15308,6 +15313,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900733412}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1900733417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900733412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 701765e2bd981b24a875257147416774, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  Wall: {fileID: 1900733412}
 --- !u!1 &1915830657
 GameObject:
   m_ObjectHideFlags: 0
@@ -16571,6 +16590,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pickupable Barrel
       objectReference: {fileID: 0}
+    - target: {fileID: 1157940953095880675, guid: f870c9b27a7a8f741bf1537c91f398dc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1157940953095880676, guid: f870c9b27a7a8f741bf1537c91f398dc, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -16616,9 +16639,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1157940953095880697, guid: f870c9b27a7a8f741bf1537c91f398dc, type: 3}
+      propertyPath: Explosion
+      value: 
+      objectReference: {fileID: 646324660433810613, guid: e33c3e64f054f364888fb9cd29404a7b, type: 3}
+    - target: {fileID: 1157940953095880697, guid: f870c9b27a7a8f741bf1537c91f398dc, type: 3}
       propertyPath: ItemParent
       value: 
       objectReference: {fileID: 1033100637}
+    - target: {fileID: 1157940953095880697, guid: f870c9b27a7a8f741bf1537c91f398dc, type: 3}
+      propertyPath: explosionTime
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f870c9b27a7a8f741bf1537c91f398dc, type: 3}
 --- !u!1 &2085442604
