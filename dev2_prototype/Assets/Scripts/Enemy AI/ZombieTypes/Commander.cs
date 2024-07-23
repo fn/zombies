@@ -87,6 +87,8 @@ public class Commander : BaseZombie
 
     public override void Normal()
     {
+       
+            
         UpdatePlayerDir();
         FaceTarget();
         VisibilityCheck();
@@ -110,6 +112,11 @@ public class Commander : BaseZombie
         SendCommand(flankGroup, enemyState.SEEK);
         SendCommand(flankGroup, currentTarget);
         if (!seesPlayer) State = enemyState.NORMAL;
+        if (attackTimer <= 0)
+        {
+            attackTimer = attackCooldown;
+            HealZeds();
+        }
 
     }
 
@@ -118,6 +125,25 @@ public class Commander : BaseZombie
         SendCommand(mainGroup, enemyState.SEEK);
         SendCommand(flankGroup, enemyState.FLANK);
         State = enemyState.NORMAL;
+    }
+
+    public void HealZeds()
+    {
+        foreach (var z in mainGroup)
+        {
+            IDamageable dmg = z.GetComponent<IDamageable>();
+            if (dmg == null)
+                continue;
+            dmg.TakeDamage(-attackDamage);
+        }
+        foreach (var z in flankGroup)
+        {
+            IDamageable dmg = z.GetComponent<IDamageable>();
+            if (dmg == null)
+                continue;
+            dmg.TakeDamage(-attackDamage);
+        }
+
     }
 
     public void PlayerVisible()

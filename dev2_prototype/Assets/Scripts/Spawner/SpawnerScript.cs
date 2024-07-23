@@ -7,8 +7,7 @@ public class SpawnerScript : MonoBehaviour
 {
     public enum StateOfSpawn { SPAWNING, WAITING, COUNTING };
 
-    [System.Serializable] // allows to change values of instances of
-                          // class in Unity Inspector
+    [System.Serializable] // allows to change values of instances of class in Unity Inspector
     public class WaveConfiguration
     {
         public int setupWaves; // Waves that open up the map and such.

@@ -9,7 +9,7 @@ public class Ranged : BaseZombie
 
     [SerializeField] float fireRate;
     [SerializeField] float fleeingDist;
-    
+
     public override void Seek()
     {
         agent.speed = movementSpeed;
@@ -22,7 +22,8 @@ public class Ranged : BaseZombie
         }
     }
 
-    public override void Attack(){
+    public override void Attack()
+    {
         UpdatePlayerDir();
         FaceTarget();
 
@@ -33,14 +34,16 @@ public class Ranged : BaseZombie
         }
 
         fleeing = GetDistanceToPlayer() < fleeingDist;
-        if (fleeing) {
+        if (fleeing)
+        {
             State = enemyState.FLEE;
             return;
         }
-        
+
         VisibilityCheck();
-        
-        if (!seesPlayer && !fleeing){
+
+        if (!seesPlayer && !fleeing)
+        {
             State = enemyState.SEEK;
             return;
         }
@@ -49,12 +52,12 @@ public class Ranged : BaseZombie
     }
 
 
-    protected override void AttackLogic(){
-        
+    protected override void AttackLogic()
+    {
         UpdatePlayerDir();
 
-        Weapon.damage = AttackDMG;
-        Weapon.rateOfFire = fireRate;
+        Weapon.Info.Damage = AttackDMG;
+        Weapon.Info.FireRate = fireRate;
         Weapon.Shoot(ShootPos.position, playerDir);
     }
 }

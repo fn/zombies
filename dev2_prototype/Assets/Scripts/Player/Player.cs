@@ -9,19 +9,24 @@ namespace Zombies
         public MovementComponent Movement;
         public ViewComponent View;
         
-        [SerializeField] List<WeaponComponent> Weapons;
-
-        [SerializeField] Transform WeaponPivot;
+        
+        [SerializeField] Transform ViewModel;
         [SerializeField] Animator ViewModelAnimator;
 
-        int HeldWeaponIndex;
+        // The starting weapon we want the player to have.
+        [SerializeField] GameObject StartingWeapon;
+
 
         public int Health, MaxHealth;
         float attackTime;
 
+        public int HeldWeaponIndex;
+        public List<WeaponComponent> Weapons;
         public WeaponComponent HeldWeapon { get => Weapons[HeldWeaponIndex]; }
 
         public bool IsAiming { get; private set; }
+
+        private Transform ShotOrigin;
 
         // Start is called before the first frame update
         void Start()
@@ -29,16 +34,41 @@ namespace Zombies
             HeldWeaponIndex = 0;
 
             GameManager.Instance.HurtScreen.enabled = false;
+
+            if (StartingWeapon != null)
+            {
+                // Add our starting weapon and load the active view model.
+                Weapons.Add(StartingWeapon.GetComponent<WeaponComponent>());
+                Weapons[Weapons.Count - 1].ResetWeapon();
+                LoadViewModel();
+            }
         }
 
         // Update is called once per frame
         void Update()
         {
             UpdateWeapons();
-            passiveHealthRegen();
+            PassiveHealthRegen();
             HealthDisplay();
 
             UpdateViewModel();
+        }
+
+        public void LoadViewModel()
+        {
+            // Destory current view model.
+            if (ViewModel.childCount > 0)
+            {
+                for (int i = 0; i < ViewModel.childCount; i++)
+                    Destroy(ViewModel.GetChild(i).gameObject);
+            }
+
+            var viewModel = Instantiate(HeldWeapon.Model, ViewModel);
+
+            // I don't really like this... But with the way we have done our bullets it makes it look bad for them to come from the camera.
+            ShotOrigin = viewModel.transform.Find("Model/ShootPos");
+
+            //HeldWeapon.ResetWeapon();
         }
 
         void UpdateViewModel()
@@ -48,22 +78,44 @@ namespace Zombies
             ViewModelAnimator.SetBool("Sprinting", Movement.IsSprinting);
         }
 
+        void PickupWeapon(WeaponComponent weapon)
+        {
+            Weapons.Add(weapon);
+            HeldWeaponIndex = Weapons.Count - 1;
+        }
+
+        void SwapWeapon(  )
+        {
+            LoadViewModel();
+        }
+
         void UpdateWeapons()
         {
             if (HeldWeapon == null)
                 return;
 
-            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.currentAmmo}/{HeldWeapon.remainingAmmo}");
+            GameManager.Instance.AmmoHudText.SetText($"{HeldWeapon.CurrentAmmo}/{HeldWeapon.RemainingAmmo}");
 
             if (Input.GetButtonDown("Fire1") && HeldWeapon.HasAmmo)
             {
-                HeldWeapon.Shoot(WeaponPivot.transform.position, View.viewCamera.transform.forward);
+                HeldWeapon.Shoot(ShotOrigin.transform.position, View.viewCamera.transform.forward);
                 ViewModelAnimator.SetTrigger("Shoot");
             }
 
             if (Input.GetButtonDown("Reload") && HeldWeapon.CanReload)
             {
                 ViewModelAnimator.SetTrigger("Reload");
+            }
+
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f && HeldWeaponIndex < Weapons.Count - 1)
+            {
+                HeldWeaponIndex++;
+                SwapWeapon();
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f && HeldWeaponIndex > 0)
+            {
+                HeldWeaponIndex--;
+                SwapWeapon();
             }
         }
 
@@ -89,7 +141,7 @@ namespace Zombies
             }
         }
 
-        public void passiveHealthRegen()
+        public void PassiveHealthRegen()
         {
             //If 3 seconds have passed
             if (attackTime < 0)
