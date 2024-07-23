@@ -118,16 +118,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d6cbc517b58b4049b6675a4a2c28eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
-  rateOfFire: 0
-  ammoCapacity: 0
-  currentAmmo: 1000
-  magSize: 0
-  specialGun: 0
-  infAmmo: 1
+  Info:
+    Damage: 10
+    FireRate: 100
+    AmmoCapacity: 10000
+    MagSize: 10
+    IsSpecial: 0
+    InfiniteAmmo: 1
+    ProjectilesPerShot: 1
+    SpreadFactor: 0
   layer: Enemy Bullet
+  Model: {fileID: 0}
   Bullet_Standard: {fileID: 2008780026319953136, guid: c21204fb72a5edc47a68899d596614f3, type: 3}
-  remainingAmmo: 0
+  CurrentAmmo: 0
+  RemainingAmmo: 0
 --- !u!33 &735750950541618683
 MeshFilter:
   m_ObjectHideFlags: 0

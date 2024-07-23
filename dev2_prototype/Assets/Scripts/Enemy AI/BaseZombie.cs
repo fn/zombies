@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BaseZombie : BaseAI, ZombieStates, IDamageable
 {
-    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER, FLANK };
+    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER, FLANK, DEAD };
 
     public int HP { get => hp; set => hp = value; }
     public int AttackDMG { get => attackDamage; set => attackDamage = value; }
@@ -72,6 +72,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         }
     }
 
+    virtual public void Dead()
+    {
+        free = false;
+        model.material.color = Color.black;
+        agent.ResetPath();
+    }
+
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
 
     [SerializeField] protected int hp;
@@ -99,9 +106,11 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected bool attacking;
     [SerializeField] protected Vector3 maxDistance;
 
+    int hpOriginal;
 
     void Start()
     {
+        hpOriginal = hp;
         free = true;
         agent.speed = movementSpeed;
 
@@ -157,6 +166,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             case enemyState.FLANK:
                 Flank();
                 break;
+            case enemyState.DEAD:
+                Dead();
+                break;
         }
 
     }
@@ -171,17 +183,30 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         //if (State == enemyState.DEMOLITION || State == enemyState.NORMAL)
         //    State = enemyState.SEEK;
         hp -= amount;
-        if (hp <= 0)
+
+        if (amount > 0)
+        {
+            StartCoroutine(FlashDamage(false));
+            if (phase == attackPhase.RECOVERY)
+                hp -= amount;
+        }
+        else
+            StartCoroutine(FlashDamage(true));
+
+
+        if (hp > hpOriginal * 2)
+            hp = hpOriginal * 2;
+        if (hp <= 0 && State != enemyState.DEAD)
         {
             GameManager.Instance.zombieDead.Add(this); //adds to the dead pile
 
-            if (commander != null)
-            {
-                if (inMainGroup)
-                    commander.mainGroup.Remove(this);
-                else
-                    commander.flankGroup.Remove(this);
-            }
+            //if (commander != null)
+            //{
+            //    if (inMainGroup)
+            //        commander.mainGroup.Remove(this);
+            //    else
+            //        commander.flankGroup.Remove(this);
+            //}
 
 
             // 25% drop chance
@@ -194,15 +219,25 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                     item.DropItem(transform.position, transform.rotation);
                 }
             }
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            State = enemyState.DEAD;
+            return;
         }
-
-        StartCoroutine(FlashDamage());
+        if (hp > 0 && State == enemyState.DEAD)
+        {
+            GameManager.Instance.zombieDead.Remove(this);
+            State = enemyState.GATHER;
+            free = true;
+        }
+        
     }
 
-    private IEnumerator FlashDamage()
+    private IEnumerator FlashDamage(bool heal)
     {
-        GetComponent<Renderer>().material.color = Color.red;
+        if (!heal)
+            GetComponent<Renderer>().material.color = Color.red;
+        else
+            GetComponent<Renderer>().material.color = Color.white;
         yield return new WaitForSeconds(.5f);
         GetComponent<Renderer>().material.color = origColor;
     }
