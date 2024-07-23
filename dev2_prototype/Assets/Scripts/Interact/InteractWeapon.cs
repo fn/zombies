@@ -3,7 +3,7 @@ using UnityEngine;
 public class InteractWeapon : MonoBehaviour
 {
     [SerializeField] GameObject Weapon;
-    [SerializeField] int weaponCost = 0;
+    [SerializeField] int weaponCost;
     // Start is called before the first frame update
     void Start()
     {

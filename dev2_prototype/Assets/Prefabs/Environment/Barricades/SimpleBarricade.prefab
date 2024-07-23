@@ -50,8 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   repairHealthAmount: 1
   repairRateInterval: 1
-  repairRateCost: 1
-  PLACEHOLDERMONEY: 10
+  repairRateCost: 10
   maxHealth: 5
   model: {fileID: 8525642879718419544}
   damageFlash: {r: 0, g: 0, b: 0, a: 0}
@@ -181,8 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   barricadeToSpawn: {fileID: 8525642879718419547}
-  purchaseCost: 0
-  PLACEHOLDERMONEY: 5
+  purchaseCost: 200
 --- !u!65 &8525642880432682004
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ public class Barricade : MonoBehaviour, IDamageable
     // repair logic called every Invoke
     [SerializeField] int repairHealthAmount;
     [SerializeField] float repairRateInterval;
-    [SerializeField] int repairRateCost;
+    [SerializeField] int repairRateCost = 10;
     private bool isRepairing = false;
 
 
@@ -102,8 +102,7 @@ public class Barricade : MonoBehaviour, IDamageable
 
             // how often the barricade is repaired, based on Time.timeScale
             InvokeRepeating(nameof(RepairBarricade), repairRateInterval, repairRateInterval);
-            GameManager.Instance.PromptBackground.SetActive(true);
-            GameManager.Instance.PromptText.SetText("Repairing Barricade");
+
             //Debug.Log("RepairBarricade InvokeRepeating");
         }
     }
