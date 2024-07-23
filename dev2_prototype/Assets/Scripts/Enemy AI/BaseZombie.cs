@@ -75,7 +75,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     virtual public void Dead()
     {
         free = false;
-        model.material.color = Color.black;
+        // model.material.color = Color.black;
         agent.ResetPath();
     }
 
@@ -101,11 +101,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     protected Color origColor;
     [SerializeField] protected Color colorPrimed;
 
-    protected Renderer model;
+    // protected Renderer model;
 
     [SerializeField] protected bool attacking;
     [SerializeField] protected Vector3 maxDistance;
 
+
+    [SerializeField] Animator animator;
     int hpOriginal;
 
     void Start()
@@ -117,8 +119,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         targetPlayer = GameManager.Instance.LocalPlayer;
         currentTarget = targetPlayer.gameObject;
 
-        model = GetComponent<Renderer>();
-        origColor = GetComponent<Renderer>().material.color;
+        // model = GetComponent<Renderer>();
+        origColor = Color.white; //GetComponent<Renderer>().material.color;
         origStoppingDistance = agent.stoppingDistance;
     }
 
@@ -139,6 +141,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             if (commander != null)
                 commander.PlayerVisible();
         }
+
+        if (animator != null)
+            animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
+
         switch (state)
         {
             case enemyState.NORMAL:
@@ -234,12 +240,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     private IEnumerator FlashDamage(bool heal)
     {
-        if (!heal)
-            GetComponent<Renderer>().material.color = Color.red;
-        else
-            GetComponent<Renderer>().material.color = Color.white;
         yield return new WaitForSeconds(.5f);
-        GetComponent<Renderer>().material.color = origColor;
     }
 
     protected void Attacking()
