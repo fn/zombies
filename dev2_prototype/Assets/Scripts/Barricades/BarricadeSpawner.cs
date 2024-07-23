@@ -62,6 +62,22 @@ public class BarricadeSpawner : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        Barricade barricade = barricadeToSpawn.GetComponent<Barricade>();
+        if(barricade != null && barricadeToSpawn.activeSelf && other.CompareTag("Player"))
+        {
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText("Repairing Barricade");
+        } 
+        else if(!barricadeToSpawn.activeSelf && other.CompareTag("Player") && barricade != null)
+        {
+            GameManager.Instance.PromptBackground.SetActive(true);
+            GameManager.Instance.PromptText.SetText($"Spawn Barricade 'E' Cost: {purchaseCost}");
+        }
+
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))

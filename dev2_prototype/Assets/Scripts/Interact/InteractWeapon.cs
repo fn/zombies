@@ -3,7 +3,7 @@ using UnityEngine;
 public class InteractWeapon : MonoBehaviour
 {
     [SerializeField] GameObject Weapon;
-    [SerializeField] int weaponCost = 0;
+    [SerializeField] int weaponCost;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +24,7 @@ public class InteractWeapon : MonoBehaviour
 
             // convert to scriptableobject name
             GameManager.Instance.PromptText.SetText($"'E' To Purchase {Weapon.name} Cost: {weaponCost}");
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.E) && GameManager.Instance.LocalPlayer.Money >= weaponCost)
             {
                 if (Weapon.TryGetComponent(out WeaponComponent weaponComp))
                 {

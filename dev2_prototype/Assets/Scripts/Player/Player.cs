@@ -66,9 +66,11 @@ namespace Zombies
             }
 
             var viewModel = Instantiate(HeldWeapon.Model, ViewModel);
-
+            
             // I don't really like this... But with the way we have done our bullets it makes it look bad for them to come from the camera.
             ShotOrigin = viewModel.transform.Find("Model/ShootPos");
+
+            HeldWeapon.IsReloading = false;
 
             //HeldWeapon.ResetWeapon();
         }

@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Weapon: {fileID: 6760176807020677831, guid: 8776f679f93a60a43b76ece01483100a, type: 3}
+  weaponCost: 500
 --- !u!65 &5048354318410451681
 BoxCollider:
   m_ObjectHideFlags: 0

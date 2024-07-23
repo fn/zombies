@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
             else if (MenuActive == MenuPause)
                 StateRun();
         }
-        MoneyText.SetText($"{LocalPlayer.Money}");
+        MoneyText.SetText($"$ {LocalPlayer.Money}");
         
     }
 
