@@ -210,7 +210,7 @@ MonoBehaviour:
   colorPrimed: {r: 0.83410656, g: 1, b: 0.023584902, a: 0}
   attacking: 0
   maxDistance: {x: 0, y: 0, z: 0}
-  animator: {fileID: -5998820308655767130}
+  animator: {fileID: 0}
   findSpots: {fileID: 8915369209756082240}
   HideLayers:
     serializedVersion: 2

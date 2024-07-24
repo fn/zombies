@@ -154,6 +154,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         //         commanderLine.commanderPoint = commander.transform;
         // }
 
+        // Temp dead check.
+        if (hp <= 0)
+            State = enemyState.DEAD;
+
         switch (state)
         {
             case enemyState.NORMAL:
@@ -274,7 +278,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             col.isTrigger = false;
 
             if (animator != null)
+            {
                 animator.SetBool("Dead", false);
+            }
 
             GameManager.Instance.zombieDead.Remove(this);
             State = enemyState.SEEK;
