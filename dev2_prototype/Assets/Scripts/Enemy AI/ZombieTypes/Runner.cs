@@ -30,10 +30,12 @@ public class Runner : BaseZombie
 
     void OnAttackHit()
     {
-        nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
+        AttackLogic();
+    }
 
-        VisibilityCheck();
-        
+    protected override void AttackLogic()
+    {
+        nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
         if (currentTarget.tag.Contains("Barricade"))
         {
             GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
@@ -42,21 +44,13 @@ public class Runner : BaseZombie
                 dmg.TakeDamage(destructionPower);
             if (!barrChild.activeSelf)
                 State = enemyState.ATTACK;
-        }
-
-        AttackLogic();
-    }
-
-    protected override void AttackLogic()
-    {
-
-        if (!nearPlayer || !seesPlayer)
             return;
-        if (targetPlayer.TryGetComponent(out IDamageable dmg))
-        {
-            dmg.TakeDamage(AttackDMG);
         }
-        
-        
+        else if (targetPlayer.TryGetComponent(out IDamageable dmg))
+        {
+            if (!nearPlayer || !seesPlayer)
+                return;
+            dmg.TakeDamage(AttackDMG);
+        }      
     }
 }

@@ -195,8 +195,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.08315098
-        functionName: OnAttackHit
+      - time: 0.019607844
+        functionName: AttackLogic
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -917,7 +917,7 @@ ModelImporter:
     hasTranslationDoF: 1
     hasExtraRoot: 0
     skeletonHasParents: 0
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: eb062aa776e44954d94c4c2f76ebc148, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1

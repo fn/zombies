@@ -91,6 +91,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected int destructionPower;
     [SerializeField] protected int cost;
     [SerializeField] protected enemyState state;
+    
     protected bool fleeing;
     protected float attackTimer;
     protected bool inMainGroup;
@@ -111,9 +112,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     [SerializeField] Animator animator;
     int hpOriginal;
-
+    Collider col;
     void Start()
     {
+        col = GetComponent<Collider>();
         hpOriginal = hp;
         free = true;
         agent.speed = movementSpeed;
@@ -128,30 +130,30 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     void Update()
     {
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-        }
+        // if (attackTimer > 0)
+        // {
+        //     attackTimer -= Time.deltaTime;
+        // }
 
-        if (!attacking)
-        {
-            movePosition = targetPlayer.transform.position;
-        }
-        if (seesPlayer)
-        {
-            if (commander != null)
-                commander.PlayerVisible();
-        }
+        // if (!attacking)
+        // {
+        //     movePosition = targetPlayer.transform.position;
+        // }
+        // if (seesPlayer)
+        // {
+        //     if (commander != null)
+        //         commander.PlayerVisible();
+        // }
 
-        if (animator != null)
-            animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
+        // if (animator != null)
+        //     animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
 
-        if (TryGetComponent(out CommanderLine commanderLine))
-        {
-            commanderLine.enabled = commander != null;
-            if (commanderLine.enabled)
-                commanderLine.commanderPoint = commander.transform;
-        }
+        // if (TryGetComponent(out CommanderLine commanderLine))
+        // {
+        //     commanderLine.enabled = commander != null;
+        //     if (commanderLine.enabled)
+        //         commanderLine.commanderPoint = commander.transform;
+        // }
 
         switch (state)
         {
@@ -181,9 +183,30 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 Flank();
                 break;
             case enemyState.DEAD:
+                attacking = false;
+                phase = attackPhase.IDLE;
                 Dead();
-                break;
+                return;
         }
+        if (attackTimer > 0)
+        {
+            attackTimer -= Time.deltaTime;
+        }
+
+        if (!attacking)
+        {
+            movePosition = targetPlayer.transform.position;
+        }
+        if (seesPlayer)
+        {
+            if (commander != null)
+                commander.PlayerVisible();
+        }
+
+        if (animator != null)
+            animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
+
+        
 
     }
 
@@ -236,14 +259,18 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 }
             }
             //Destroy(gameObject);
+            col.isTrigger = true;
             State = enemyState.DEAD;
             return;
         }
         if (hp > 0 && State == enemyState.DEAD)
         {
+            
+            agent.ResetPath();
+            col.isTrigger = false;
             animator.SetBool("Dead", false);
             GameManager.Instance.zombieDead.Remove(this);
-            State = enemyState.GATHER;
+            State = enemyState.SEEK;
             free = true;
         }
         
@@ -274,7 +301,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
                 if (animator != null)
                 {
-                    animator.SetTrigger("Attack");
+                    if (currentTarget.tag.Contains("Barricade"))
+                        animator.SetTrigger("BarricadeAttack");
+                    else
+                        animator.SetTrigger("Attack");
                     return;
                 }
 

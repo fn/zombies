@@ -53,6 +53,20 @@ public class Ranged : BaseZombie
 
     void OnAttackHit()
     {
+        if (currentTarget.tag.Contains("Barricade"))
+        {
+            GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
+
+            if (barrChild.TryGetComponent(out IDamageable dmg))
+                dmg.TakeDamage(destructionPower);
+            if (!barrChild.activeSelf)
+            {
+                State = enemyState.SEEK;
+                phase = attackPhase.IDLE;
+            }
+                
+            return;
+        }
         AttackLogic();
     }
 
