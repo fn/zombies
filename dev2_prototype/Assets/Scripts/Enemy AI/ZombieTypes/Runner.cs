@@ -43,6 +43,7 @@ public class Runner : BaseZombie
                 dmg.TakeDamage(destructionPower);
             if (!barrChild.activeSelf)
                 State = enemyState.ATTACK;
+            return;
         }
 
         AttackLogic();

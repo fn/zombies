@@ -90,6 +90,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected int destructionPower;
     [SerializeField] protected int cost;
     [SerializeField] protected enemyState state;
+    
     protected bool fleeing;
     protected float attackTimer;
     protected bool inMainGroup;
@@ -110,9 +111,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     [SerializeField] Animator animator;
     int hpOriginal;
-
+    Collider col;
     void Start()
     {
+        col = GetComponent<Collider>();
         hpOriginal = hp;
         free = true;
         agent.speed = movementSpeed;
@@ -229,11 +231,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 }
             }
             //Destroy(gameObject);
+            col.isTrigger = true;
             State = enemyState.DEAD;
             return;
         }
         if (hp > 0 && State == enemyState.DEAD)
         {
+            col.isTrigger = false;
             animator.SetBool("Dead", false);
             GameManager.Instance.zombieDead.Remove(this);
             State = enemyState.GATHER;
