@@ -196,7 +196,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.019607844
-        functionName: OnAttackHit
+        functionName: AttackLogic
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

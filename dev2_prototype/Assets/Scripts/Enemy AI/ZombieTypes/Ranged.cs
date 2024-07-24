@@ -60,7 +60,11 @@ public class Ranged : BaseZombie
             if (barrChild.TryGetComponent(out IDamageable dmg))
                 dmg.TakeDamage(destructionPower);
             if (!barrChild.activeSelf)
-                State = enemyState.ATTACK;
+            {
+                State = enemyState.SEEK;
+                phase = attackPhase.IDLE;
+            }
+                
             return;
         }
         AttackLogic();

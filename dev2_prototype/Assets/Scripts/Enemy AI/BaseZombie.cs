@@ -130,24 +130,6 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     void Update()
     {
 
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-        }
-
-        if (!attacking)
-        {
-            movePosition = targetPlayer.transform.position;
-        }
-        if (seesPlayer)
-        {
-            if (commander != null)
-                commander.PlayerVisible();
-        }
-
-        if (animator != null)
-            animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
-
         switch (state)
         {
             case enemyState.NORMAL:
@@ -176,9 +158,30 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 Flank();
                 break;
             case enemyState.DEAD:
+                attacking = false;
+                phase = attackPhase.IDLE;
                 Dead();
-                break;
+                return;
         }
+        if (attackTimer > 0)
+        {
+            attackTimer -= Time.deltaTime;
+        }
+
+        if (!attacking)
+        {
+            movePosition = targetPlayer.transform.position;
+        }
+        if (seesPlayer)
+        {
+            if (commander != null)
+                commander.PlayerVisible();
+        }
+
+        if (animator != null)
+            animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
+
+        
 
     }
 
@@ -237,10 +240,12 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         }
         if (hp > 0 && State == enemyState.DEAD)
         {
+            
+            agent.ResetPath();
             col.isTrigger = false;
             animator.SetBool("Dead", false);
             GameManager.Instance.zombieDead.Remove(this);
-            State = enemyState.GATHER;
+            State = enemyState.SEEK;
             free = true;
         }
         

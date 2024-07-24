@@ -127,6 +127,11 @@ public class Commander : BaseZombie
         State = enemyState.NORMAL;
     }
 
+    public override void Dead()
+    {
+        Destroy(gameObject);
+    }
+
     public void HealZeds()
     {
         foreach (var z in mainGroup)
