@@ -271,7 +271,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 phase++;
                 if (animator != null)
                 {
-                    animator.SetTrigger("Attack");
+                    if (currentTarget.tag.Contains("Barricade"))
+                        animator.SetTrigger("BarricadeAttack");
+                    else
+                        animator.SetTrigger("Attack");
                     return;
                 }
 
