@@ -21,3 +21,6 @@ MonoBehaviour:
   ProjectilesPerShot: 8
   SpreadFactor: 0.075
   ReloadSpeed: 0
+  ReloadSound: {fileID: 8300000, guid: a05dcb8223dd5d246b73601c792ddf50, type: 3}
+  ShootSound: {fileID: 8300000, guid: 5fad73eb3d87b2a46ab107b579433beb, type: 3}
+  WeaponVolume: 0.5

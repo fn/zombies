@@ -9,6 +9,7 @@ public class Runner : BaseZombie
         Move();
 
         StartCoroutine(TargetCheck(0.1f));
+
         VisibilityCheck();
 
         agent.speed = SeesPlayer ? movementSpeed * 2 : movementSpeed;
@@ -28,7 +29,7 @@ public class Runner : BaseZombie
         Attacking();
     }
 
-    void OnAttackHit()
+    public void OnAttackHit()
     {
         AttackLogic();
     }
@@ -48,7 +49,8 @@ public class Runner : BaseZombie
         }
         else if (targetPlayer.TryGetComponent(out IDamageable dmg))
         {
-            if (!nearPlayer || !seesPlayer)
+            // Sees player seems to be false a lot I don't know lets get hit through walls instead...
+            if (!nearPlayer /*|| !seesPlayer*/)
                 return;
             dmg.TakeDamage(AttackDMG);
         }      

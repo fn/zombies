@@ -102,10 +102,11 @@ public class SpawnerScript : MonoBehaviour
 
                     if (Time.time - lastSpawnTime > spawnTime)
                     {
-                        SpawnEnemy(waveConfig);
-
-                        lastSpawnTime = Time.time;
-                        enemiesLeftToSpawn--;
+                        if (SpawnEnemy(waveConfig))
+                        {
+                            lastSpawnTime = Time.time;
+                            enemiesLeftToSpawn--;
+                        }
                     }
                 }
                 else
@@ -123,11 +124,10 @@ public class SpawnerScript : MonoBehaviour
 
     bool NoEnemiesAlive()
     {
-        // This is a bad check honestly. The spawner should put entities in a list and then we remove them from when they die.
         return waveConfig.enemyCount == GameManager.Instance.zombieDead.Count;
     }
 
-    void SpawnEnemy(WaveConfiguration waveCfg)
+    bool SpawnEnemy(WaveConfiguration waveCfg)
     {
         var availableSpawns = new List<SpawnPoint>();
 
@@ -152,11 +152,21 @@ public class SpawnerScript : MonoBehaviour
 
         // Technically this means there are spots you could take a break in where no zombies would spawn. (Sort of like safe zones)
         if (availableSpawns.Count <= 0)
-            return;
+            return false;
 
         var curSpawner = availableSpawns[Random.Range(0, availableSpawns.Count)];
         var curPoint = curSpawner.Position;
         var curEntities = curSpawner.Entities;
-        Instantiate(curEntities[Random.Range(0, curEntities.Length)], curPoint.position, curPoint.rotation);
+        var spawnedEnt = Instantiate(curEntities[Random.Range(0, curEntities.Length)], curPoint.position, curPoint.rotation);
+
+        // No clue if this does anything at all.
+        if (spawnedEnt.gameObject.TryGetComponent(out BaseZombie zombie))
+        {
+            zombie.animator.enabled = true;
+            zombie.animator.Rebind();
+            zombie.animator.Update(0f);
+        }
+
+        return true;
     }
 }

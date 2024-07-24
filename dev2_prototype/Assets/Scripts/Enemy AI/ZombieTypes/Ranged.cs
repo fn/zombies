@@ -24,6 +24,9 @@ public class Ranged : BaseZombie
 
     public override void Attack()
     {
+        if (State == enemyState.DEAD)
+            return;
+
         UpdatePlayerDir();
         FaceTarget();
 
@@ -51,7 +54,7 @@ public class Ranged : BaseZombie
         Attacking();
     }
 
-    void OnAttackHit()
+    public void OnAttackHit()
     {
         if (currentTarget.tag.Contains("Barricade"))
         {

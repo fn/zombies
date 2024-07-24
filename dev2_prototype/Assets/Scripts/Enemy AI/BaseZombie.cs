@@ -44,7 +44,6 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         {
             fleeing = false;
             State = enemyState.SEEK;
-            
         }
     }
     virtual public void Gather()
@@ -109,8 +108,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected bool attacking;
     [SerializeField] protected Vector3 maxDistance;
 
-
-    [SerializeField] Animator animator;
+    public Animator animator;
     int hpOriginal;
     Collider col;
     void Start()
@@ -126,6 +124,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         // model = GetComponent<Renderer>();
         origColor = Color.white; //GetComponent<Renderer>().material.color;
         origStoppingDistance = agent.stoppingDistance;
+
     }
 
     void Update()
@@ -188,6 +187,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 Dead();
                 return;
         }
+
         if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
@@ -203,11 +203,15 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 commander.PlayerVisible();
         }
 
+        if (gameObject.TryGetComponent(out CommanderLine commanderLine))
+        {
+            commanderLine.enabled = commander != null;
+            if (commander != null)
+                commanderLine.commanderPoint = commander.transform;
+        }
+
         if (animator != null)
             animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
-
-        
-
     }
 
     public void DestinationCommand(Vector3 destination)
@@ -268,7 +272,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             
             agent.ResetPath();
             col.isTrigger = false;
-            animator.SetBool("Dead", false);
+
+            if (animator != null)
+                animator.SetBool("Dead", false);
+
             GameManager.Instance.zombieDead.Remove(this);
             State = enemyState.SEEK;
             free = true;
@@ -283,6 +290,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     protected void Attacking()
     {
+        if (State == enemyState.DEAD)
+            return;
+
         seesPlayer = false;
         agent.ResetPath();
         switch (phase)
@@ -325,6 +335,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     protected virtual void OnTriggerEnter(Collider other)
     {
+        if (State == enemyState.DEAD)
+            return;
+
         if (other.tag.Contains("Barricade"))
         {
             if (other.gameObject.TryGetComponent(out Barricade barricade) && barricade.IsBroken)
