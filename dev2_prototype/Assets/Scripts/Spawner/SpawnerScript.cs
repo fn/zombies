@@ -20,6 +20,7 @@ public class SpawnerScript : MonoBehaviour
     public class SpawnPoint
     {
         public Transform Position;
+        public float SpawnRadius;
         public GameObject[] Entities;
     }
 
@@ -30,7 +31,6 @@ public class SpawnerScript : MonoBehaviour
     public float waitTime = 5f;
     public StateOfSpawn spawnState = StateOfSpawn.COUNTING;
     public bool isActive;
-    public float spawnerRange;
 
     private int currentWaveNumber = 1;
     private float countDown;
@@ -145,10 +145,14 @@ public class SpawnerScript : MonoBehaviour
         {
             foreach (SpawnPoint sp in spawnPointLocations)
             {
-                if (Vector3.Distance(sp.Position.transform.position, GameManager.Instance.LocalPlayer.transform.position) <= spawnerRange)
+                if (Vector3.Distance(sp.Position.transform.position, GameManager.Instance.LocalPlayer.transform.position) <= sp.SpawnRadius)
                     availableSpawns.Add(sp);
             }
         }
+
+        // Technically this means there are spots you could take a break in where no zombies would spawn. (Sort of like safe zones)
+        if (availableSpawns.Count <= 0)
+            return;
 
         var curSpawner = availableSpawns[Random.Range(0, availableSpawns.Count)];
         var curPoint = curSpawner.Position;

@@ -7,7 +7,7 @@ public class CommanderLine : MonoBehaviour
 
     [SerializeField] LineRenderer commanderLine;
 
-    [SerializeField] Transform commanderPoint;
+    public Transform commanderPoint;
 
     [SerializeField] Material model;
     [SerializeField] Color color;

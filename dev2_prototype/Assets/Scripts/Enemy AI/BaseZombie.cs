@@ -75,9 +75,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     virtual public void Dead()
     {
         free = false;
-        // model.material.color = Color.black;
         agent.ResetPath();
-        animator.SetBool("Dead", true);
+
+        if (animator != null)
+            animator.SetBool("Dead", true);
     }
 
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
@@ -127,7 +128,6 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     void Update()
     {
-
         if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
@@ -145,6 +145,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         if (animator != null)
             animator.SetFloat("Speed", agent.velocity.normalized.magnitude);
+
+        if (TryGetComponent(out CommanderLine commanderLine))
+        {
+            commanderLine.enabled = commander != null;
+            if (commanderLine.enabled)
+                commanderLine.commanderPoint = commander.transform;
+        }
 
         switch (state)
         {
@@ -260,11 +267,11 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 attacking = true;
                 attackTimer = AttackDelay;
                 phase++;
-
                 break;
             case attackPhase.ATTACK:
                 attackTimer = AttackCD;
                 phase++;
+
                 if (animator != null)
                 {
                     animator.SetTrigger("Attack");
@@ -272,7 +279,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 }
 
                 AttackLogic();
-                
+
                 break;
             case attackPhase.RECOVERY:
                 if (attackTimer < 0)
@@ -290,16 +297,15 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     {
         if (other.tag.Contains("Barricade"))
         {
-            //checks if barricadeSpawner's child is active
-
             if (other.gameObject.TryGetComponent(out Barricade barricade) && barricade.IsBroken)
+            {
                 return;
+            }
 
             currentTarget = other.gameObject;
             State = enemyState.DEMOLITION;
         }
     }
-
-    
+ 
     protected virtual void AttackLogic() { }
 }

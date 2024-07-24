@@ -30,11 +30,10 @@ public class Runner : BaseZombie
 
     void OnAttackHit()
     {
-        //StartCoroutine(TargetCheck());
-
         nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
 
         VisibilityCheck();
+        
         if (currentTarget.tag.Contains("Barricade"))
         {
             GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;

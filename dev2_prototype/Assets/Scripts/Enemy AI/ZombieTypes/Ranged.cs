@@ -51,6 +51,10 @@ public class Ranged : BaseZombie
         Attacking();
     }
 
+    void OnAttackHit()
+    {
+        AttackLogic();
+    }
 
     protected override void AttackLogic()
     {

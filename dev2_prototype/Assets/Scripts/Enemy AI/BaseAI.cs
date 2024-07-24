@@ -13,10 +13,8 @@ public class BaseAI : MonoBehaviour
     [SerializeField] protected int detectionRange;
 
     protected Vector3 playerDir;
-
     protected Vector3 movePosition;
-
-    protected Zombies.Player targetPlayer;
+    protected Player targetPlayer;
 
     void Start()
     {
@@ -31,8 +29,7 @@ public class BaseAI : MonoBehaviour
     protected void VisibilityCheck()
     {
         UpdatePlayerDir();
-        RaycastHit vis;
-        if (Physics.Raycast(transform.position, playerDir, out vis, detectionRange))
+        if (Physics.Raycast(transform.position, playerDir, out RaycastHit vis, detectionRange))
         {
             Debug.DrawRay(transform.position, playerDir, Color.green);
 
