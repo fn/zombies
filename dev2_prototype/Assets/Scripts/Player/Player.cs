@@ -29,6 +29,11 @@ namespace Zombies
 
         private Transform ShotOrigin;
 
+        public AudioSource Audio;
+
+        public AudioClip[] FootstepSounds;
+        public float FootstepVolume;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -104,11 +109,15 @@ namespace Zombies
             {
                 HeldWeapon.Shoot(ShotOrigin.transform.position, View.viewCamera.transform.forward);
                 ViewModelAnimator.SetTrigger("Shoot");
+
+                Audio.PlayOneShot(HeldWeapon.Info.ShootSound, HeldWeapon.Info.WeaponVolume);
             }
 
             if (Input.GetButtonDown("Reload") && HeldWeapon.CanReload)
             {
                 ViewModelAnimator.SetTrigger("Reload");
+
+                Audio.PlayOneShot(HeldWeapon.Info.ReloadSound, HeldWeapon.Info.WeaponVolume);
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f && HeldWeaponIndex < Weapons.Count - 1)

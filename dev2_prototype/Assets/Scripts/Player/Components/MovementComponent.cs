@@ -11,6 +11,7 @@ namespace Zombies
 {
     public class MovementComponent : MonoBehaviour
     {
+        [SerializeField] Player Owner;
         [SerializeField] CharacterController Controller;
         
         public float CrouchHeight;
@@ -66,6 +67,8 @@ namespace Zombies
 
         // Helpful to view in the editor.
         bool isGrounded;
+
+        float lastStepTime;
 
         void Start()
         {
@@ -208,6 +211,15 @@ namespace Zombies
             var right = Vector3.Cross(data.SurfaceNormal, forward);
 
             var wishdir = (forwardMove * forward + rightMove * right).normalized;
+
+            float stepDelay = data.Sprinting ? 0.3f : 0.5f;
+
+            // Moving a little on the ground.
+            if (wishdir.magnitude > 0.03f && !IsJumping && Time.time - lastStepTime > stepDelay)
+            {
+                Owner.Audio.PlayOneShot(Owner.FootstepSounds[Random.Range(0, Owner.FootstepSounds.Length - 1)], Owner.FootstepVolume);
+                lastStepTime = Time.time;
+            }
 
             // Set the target speed of the player
             float wishSpeed = wishdir.magnitude;

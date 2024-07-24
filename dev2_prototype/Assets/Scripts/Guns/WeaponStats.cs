@@ -15,4 +15,10 @@ public class WeaponStats : ScriptableObject
     public int ProjectilesPerShot;
     public float SpreadFactor;
     public float ReloadSpeed;
+
+    public AudioClip ReloadSound;
+    public AudioClip ShootSound;
+
+    [Range(0f, 1f)]
+    public float WeaponVolume;
 }
