@@ -32,7 +32,6 @@ public class Interact : MonoBehaviour
         if (GameManager.Instance.ItemInHand)
         {
             //GameManager.Instance.DropPrompt.SetActive(true);
-            GameManager.Instance.PromptBackground.SetActive(true);
             GameManager.Instance.PromptText.SetText("'Q' To Drop");
             if (Input.GetKey(KeyCode.Q))
             {
@@ -92,8 +91,11 @@ public class Interact : MonoBehaviour
             //create an explosion
             Instantiate(Explosion, Barrel.transform.position, Barrel.transform.rotation, Barrel.transform);
             Barrel.GetComponent<Collider>().enabled = false;
-            Destroy(gameObject, explosionTime);
+
             GameManager.Instance.PromptBackground.SetActive(false);
+            GameManager.Instance.PromptText.SetText("");
+
+            Destroy(gameObject, explosionTime);
         }
     }
     private void OnTriggerExit(Collider other)

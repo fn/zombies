@@ -3389,7 +3389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6287104669802105556, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
       propertyPath: Health
-      value: 100
+      value: 100000
       objectReference: {fileID: 0}
     - target: {fileID: 6287104669802105556, guid: fd8ee4870095b3b49a8ad807bafd3b3f, type: 3}
       propertyPath: StartingWeapon
