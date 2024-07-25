@@ -162,9 +162,12 @@ public class SpawnerScript : MonoBehaviour
         // No clue if this does anything at all.
         if (spawnedEnt.gameObject.TryGetComponent(out BaseZombie zombie))
         {
-            zombie.animator.enabled = true;
-            zombie.animator.Rebind();
-            zombie.animator.Update(0f);
+            if (zombie.animator != null)
+            {
+                zombie.animator.enabled = true;
+                zombie.animator.Rebind();
+                zombie.animator.Update(0f);
+            }
         }
 
         return true;

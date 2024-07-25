@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 7176301370458012267}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.37513, y: -27.459625, z: 7.423973}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,22 +44,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f040e24aacf5b044bba6ac7908ca53d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allWaves:
-  - name: Enemy
-    capsulePrefab: {fileID: 2793103676934300709, guid: 1a55c865530d9fc4fa102c12d9b52d90, type: 3}
-    enemyCount: 1
-    spawnRate: 1
-  - name: Enemy 2.0
-    capsulePrefab: {fileID: 2793103676934300709, guid: 1a55c865530d9fc4fa102c12d9b52d90, type: 3}
-    enemyCount: 2
-    spawnRate: 1.5
-  - name: Enemy 3.0
-    capsulePrefab: {fileID: 2793103676934300709, guid: 1a55c865530d9fc4fa102c12d9b52d90, type: 3}
-    enemyCount: 3
-    spawnRate: 2
-  points:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  MaxWaveNumber: 100
+  waveConfig:
+    setupWaves: 0
+    spawnRate: 40
+    waveNumber: 1
+    enemyCount: 0
+  spawnPointLocations:
+  - Position: {fileID: 0}
+    SpawnRadius: 50
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 50
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 25
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 10
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+    - {fileID: 5512426843049296796, guid: cffa0d69596fa2345b096b8e63066d21, type: 3}
+    - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 10
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+    - {fileID: 5512426843049296796, guid: cffa0d69596fa2345b096b8e63066d21, type: 3}
+    - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+    - {fileID: 5512426843049296796, guid: cffa0d69596fa2345b096b8e63066d21, type: 3}
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+  - Position: {fileID: 0}
+    SpawnRadius: 15
+    Entities:
+    - {fileID: 6475530878062941317, guid: 370bc4bf285847d4ba28c3564a3b8695, type: 3}
+    - {fileID: 617166675004446998, guid: 85fa37a80cf478747828eb771b7885cc, type: 3}
+    - {fileID: 2169662090270192759, guid: 429f62d6c338b9a4a91615944205499f, type: 3}
+    - {fileID: 5512426843049296796, guid: cffa0d69596fa2345b096b8e63066d21, type: 3}
   waitTime: 5
   spawnState: 2
+  isActive: 1

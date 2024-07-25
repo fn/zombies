@@ -209,9 +209,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         if (gameObject.TryGetComponent(out CommanderLine commanderLine))
         {
-            commanderLine.enabled = commander != null;
-            if (commander != null)
+            if (commander != null && commander.State != enemyState.DEAD)
+            {
+                commanderLine.enabled = true;
                 commanderLine.commanderPoint = commander.transform;
+            }
+            else
+                commanderLine.enabled = false;
         }
 
         if (animator != null)

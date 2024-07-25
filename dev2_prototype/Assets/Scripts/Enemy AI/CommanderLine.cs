@@ -21,6 +21,9 @@ public class CommanderLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (commanderPoint == null)
+            return;
+
         // line renderer position
         commanderLine.SetPosition(0, transform.position);
         commanderLine.SetPosition(1, commanderPoint.position);

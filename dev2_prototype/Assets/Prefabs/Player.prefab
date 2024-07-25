@@ -187,13 +187,12 @@ MonoBehaviour:
   View: {fileID: 6287104669802105546}
   ViewModel: {fileID: 322880520603901949}
   ViewModelAnimator: {fileID: 127498556}
-  StartingWeapon: {fileID: 0}
+  StartingWeapon: {fileID: 8924959846374244817, guid: 16feb7376f348a04cb50c4e9fd362d3d, type: 3}
   Money: 0
   Health: 100
   MaxHealth: 100
   HeldWeaponIndex: 0
-  Weapons:
-  - {fileID: 729597977714727062, guid: 16feb7376f348a04cb50c4e9fd362d3d, type: 3}
+  Weapons: []
   Audio: {fileID: 1137977370575542430}
   FootstepSounds:
   - {fileID: 8300000, guid: 5540b6c9913cf2540bcca555621dff73, type: 3}
