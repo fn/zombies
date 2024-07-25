@@ -17,6 +17,8 @@ public class WeaponComponent : MonoBehaviour
     public bool CanReload { get => CurrentAmmo != Info.MagSize && RemainingAmmo > 0 && !IsReloading; }
 
     public bool IsReloading;
+
+    public bool IsFullAuto;
     private float lastShotTime;
     private float reloadStartTime;
     // Start is called before the first frame update

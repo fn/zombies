@@ -36,7 +36,7 @@ public class DamageSource : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger)
+        if (other.isTrigger && GetComponent<IDamageable>() != null)
             return;
 
         if (other.TryGetComponent(out IDamageable dmg) && !DealtDamage)
