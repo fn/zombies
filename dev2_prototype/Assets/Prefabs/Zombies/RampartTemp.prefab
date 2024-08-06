@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 3409569455007674321}
   m_Layer: 7
   m_Name: RampartTemp
-  m_TagString: Zombie
+  m_TagString: WildCard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,7 +199,7 @@ MonoBehaviour:
   commander: {fileID: 0}
   currentTarget: {fileID: 0}
   hp: 200
-  attackDamage: 100
+  attackDamage: 80
   attackDelay: 2.5
   attackCooldown: 2.5
   movementSpeed: 3

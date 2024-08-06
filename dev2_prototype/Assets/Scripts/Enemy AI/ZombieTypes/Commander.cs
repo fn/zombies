@@ -9,8 +9,8 @@ public class Commander : BaseZombie
     
     [Tooltip("Percentage of zeds being sent to flanking")]
     [Range(0, 50)]
-    [SerializeField] int flankPercent;
-    [Tooltip("the bigger the number, the further the flanking zeds will be from the player")] 
+    [SerializeField] public int flankPercent;
+    [Tooltip("the bigger the number, the further the flanking zeds will be from the player")]
     public int flankingDeviation;
     public GameObject movePos;
     public List<BaseZombie> mainGroup;
@@ -19,59 +19,8 @@ public class Commander : BaseZombie
     bool commandSent;
     bool flanking;
 
-    protected override void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Zombie")
-        {
-            BaseZombie z = other.gameObject.GetComponent<BaseZombie>();
-            if (z.commander != null)
-                return;
-            if (z.State != enemyState.SEEK)
-                return;
-
-            z.commander = this;
-            z.State = enemyState.GATHER;
-
-            int total = mainGroup.Count + flankGroup.Count;
-            float per = (float)flankPercent / 100;
-            float totPer = total * per;
-
-            if (flankGroup.Count >= totPer)
-            {
-                mainGroup.Add(z);
-                z.IsInMain = true;
-            }
-            else
-            {
-                z.IsInMain = false;
-                flankGroup.Add(z);
-            }
-                
-        }
-
-        if (other.gameObject.tag == "Player")
-        {
-            agent.ResetPath();
-            State = enemyState.GATHER;
-        }
-        
-    }
-    protected void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Zombie")
-        {
-            BaseZombie z = other.gameObject.GetComponent<BaseZombie>();
-            if (z.commander != this)
-                return;
-
-            z.commander = null;
-        }
-
-        if (other.gameObject.tag == "Player")
-        {
-            State = enemyState.SEEK;
-        }
-    }
+    
+    
     public override void Seek()
     {
         agent.speed = MoveSPD;

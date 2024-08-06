@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 617166675004446992}
   - component: {fileID: 3994592407605718444}
   - component: {fileID: -6043086646946241960}
-  - component: {fileID: 6652862314630949472}
   - component: {fileID: 1123932680002637433}
   - component: {fileID: 5592875435283211114}
   m_Layer: 7
@@ -138,27 +137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   droppableItems:
   - {fileID: 4442196487086083471, guid: dd983b4f0eb4217468b03ee7ba1713f9, type: 3}
---- !u!95 &6652862314630949472
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617166675004446998}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
-  m_Controller: {fileID: 9100000, guid: eed427ea5c0292c428132fc77959f8b9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1123932680002637433
 MonoBehaviour:
   m_ObjectHideFlags: 0

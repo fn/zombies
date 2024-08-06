@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: -930048327908534442}
   m_Layer: 7
   m_Name: CommanderTemp
-  m_TagString: Zombie
+  m_TagString: WildCard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

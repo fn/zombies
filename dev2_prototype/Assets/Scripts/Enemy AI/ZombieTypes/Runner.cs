@@ -37,6 +37,7 @@ public class Runner : BaseZombie
     protected override void AttackLogic()
     {
         nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
+        VisibilityCheck();
         if (currentTarget.tag.Contains("Barricade"))
         {
             GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
@@ -44,13 +45,17 @@ public class Runner : BaseZombie
             if (barrChild.TryGetComponent(out IDamageable dmg))
                 dmg.TakeDamage(destructionPower);
             if (!barrChild.activeSelf)
+            {
                 State = enemyState.ATTACK;
+                phase = attackPhase.RECOVERY;
+            }
+                
             return;
         }
         else if (targetPlayer.TryGetComponent(out IDamageable dmg))
         {
-            // Sees player seems to be false a lot I don't know lets get hit through walls instead...
-            if (!nearPlayer /*|| !seesPlayer*/)
+
+            if (!nearPlayer || !seesPlayer)
                 return;
             dmg.TakeDamage(AttackDMG);
         }      

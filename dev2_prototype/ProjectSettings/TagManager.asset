@@ -17,6 +17,7 @@ TagManager:
   - Pickup
   - Barricade
   - Zombie
+  - WildCard
   layers:
   - Default
   - TransparentFX

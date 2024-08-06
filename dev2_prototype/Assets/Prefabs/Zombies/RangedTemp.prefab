@@ -1247,7 +1247,6 @@ GameObject:
   - component: {fileID: 6085894060492415887}
   - component: {fileID: -6950293119309361311}
   - component: {fileID: -3109347203830223348}
-  - component: {fileID: -3001200780394974777}
   m_Layer: 7
   m_Name: RangedTemp
   m_TagString: Zombie
@@ -1326,6 +1325,7 @@ MonoBehaviour:
   CurrentAmmo: 0
   RemainingAmmo: 0
   IsReloading: 0
+  IsFullAuto: 0
 --- !u!136 &2349761625740995042
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1392,24 +1392,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   droppableItems:
   - {fileID: 7856614685524448234, guid: 20d7e2536a1201e4dad4e5205d87b4a5, type: 3}
---- !u!95 &-3001200780394974777
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6475530878062941317}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
-  m_Controller: {fileID: 9100000, guid: 56a3407a38d3a204f990d5fffb0ce749, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 2
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0

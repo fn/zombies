@@ -26,17 +26,17 @@ public class Rampart : BaseZombie
         if (nearPlayer)
         {
             FaceTarget();
+            
+            //if (seesPlayer)
+            //{
+            //    currentTarget = targetPlayer.gameObject;
+            //    State = enemyState.ATTACK;
+            //    return;
+            //}
         }
         else
         {
             colli.enabled = false;
-        }
-
-        if (nearPlayer && seesPlayer)
-        {
-            currentTarget = targetPlayer.gameObject;
-            State = enemyState.ATTACK;
-            return;
         }
         //agent.SetDestination(targetPlayer.transform.position);
         MoveLogic();
@@ -44,7 +44,12 @@ public class Rampart : BaseZombie
 
     public override void Attack()
     {
-        colli.enabled = agent.velocity.sqrMagnitude >= 25;
+        agent.stoppingDistance = 1;
+        StartCoroutine(TargetCheck());
+        if (nearPlayer && phase != attackPhase.RECOVERY)
+            colli.enabled = true;
+        else
+            colli.enabled = false;
         rushing = agent.velocity.sqrMagnitude >= 25;
         if (rushing)
         {
@@ -58,6 +63,13 @@ public class Rampart : BaseZombie
         else
         {
             FaceTarget();
+            VisibilityCheck();
+            
+
+            if (nearPlayer & seesPlayer)
+            {
+                Attacking();
+            }
         }
 
 
@@ -111,49 +123,80 @@ public class Rampart : BaseZombie
 
     void Hide()
     {
-        //gives a number of objects within a certain distance of the object that one can hide behind
         int hits = Physics.OverlapSphereNonAlloc(transform.position, findSpots.radius, hideSpots, HideLayers);
+        float scoreBest = float.MinValue;
+        Vector3 spotBest = transform.position;
 
         for (int i = 0; i < hits; i++)
         {
             float dist = Vector3.Distance(transform.position, hideSpots[i].transform.position);
-            //finds nearest navmesh point within range
+            Vector3 dir = (targetPlayer.transform.position - hideSpots[i].transform.position).normalized;
+
             if (NavMesh.SamplePosition(hideSpots[i].transform.position, out NavMeshHit hit, dist, agent.areaMask))
             {
-                //error check
-                if (!NavMesh.FindClosestEdge(hit.position, out hit, agent.areaMask))
-                {
-                    // Debug.LogError($"Cant find hide spot at {hit.position}");
-                }
-                //if diff between hiding spot's "Dot" variable (a part of the hit data) and player is within hideFactor range, do hiding
-                if (Vector3.Dot(hit.normal, (targetPlayer.transform.position - hit.position).normalized) < hideFactor)
-                {
-                    agent.SetDestination(hit.position);
-                    break;
+                NavMesh.FindClosestEdge(hit.position, out hit, agent.areaMask);
+                float vis = Vector3.Dot(hit.normal, dir);
 
+                if (vis < hideFactor)
+                {
+                    float score = -vis / dist;
+                    if (score > scoreBest)
+                    {
+                        scoreBest = score;
+                        spotBest = hit.position;
+                    }
                 }
                 else
-                {//documentation recommends doing this twice for random results. changing the code a bit we can also use this to check the other side of the obstacle near the hiding spot instead.
-                    if (NavMesh.SamplePosition(hideSpots[i].transform.position - (targetPlayer.transform.position - hit.position).normalized * 2, out NavMeshHit hit2, dist, agent.areaMask))
+                {
+                    Vector3 pos2 = hideSpots[i].transform.position - dir * 2;
+                    if (NavMesh.SamplePosition(pos2, out NavMeshHit hit2, dist, agent.areaMask))
                     {
-                        if (!NavMesh.FindClosestEdge(hit2.position, out hit2, agent.areaMask))
-                        {
-                            // Debug.LogError($"Cant find hide spot at {hit2.position}");
-                        }
+                        NavMesh.FindClosestEdge(hit2.position, out hit2, agent.areaMask);
+                        vis = Vector3.Dot(hit2.normal, dir);
 
-                        if (Vector3.Dot(hit2.normal, (targetPlayer.transform.position - hit2.position).normalized) < hideFactor)
+                        if (vis < hideFactor)
                         {
-                            agent.SetDestination(hit2.position);
-                            break;
-
+                            float score = -vis / dist;
+                            if (score > scoreBest)
+                            {
+                                scoreBest = score;
+                                spotBest = hit2.position;
+                            }
                         }
                     }
                 }
             }
-            else
-            {
-                // Debug.LogError($"Unable to find NavMesh near {hideSpots[i].name} at {hideSpots[i].transform.position}");
-            }
         }
+
+        agent.SetDestination(spotBest);
     }
 }
+
+
+
+
+
+
+
+
+//if (Vector3.Dot(hit.normal, (targetPlayer.transform.position - hit.position).normalized) < hideFactor)
+//{
+//    agent.SetDestination(hit.position);
+//    break;
+
+//}
+//else
+//{
+//    if (NavMesh.SamplePosition(hideSpots[i].transform.position - (targetPlayer.transform.position - hit.position).normalized * 2, out NavMeshHit hit2, dist * 2, agent.areaMask))
+//    {
+
+
+//        NavMesh.FindClosestEdge(hit2.position, out hit2, agent.areaMask);
+//        if (Vector3.Dot(hit2.normal, (targetPlayer.transform.position - hit2.position).normalized) < hideFactor)
+//        {
+//            agent.SetDestination(hit2.position);
+//            break;
+
+//        }
+//    }
+//}

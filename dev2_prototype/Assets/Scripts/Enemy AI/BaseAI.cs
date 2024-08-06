@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Zombies;
 
 public class BaseAI : MonoBehaviour
@@ -15,6 +16,11 @@ public class BaseAI : MonoBehaviour
     protected Vector3 playerDir;
     protected Vector3 movePosition;
     protected Player targetPlayer;
+
+    public NavMeshAgent Agent()
+    {
+        return agent;
+    }
 
     void Start()
     {
