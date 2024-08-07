@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mitchell.unity
     guid: 190ea4ffe8e33d44e8343148dd49b2c7
+  - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 73dc815334b59c34695aa3daa31c47e2
   m_configObjects: {}

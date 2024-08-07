@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuPause;
     [SerializeField] GameObject MenuWin;
     [SerializeField] GameObject MenuLose;
+
     public GameObject PromptBackground;
     public TMP_Text PromptText;
 
@@ -79,8 +80,11 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        MenuActive.SetActive(IsPaused);
-        MenuActive = null;
+        if (MenuActive != null)
+        {
+            MenuActive.SetActive(IsPaused);
+            MenuActive = null;
+        }
     }
 
     public void UpdateGameGoal(int amt)

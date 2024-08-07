@@ -16,6 +16,12 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.StateRun();
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("TitleScreen", LoadSceneMode.Single);
+        //GameManager.Instance.StateRun();
+    }
+
     public void Quit()
     {
 #if UNITY_EDITOR
