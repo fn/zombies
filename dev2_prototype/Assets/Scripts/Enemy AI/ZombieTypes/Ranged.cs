@@ -14,9 +14,9 @@ public class Ranged : BaseZombie
     {
         agent.speed = movementSpeed;
         Move();
-        VisibilityCheck();
+        TargetVisibilityCheck();
         StartCoroutine(TargetCheck());
-        if (nearPlayer && seesPlayer)
+        if (nearPlayer && seesTarget)
         {
             State = enemyState.ATTACK;
         }
@@ -27,7 +27,7 @@ public class Ranged : BaseZombie
         if (State == enemyState.DEAD)
             return;
 
-        UpdatePlayerDir();
+        UpdateTargetDir();
         FaceTarget();
 
         if (attacking)
@@ -36,16 +36,16 @@ public class Ranged : BaseZombie
             return;
         }
 
-        fleeing = GetDistanceToPlayer() < fleeingDist;
+        fleeing = GetDistanceToTarget() < fleeingDist;
         if (fleeing)
         {
             State = enemyState.FLEE;
             return;
         }
 
-        VisibilityCheck();
+        TargetVisibilityCheck();
 
-        if (!seesPlayer && !fleeing)
+        if (!seesTarget && !fleeing)
         {
             State = enemyState.SEEK;
             return;
@@ -75,7 +75,7 @@ public class Ranged : BaseZombie
 
     protected override void AttackLogic()
     {
-        UpdatePlayerDir();
+        UpdateTargetDir();
 
         Weapon.Info.Damage = AttackDMG;
         Weapon.Info.FireRate = fireRate;

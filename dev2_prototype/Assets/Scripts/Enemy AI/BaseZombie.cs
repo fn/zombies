@@ -21,10 +21,10 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         attacking = !attacking;
     }
 
-    public bool SeesPlayer { get => seesPlayer; set => seesPlayer = value; }
+    
     public enemyState State { get => state; set => state = value; }
     public Commander commander;
-    public GameObject currentTarget;
+    
 
 
 
@@ -34,13 +34,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     virtual public void Flee()
     {
         agent.speed = 2 * movementSpeed;
-        UpdatePlayerDir();
+        UpdateTargetDir();
         Vector3 newPos = (transform.position - playerDir);
         //Debug.Log("New:" + newPos);
         //Debug.Log("Old: " + transform.position);
         agent.stoppingDistance = 0;
         agent.SetDestination(newPos);
-        if (GetDistanceToPlayer() >= detectionRange)
+        if (GetDistanceToTarget() >= detectionRange)
         {
             fleeing = false;
             State = enemyState.SEEK;
@@ -64,8 +64,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     virtual public void Flank()
     {
         agent.speed = 2 * movementSpeed;
-        FlankTarget(targetPlayer.transform, commander.flankingDeviation);
-        if (Vector3.Distance(transform.position, targetPlayer.transform.position) <= agent.stoppingDistance + commander.flankingDeviation)
+        FlankTarget(currentTarget.transform, commander.flankingDeviation);
+        if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance + commander.flankingDeviation)
         {
             State = enemyState.SEEK;
         }
@@ -118,8 +118,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         free = true;
         agent.speed = movementSpeed;
 
-        targetPlayer = GameManager.Instance.LocalPlayer;
-        currentTarget = targetPlayer.gameObject;
+        currentTarget = GameManager.Instance.LocalPlayer.gameObject;
 
         // model = GetComponent<Renderer>();
         origColor = Color.white; //GetComponent<Renderer>().material.color;
@@ -139,9 +138,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         // if (!attacking)
         // {
-        //     movePosition = targetPlayer.transform.position;
+        //     movePosition = currentTarget.transform.position;
         // }
-        // if (seesPlayer)
+        // if (seesTarget)
         // {
         //     if (commander != null)
         //         commander.PlayerVisible();
@@ -168,8 +167,8 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 break;
             case enemyState.SEEK:
                 free = false;
-                currentTarget = targetPlayer.gameObject;
                 FaceTarget();
+                currentTarget = GameManager.Instance.LocalPlayer.gameObject;
                 Seek();
                 break;
             case enemyState.ATTACK:
@@ -202,9 +201,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         if (!attacking)
         {
-            movePosition = targetPlayer.transform.position;
+            movePosition = currentTarget.transform.position;
         }
-        if (seesPlayer)
+        if (seesTarget)
         {
             if (commander != null)
                 commander.PlayerVisible();
@@ -306,7 +305,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         if (State == enemyState.DEAD)
             return;
 
-        seesPlayer = false;
+        seesTarget = false;
         agent.ResetPath();
         switch (phase)
         {

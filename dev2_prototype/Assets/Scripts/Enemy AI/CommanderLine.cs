@@ -21,9 +21,15 @@ public class CommanderLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (commanderPoint == null)
+        BaseZombie z = this.transform.parent.GetComponent<BaseZombie>();
+        commanderPoint = z.commander.transform;
+        if (commanderPoint == null || z.State == BaseZombie.enemyState.DEAD)
+        {
+            commanderLine.enabled = false;
             return;
+        }
 
+        commanderLine.enabled = true;
         // line renderer position
         commanderLine.SetPosition(0, transform.position);
         commanderLine.SetPosition(1, commanderPoint.position);

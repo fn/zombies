@@ -6,48 +6,50 @@ using Zombies;
 
 public class BaseAI : MonoBehaviour
 {
+    public GameObject currentTarget;
+
     [SerializeField] int faceTargetSpeed;
-    protected float origStoppingDistance;
     [SerializeField] protected UnityEngine.AI.NavMeshAgent agent;
-    [SerializeField] protected bool seesPlayer;
+    [SerializeField] protected bool seesTarget;
     [SerializeField] protected bool nearPlayer;
     [SerializeField] protected int detectionRange;
     [SerializeField] protected LayerMask detectionLayers;
 
     protected Vector3 playerDir;
     protected Vector3 movePosition;
-    protected Player targetPlayer;
+    protected float origStoppingDistance;
+
 
     public NavMeshAgent Agent()
     {
         return agent;
     }
 
+    public bool SeesTarget { get => seesTarget; set => seesTarget = value; }
+
     void Start()
     {
-        targetPlayer = GameManager.Instance.LocalPlayer;
     }
 
-    protected void UpdatePlayerDir()
+    protected void UpdateTargetDir()
     {
-        playerDir = targetPlayer.View.transform.position - transform.position;
+        playerDir = currentTarget.transform.position - transform.position;
     }
-
-    protected void VisibilityCheck()
+    protected void TargetVisibilityCheck()
     {
-        UpdatePlayerDir();
+        UpdateTargetDir();
         if (Physics.Raycast(transform.position, playerDir, out RaycastHit vis, detectionRange, detectionLayers))
         {
             Debug.DrawRay(transform.position, playerDir, Color.green);
 
-            seesPlayer = vis.collider.gameObject.CompareTag("Player");
+            seesTarget = vis.collider.gameObject.CompareTag("Player");
         }
     }
 
     protected IEnumerator TargetCheck(float delay = 0.1f)
     {
         yield return new WaitForSeconds(delay);
-        nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
+        nearPlayer = GetDistanceToTarget() <= origStoppingDistance;
         yield return new WaitForSeconds(delay);
     }
 
@@ -57,9 +59,9 @@ public class BaseAI : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
-    protected float GetDistanceToPlayer()
+    protected float GetDistanceToTarget()
     {
-        return Vector3.Distance(transform.position, targetPlayer.transform.position);
+        return Vector3.Distance(transform.position, currentTarget.transform.position);
     }
 
     protected void Move()

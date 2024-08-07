@@ -10,9 +10,9 @@ public class Runner : BaseZombie
 
         StartCoroutine(TargetCheck(0.1f));
 
-        VisibilityCheck();
+        TargetVisibilityCheck();
 
-        agent.speed = SeesPlayer ? movementSpeed * 2 : movementSpeed;
+        agent.speed = seesTarget ? movementSpeed * 2 : movementSpeed;
 
         if (attacking)
         {
@@ -36,8 +36,8 @@ public class Runner : BaseZombie
 
     protected override void AttackLogic()
     {
-        nearPlayer = GetDistanceToPlayer() <= origStoppingDistance;
-        VisibilityCheck();
+        nearPlayer = GetDistanceToTarget() <= origStoppingDistance;
+        TargetVisibilityCheck();
         if (currentTarget.tag.Contains("Barricade"))
         {
             GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
@@ -52,10 +52,10 @@ public class Runner : BaseZombie
                 
             return;
         }
-        else if (targetPlayer.TryGetComponent(out IDamageable dmg))
+        else if (currentTarget.TryGetComponent(out IDamageable dmg))
         {
 
-            if (!nearPlayer || !seesPlayer)
+            if (!nearPlayer || !seesTarget)
                 return;
             dmg.TakeDamage(AttackDMG);
         }      

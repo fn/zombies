@@ -38,10 +38,10 @@ public class Commander : BaseZombie
     {
        
             
-        UpdatePlayerDir();
+        UpdateTargetDir();
         FaceTarget();
-        VisibilityCheck();
-        if (seesPlayer)
+        TargetVisibilityCheck();
+        if (seesTarget)
         {
             State = enemyState.ATTACK;
             return;
@@ -56,11 +56,13 @@ public class Commander : BaseZombie
 
     public override void Attack()
     {
+        UpdateTargetDir();
+        FaceTarget();
         SendCommand(mainGroup, enemyState.SEEK);
         SendCommand(mainGroup, currentTarget);
         SendCommand(flankGroup, enemyState.SEEK);
         SendCommand(flankGroup, currentTarget);
-        if (!seesPlayer) State = enemyState.NORMAL;
+        if (!seesTarget) State = enemyState.NORMAL;
         if (attackTimer <= 0)
         {
             attackTimer = attackCooldown;
@@ -102,7 +104,7 @@ public class Commander : BaseZombie
 
     public void PlayerVisible()
     {
-        seesPlayer = true;
+        seesTarget = true;
         State = enemyState.ATTACK;
     }
 
@@ -127,8 +129,8 @@ public class Commander : BaseZombie
             if (!z.Free)
                 continue;
             z.currentTarget = target;
-            if (!z.SeesPlayer)
-                z.SeesPlayer = SeesPlayer;
+            if (!z.SeesTarget)
+                z.SeesTarget = seesTarget;
             z.DestinationCommand(target.transform.position);
             z.Free = false;
         }
