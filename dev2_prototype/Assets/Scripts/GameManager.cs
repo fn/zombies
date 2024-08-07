@@ -63,13 +63,30 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void LockInput()
+    {
+        Cursor.visible = !Cursor.visible;
+
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+        } else if (Cursor.lockState == CursorLockMode.Confined)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        //Cursor.lockState = CursorLockMode.Confined;
+    }
+
     public void StatePause()
     {
         IsPaused = !IsPaused;
         Time.timeScale = 0;
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        LockInput();
+
+        //Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void StateRun()
@@ -77,8 +94,9 @@ public class GameManager : MonoBehaviour
         IsPaused = !IsPaused;
         Time.timeScale = origTimescale;
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        LockInput();
+        //Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         if (MenuActive != null)
         {
