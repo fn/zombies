@@ -125,6 +125,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         origColor = Color.white; //GetComponent<Renderer>().material.color;
         origStoppingDistance = agent.stoppingDistance;
 
+        AddDetLayer("Player");
+        AddDetLayer("Default");
+        
     }
 
     void Update()

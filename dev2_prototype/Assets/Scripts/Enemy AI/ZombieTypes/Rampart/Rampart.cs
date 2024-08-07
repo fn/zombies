@@ -34,10 +34,6 @@ public class Rampart : BaseZombie
             //    return;
             //}
         }
-        else
-        {
-            colli.enabled = false;
-        }
         //agent.SetDestination(targetPlayer.transform.position);
         MoveLogic();
     }
@@ -46,10 +42,6 @@ public class Rampart : BaseZombie
     {
         agent.stoppingDistance = 1;
         StartCoroutine(TargetCheck());
-        if (nearPlayer && phase != attackPhase.RECOVERY)
-            colli.enabled = true;
-        else
-            colli.enabled = false;
         rushing = agent.velocity.sqrMagnitude >= 25;
         if (rushing)
         {
@@ -169,6 +161,29 @@ public class Rampart : BaseZombie
         }
 
         agent.SetDestination(spotBest);
+    }
+
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if (State == enemyState.DEAD)
+            return;
+
+        if (other.tag.Contains("Barricade"))
+        {
+
+            Barricade barricade = other.GetComponentInChildren<Barricade>();
+            if (barricade == null)
+                return;
+
+            IDamageable dmg = barricade.GetComponent<IDamageable>();
+            if (dmg == null)
+                return;
+
+            dmg.TakeDamage(barricade.Health);
+            
+
+        }
     }
 }
 

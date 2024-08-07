@@ -50,6 +50,9 @@ MonoBehaviour:
   seesPlayer: 0
   nearPlayer: 0
   detectionRange: 200
+  detectionLayers:
+    serializedVersion: 2
+    m_Bits: 0
   placeFound: 0
 --- !u!195 &2169662089823677159
 NavMeshAgent:
@@ -196,6 +199,9 @@ MonoBehaviour:
   seesPlayer: 0
   nearPlayer: 0
   detectionRange: 20
+  detectionLayers:
+    serializedVersion: 2
+    m_Bits: 65
   commander: {fileID: 0}
   currentTarget: {fileID: 0}
   hp: 200

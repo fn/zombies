@@ -12,6 +12,7 @@ public class BaseAI : MonoBehaviour
     [SerializeField] protected bool seesPlayer;
     [SerializeField] protected bool nearPlayer;
     [SerializeField] protected int detectionRange;
+    [SerializeField] protected LayerMask detectionLayers;
 
     protected Vector3 playerDir;
     protected Vector3 movePosition;
@@ -35,7 +36,7 @@ public class BaseAI : MonoBehaviour
     protected void VisibilityCheck()
     {
         UpdatePlayerDir();
-        if (Physics.Raycast(transform.position, playerDir, out RaycastHit vis, detectionRange))
+        if (Physics.Raycast(transform.position, playerDir, out RaycastHit vis, detectionRange, detectionLayers))
         {
             Debug.DrawRay(transform.position, playerDir, Color.green);
 
@@ -76,6 +77,12 @@ public class BaseAI : MonoBehaviour
          Vector3 flankPosition = target.position + flank * offset;
 
          agent.SetDestination(flankPosition);
+    }
+
+
+    public void AddDetLayer(string  layer)
+    {
+        detectionLayers |= (1 << LayerMask.NameToLayer(layer));
     }
 
     
