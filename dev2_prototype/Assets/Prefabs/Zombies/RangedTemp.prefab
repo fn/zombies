@@ -1292,6 +1292,7 @@ MonoBehaviour:
   detectionLayers:
     serializedVersion: 2
     m_Bits: 0
+  proximityRange: 15
   commander: {fileID: 0}
   hp: 50
   attackDamage: 30
@@ -1452,7 +1453,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6959085809319717586}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1542,5 +1543,5 @@ LineRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 1
+  m_UseWorldSpace: 0
   m_Loop: 0

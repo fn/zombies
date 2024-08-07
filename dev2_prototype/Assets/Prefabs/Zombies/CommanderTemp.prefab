@@ -141,16 +141,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e738ebb99e6834e977caaa9fd186bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceTargetSpeed: 180
+  currentTarget: {fileID: 0}
+  faceTargetSpeed: 3
   agent: {fileID: 5512426843049296799}
-  seesPlayer: 0
+  seesTarget: 0
   nearPlayer: 0
   detectionRange: 1000
   detectionLayers:
     serializedVersion: 2
     m_Bits: 0
+  proximityRange: 5
   commander: {fileID: 0}
-  currentTarget: {fileID: 0}
   hp: 50
   attackDamage: 50
   attackDelay: 0

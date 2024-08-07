@@ -16,6 +16,7 @@ public class Commander : BaseZombie
     public List<BaseZombie> mainGroup;
     public List<BaseZombie> flankGroup;
     public int readyZombies;
+    float commandTimer;
     bool commandSent;
     bool flanking;
 
@@ -57,17 +58,32 @@ public class Commander : BaseZombie
     public override void Attack()
     {
         UpdateTargetDir();
+        StartCoroutine(TargetProximityCheck());
         FaceTarget();
-        SendCommand(mainGroup, enemyState.SEEK);
-        SendCommand(mainGroup, currentTarget);
-        SendCommand(flankGroup, enemyState.SEEK);
-        SendCommand(flankGroup, currentTarget);
+        
         if (!seesTarget) State = enemyState.NORMAL;
         if (attackTimer <= 0)
         {
             attackTimer = attackCooldown;
             HealZeds();
         }
+        commandTimer -= Time.deltaTime;
+
+        if (commandTimer < 0)
+        {
+            commandTimer = 5;
+            commandSent = false;
+        }
+        if (nearPlayer) State = enemyState.FLEE;
+
+
+        if (commandSent)
+            return;
+        SendCommand(mainGroup, enemyState.SEEK);
+        SendCommand(mainGroup, currentTarget);
+        SendCommand(flankGroup, enemyState.SEEK);
+        SendCommand(flankGroup, currentTarget);
+        commandSent = true;
 
     }
 

@@ -35,7 +35,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     {
         agent.speed = 2 * movementSpeed;
         UpdateTargetDir();
-        Vector3 newPos = (transform.position - playerDir);
+        Vector3 newPos = (transform.position - targetDir);
         //Debug.Log("New:" + newPos);
         //Debug.Log("Old: " + transform.position);
         agent.stoppingDistance = 0;

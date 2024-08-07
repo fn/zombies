@@ -14,8 +14,9 @@ public class BaseAI : MonoBehaviour
     [SerializeField] protected bool nearPlayer;
     [SerializeField] protected int detectionRange;
     [SerializeField] protected LayerMask detectionLayers;
+    [SerializeField] protected float proximityRange;
 
-    protected Vector3 playerDir;
+    protected Vector3 targetDir;
     protected Vector3 movePosition;
     protected float origStoppingDistance;
 
@@ -33,29 +34,29 @@ public class BaseAI : MonoBehaviour
 
     protected void UpdateTargetDir()
     {
-        playerDir = currentTarget.transform.position - transform.position;
+        targetDir = currentTarget.transform.position - transform.position;
     }
     protected void TargetVisibilityCheck()
     {
         UpdateTargetDir();
-        if (Physics.Raycast(transform.position, playerDir, out RaycastHit vis, detectionRange, detectionLayers))
+        if (Physics.Raycast(transform.position, targetDir, out RaycastHit vis, detectionRange, detectionLayers))
         {
-            Debug.DrawRay(transform.position, playerDir, Color.green);
+            Debug.DrawRay(transform.position, targetDir, Color.green);
 
             seesTarget = vis.collider.gameObject.CompareTag("Player");
         }
     }
 
-    protected IEnumerator TargetCheck(float delay = 0.1f)
+    protected IEnumerator TargetProximityCheck(float delay = 0.1f)
     {
         yield return new WaitForSeconds(delay);
-        nearPlayer = GetDistanceToTarget() <= origStoppingDistance;
+        nearPlayer = GetDistanceToTarget() <= proximityRange;
         yield return new WaitForSeconds(delay);
     }
 
     protected void FaceTarget()
     {
-        Quaternion rot = Quaternion.LookRotation(playerDir);
+        Quaternion rot = Quaternion.LookRotation(targetDir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 

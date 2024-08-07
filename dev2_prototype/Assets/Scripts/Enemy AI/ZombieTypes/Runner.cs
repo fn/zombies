@@ -8,7 +8,7 @@ public class Runner : BaseZombie
     {
         Move();
 
-        StartCoroutine(TargetCheck(0.1f));
+        StartCoroutine(TargetProximityCheck(0.1f));
 
         TargetVisibilityCheck();
 
