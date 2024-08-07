@@ -17,7 +17,7 @@ public class Rampart : BaseZombie
     public override void Seek()
     {
         agent.stoppingDistance = origStoppingDistance;
-        StartCoroutine(TargetCheck());
+        StartCoroutine(TargetProximityCheck());
         TargetVisibilityCheck();
         if (attacking)
         {
@@ -41,7 +41,7 @@ public class Rampart : BaseZombie
     public override void Attack()
     {
         agent.stoppingDistance = 1;
-        StartCoroutine(TargetCheck());
+        StartCoroutine(TargetProximityCheck());
         rushing = agent.velocity.sqrMagnitude >= 25;
         if (rushing)
         {

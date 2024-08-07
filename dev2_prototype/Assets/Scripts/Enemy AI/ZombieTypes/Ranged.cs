@@ -15,7 +15,7 @@ public class Ranged : BaseZombie
         agent.speed = movementSpeed;
         Move();
         TargetVisibilityCheck();
-        StartCoroutine(TargetCheck());
+        StartCoroutine(TargetProximityCheck());
         if (nearPlayer && seesTarget)
         {
             State = enemyState.ATTACK;
@@ -79,6 +79,6 @@ public class Ranged : BaseZombie
 
         Weapon.Info.Damage = AttackDMG;
         Weapon.Info.FireRate = fireRate;
-        Weapon.Shoot(ShootPos.position, playerDir);
+        Weapon.Shoot(ShootPos.position, targetDir);
     }
 }
