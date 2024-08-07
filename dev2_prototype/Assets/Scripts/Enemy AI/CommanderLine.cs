@@ -22,13 +22,14 @@ public class CommanderLine : MonoBehaviour
     void Update()
     {
         BaseZombie z = this.transform.parent.GetComponent<BaseZombie>();
-        commanderPoint = z.commander.transform;
-        if (commanderPoint == null || z.State == BaseZombie.enemyState.DEAD)
+
+        if (z.commander == null || z.State == BaseZombie.enemyState.DEAD)
         {
             commanderLine.enabled = false;
             return;
         }
 
+        commanderPoint = z.commander.transform;
         commanderLine.enabled = true;
         // line renderer position
         commanderLine.SetPosition(0, transform.position);
