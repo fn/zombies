@@ -18,7 +18,7 @@ public class Rampart : BaseZombie
     {
         agent.stoppingDistance = origStoppingDistance;
         StartCoroutine(TargetCheck());
-        VisibilityCheck();
+        TargetVisibilityCheck();
         if (attacking)
         {
             return;
@@ -27,14 +27,14 @@ public class Rampart : BaseZombie
         {
             FaceTarget();
             
-            //if (seesPlayer)
+            //if (seesTarget)
             //{
-            //    currentTarget = targetPlayer.gameObject;
+            //    currentTarget = currentTarget.gameObject;
             //    State = enemyState.ATTACK;
             //    return;
             //}
         }
-        //agent.SetDestination(targetPlayer.transform.position);
+        //agent.SetDestination(currentTarget.transform.position);
         MoveLogic();
     }
 
@@ -55,10 +55,10 @@ public class Rampart : BaseZombie
         else
         {
             FaceTarget();
-            VisibilityCheck();
+            TargetVisibilityCheck();
             
 
-            if (nearPlayer & seesPlayer)
+            if (nearPlayer & seesTarget)
             {
                 Attacking();
             }
@@ -75,7 +75,7 @@ public class Rampart : BaseZombie
         }
 
 
-        agent.SetDestination(targetPlayer.transform.position);
+        agent.SetDestination(currentTarget.transform.position);
     }
 
     protected override void AttackLogic()
@@ -98,7 +98,7 @@ public class Rampart : BaseZombie
 
     void MoveLogic()
     {
-        if (!seesPlayer)
+        if (!seesTarget)
         {
             agent.speed = movementSpeed;
             Hide();
@@ -122,7 +122,7 @@ public class Rampart : BaseZombie
         for (int i = 0; i < hits; i++)
         {
             float dist = Vector3.Distance(transform.position, hideSpots[i].transform.position);
-            Vector3 dir = (targetPlayer.transform.position - hideSpots[i].transform.position).normalized;
+            Vector3 dir = (currentTarget.transform.position - hideSpots[i].transform.position).normalized;
 
             if (NavMesh.SamplePosition(hideSpots[i].transform.position, out NavMeshHit hit, dist, agent.areaMask))
             {
@@ -194,7 +194,7 @@ public class Rampart : BaseZombie
 
 
 
-//if (Vector3.Dot(hit.normal, (targetPlayer.transform.position - hit.position).normalized) < hideFactor)
+//if (Vector3.Dot(hit.normal, (currentTarget.transform.position - hit.position).normalized) < hideFactor)
 //{
 //    agent.SetDestination(hit.position);
 //    break;
@@ -202,12 +202,12 @@ public class Rampart : BaseZombie
 //}
 //else
 //{
-//    if (NavMesh.SamplePosition(hideSpots[i].transform.position - (targetPlayer.transform.position - hit.position).normalized * 2, out NavMeshHit hit2, dist * 2, agent.areaMask))
+//    if (NavMesh.SamplePosition(hideSpots[i].transform.position - (currentTarget.transform.position - hit.position).normalized * 2, out NavMeshHit hit2, dist * 2, agent.areaMask))
 //    {
 
 
 //        NavMesh.FindClosestEdge(hit2.position, out hit2, agent.areaMask);
-//        if (Vector3.Dot(hit2.normal, (targetPlayer.transform.position - hit2.position).normalized) < hideFactor)
+//        if (Vector3.Dot(hit2.normal, (currentTarget.transform.position - hit2.position).normalized) < hideFactor)
 //        {
 //            agent.SetDestination(hit2.position);
 //            break;
