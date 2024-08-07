@@ -50,6 +50,13 @@ public class WeaponComponent : MonoBehaviour
         if (CurrentAmmo <= 0 && !Info.InfiniteAmmo)
             return;
 
+        // Check if the weapon has an elemental component.
+        if (TryGetComponent(out IElementalWeapon elemental))
+        {
+            elemental.Shoot(origin, direction);
+            return;
+        }
+
         if (Time.time - lastShotTime >= shotCooldown)
         {
             // Update the last shot time and decrease ammo count

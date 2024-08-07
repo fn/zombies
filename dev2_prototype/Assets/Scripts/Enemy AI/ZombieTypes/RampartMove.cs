@@ -16,6 +16,7 @@ public class RampartMove : BaseAI
         if (!seesPlayer){
             Move();
         }
+
         VisibilityCheck();
 
         if (seesPlayer){
