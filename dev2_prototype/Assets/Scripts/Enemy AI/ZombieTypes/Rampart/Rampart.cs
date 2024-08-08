@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Zombies.AI;
 
 public class Rampart : BaseZombie
 {
@@ -67,7 +68,7 @@ public class Rampart : BaseZombie
 
 
 
-        if (phase != attackPhase.IDLE)
+        if (AttackPhase != AttackPhases.IDLE)
         {
             rushing = false;
             Attacking();
@@ -109,7 +110,7 @@ public class Rampart : BaseZombie
             oRotation = transform.forward;
             agent.speed = movementSpeed * 10;
 
-            State = enemyState.ATTACK;
+            // State = enemyState.ATTACK;
         }
     }
 
@@ -166,7 +167,7 @@ public class Rampart : BaseZombie
 
     protected override void OnTriggerEnter(Collider other)
     {
-        if (State == enemyState.DEAD)
+        if (CurrentState != null && CurrentState.Name == EnemyState.DEAD)
             return;
 
         if (other.tag.Contains("Barricade"))
@@ -184,6 +185,21 @@ public class Rampart : BaseZombie
             
 
         }
+    }
+
+    public override BaseAIState GetNormalState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override BaseAIState GetAttackState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override BaseAIState GetSeekState()
+    {
+        throw new System.NotImplementedException();
     }
 }
 

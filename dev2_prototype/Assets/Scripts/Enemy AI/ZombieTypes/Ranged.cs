@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zombies.AI;
 
 public class Ranged : BaseZombie
 {
@@ -12,46 +13,46 @@ public class Ranged : BaseZombie
 
     public override void Seek()
     {
-        agent.speed = movementSpeed;
-        Move();
-        TargetVisibilityCheck();
-        StartCoroutine(TargetProximityCheck());
-        if (nearPlayer && seesTarget)
-        {
-            State = enemyState.ATTACK;
-        }
+        //agent.speed = movementSpeed;
+        //Move();
+        //TargetVisibilityCheck();
+        //StartCoroutine(TargetProximityCheck());
+        //if (nearPlayer && seesTarget)
+        //{
+        //    State = enemyState.ATTACK;
+        //}
     }
 
     public override void Attack()
     {
-        if (State == enemyState.DEAD)
-            return;
+        //if (State == enemyState.DEAD)
+        //    return;
 
-        UpdateTargetDir();
-        FaceTarget();
+        //UpdateTargetDir();
+        //FaceTarget();
 
-        if (attacking)
-        {
-            Attacking();
-            return;
-        }
+        //if (attacking)
+        //{
+        //    Attacking();
+        //    return;
+        //}
 
-        fleeing = GetDistanceToTarget() < fleeingDist;
-        if (fleeing)
-        {
-            State = enemyState.FLEE;
-            return;
-        }
+        //fleeing = GetDistanceToTarget() < fleeingDist;
+        //if (fleeing)
+        //{
+        //    State = enemyState.FLEE;
+        //    return;
+        //}
 
-        TargetVisibilityCheck();
+        //TargetVisibilityCheck();
 
-        if (!seesTarget && !fleeing)
-        {
-            State = enemyState.SEEK;
-            return;
-        }
+        //if (!seesTarget && !fleeing)
+        //{
+        //    State = enemyState.SEEK;
+        //    return;
+        //}
 
-        Attacking();
+        //Attacking();
     }
 
     public void OnAttackHit()
@@ -64,12 +65,15 @@ public class Ranged : BaseZombie
                 dmg.TakeDamage(destructionPower);
             if (!barrChild.activeSelf)
             {
-                State = enemyState.SEEK;
-                phase = attackPhase.IDLE;
+                // State = enemyState.SEEK;
+                UpdateState(GetSeekState());
+
+                AttackPhase = AttackPhases.IDLE;
             }
                 
             return;
         }
+
         AttackLogic();
     }
 
@@ -80,5 +84,20 @@ public class Ranged : BaseZombie
         Weapon.Info.Damage = AttackDMG;
         Weapon.Info.FireRate = fireRate;
         Weapon.Shoot(ShootPos.position, targetDir);
+    }
+
+    public override BaseAIState GetNormalState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override BaseAIState GetAttackState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override BaseAIState GetSeekState()
+    {
+        throw new System.NotImplementedException();
     }
 }

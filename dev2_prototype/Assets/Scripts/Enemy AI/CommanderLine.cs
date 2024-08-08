@@ -23,7 +23,7 @@ public class CommanderLine : MonoBehaviour
     {
         BaseZombie z = this.transform.parent.GetComponent<BaseZombie>();
 
-        if (z.commander == null || z.State == BaseZombie.enemyState.DEAD)
+        if (z.commander == null || z.CurrentState != null && z.CurrentState.Name == EnemyState.DEAD)
         {
             commanderLine.enabled = false;
             return;

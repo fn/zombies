@@ -14,11 +14,11 @@ public class FindArea : MonoBehaviour
             BaseZombie z = other.gameObject.GetComponent<BaseZombie>();
             if (z.commander != null)
                 return;
-            if (z.State != enemyState.SEEK)
-                return;
+            // if (z.State != EnemyState.SEEK)
+            //     return;
 
             z.commander = comm;
-            z.State = enemyState.GATHER;
+            // z.State = EnemyState.GATHER;
 
             int total = comm.mainGroup.Count + comm.flankGroup.Count;
             float per = (float)comm.flankPercent / 100;
@@ -39,8 +39,8 @@ public class FindArea : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
-            comm.Agent().ResetPath();
-            comm.State = enemyState.GATHER;
+            // comm.Agent().ResetPath();
+            // comm.State = EnemyState.GATHER;
         }
 
     }
@@ -58,7 +58,7 @@ public class FindArea : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
-            comm.State = enemyState.SEEK;
+            // comm.CurrentState = EnemyState.SEEK;
         }
     }
 }

@@ -1,10 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using Zombies.AI;
+using Zombies.AI.States;
 
-public class BaseZombie : BaseAI, ZombieStates, IDamageable
+public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
 {
-    public enum enemyState { NORMAL, SEEK, ATTACK, FLEE, DEMOLITION, GATHER, FLANK, DEAD };
-
     public int HP { get => hp; set => hp = value; }
     public int AttackDMG { get => attackDamage; set => attackDamage = value; }
     public float AttackDelay { get => attackDelay; set => attackDelay = value; }
@@ -16,21 +16,22 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     public bool IsInMain { get => inMainGroup; set => inMainGroup = value; }
     public bool Free { get => free; set => free = value; }
 
-    void IsAttackingToggle()
-    {
-        attacking = !attacking;
-    }
-
-    
-    public enemyState State { get => state; set => state = value; }
+   
+    // public enemyState State { get => state; set => state = value; }
     public Commander commander;
-    
 
-
+    public BaseAIState CurrentState;
 
     virtual public void Normal() { }
     virtual public void Seek() { }
+    
     virtual public void Attack() { }
+
+    // These should ideally just be temporary.
+    public abstract BaseAIState GetNormalState();
+    public abstract BaseAIState GetAttackState();
+    public abstract BaseAIState GetSeekState();
+
     virtual public void Flee()
     {
         agent.speed = 2 * movementSpeed;
@@ -43,9 +44,11 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         if (GetDistanceToTarget() >= detectionRange)
         {
             fleeing = false;
-            State = enemyState.SEEK;
+
+            UpdateState(new SeekState(this));
         }
     }
+
     virtual public void Gather()
     {
         agent.speed = movementSpeed;
@@ -56,18 +59,23 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         if (Vector3.Distance(transform.position, commander.transform.position) <= agent.stoppingDistance + 1)
         {
-            State = enemyState.NORMAL;
+            // Set normal state.
+            UpdateState(GetNormalState());
+
+            // State = enemyState.NORMAL;
             commander.readyZombies++;
             free = true;
         }
     }
+
     virtual public void Flank()
     {
         agent.speed = 2 * movementSpeed;
         FlankTarget(currentTarget.transform, commander.flankingDeviation);
         if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance + commander.flankingDeviation)
         {
-            State = enemyState.SEEK;
+            // Set seek state.
+            UpdateState(GetSeekState());
         }
     }
 
@@ -89,16 +97,15 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
     [SerializeField] protected int movementSpeed;
     [SerializeField] protected int destructionPower;
     [SerializeField] protected int cost;
-    [SerializeField] protected enemyState state;
     
     protected bool fleeing;
     protected float attackTimer;
     protected bool inMainGroup;
     protected bool free;
 
-    protected enum attackPhase { IDLE, PRIMED, ATTACK, RECOVERY };
+    protected enum AttackPhases { IDLE, PRIMED, ATTACK, RECOVERY };
 
-    [SerializeField] protected attackPhase phase;
+    [SerializeField] protected AttackPhases AttackPhase;
 
     protected Color origColor;
     [SerializeField] protected Color colorPrimed;
@@ -127,6 +134,18 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         AddDetLayer("Player");
         AddDetLayer("Default");
         
+        UpdateState(GetSeekState());
+    }
+
+    public void UpdateState(BaseAIState aiState)
+    {
+        CurrentState = aiState;
+    }
+
+    public void ResetAttack()
+    {
+        IsAttacking = false;
+        AttackPhase = AttackPhases.IDLE;
     }
 
     void Update()
@@ -158,41 +177,45 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         // Temp dead check.
         if (hp <= 0)
-            State = enemyState.DEAD;
+            UpdateState(new DeadState(this));
 
-        switch (state)
-        {
-            case enemyState.NORMAL:
-                Normal();
-                break;
-            case enemyState.SEEK:
-                free = false;
-                FaceTarget();
-                currentTarget = GameManager.Instance.LocalPlayer.gameObject;
-                Seek();
-                break;
-            case enemyState.ATTACK:
-                free = false;
-                Attack();
-                break;
-            case enemyState.FLEE:
-                Flee();
-                break;
-            case enemyState.DEMOLITION:
-                Attacking();
-                break;
-            case enemyState.GATHER:
-                Gather();
-                break;
-            case enemyState.FLANK:
-                Flank();
-                break;
-            case enemyState.DEAD:
-                attacking = false;
-                phase = attackPhase.IDLE;
-                Dead();
-                return;
-        }
+        if (CurrentState != null)
+            CurrentState.StateBehavior();
+
+        //switch (state)
+        //{
+        //    case enemyState.NORMAL:
+        //        Normal();
+        //        break;
+        //    case enemyState.SEEK:
+        //        free = false;
+        //        FaceTarget();
+        //        currentTarget = GameManager.Instance.LocalPlayer.gameObject;
+        //        Seek();
+        //        break;
+        //    case enemyState.ATTACK:
+        //        free = false;
+        //        Attack();
+        //        break;
+        //    case enemyState.FLEE:
+        //        Flee();
+        //        break;
+        //    case enemyState.DEMOLITION:
+        //        Attacking();
+        //        break;
+        //    case enemyState.GATHER:
+        //        Gather();
+        //        break;
+        //    case enemyState.FLANK:
+        //        Flank();
+        //        break;
+        //    //case enemyState.DEAD:
+        //    //    attacking = false;
+        //    //    AttackPhase = AttackPhases.IDLE;
+        //    //    Dead();
+
+        //        return;
+        //}
 
         if (attackTimer > 0)
         {
@@ -211,7 +234,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         if (gameObject.TryGetComponent(out CommanderLine commanderLine))
         {
-            if (commander != null && commander.State != enemyState.DEAD)
+            if (commander != null && commander.CurrentState != null && commander.CurrentState.Name != EnemyState.DEAD)
             {
                 commanderLine.enabled = true;
                 commanderLine.commanderPoint = commander.transform;
@@ -238,7 +261,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         if (amount > 0)
         {
             StartCoroutine(FlashDamage(false));
-            if (phase == attackPhase.RECOVERY)
+            if (AttackPhase == AttackPhases.RECOVERY)
                 hp -= amount;
         }
         else
@@ -247,7 +270,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         if (hp > hpOriginal * 2)
             hp = hpOriginal * 2;
-        if (hp <= 0 && State != enemyState.DEAD)
+        if (hp <= 0 && CurrentState != null && CurrentState.Name != EnemyState.DEAD)
         {
             GameManager.Instance.zombieDead.Add(this); //adds to the dead pile
 
@@ -274,12 +297,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             }
             //Destroy(gameObject);
             col.isTrigger = true;
-            State = enemyState.DEAD;
+
+            // Set the current state to dead.
+            UpdateState(new DeadState(this));
             return;
         }
-        if (hp > 0 && State == enemyState.DEAD)
+        if (hp > 0 && CurrentState != null && CurrentState.Name == EnemyState.DEAD)
         {
-            
             agent.ResetPath();
             col.isTrigger = false;
 
@@ -289,10 +313,11 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             }
 
             GameManager.Instance.zombieDead.Remove(this);
-            State = enemyState.SEEK;
+            
+            // We have been revived. Set state back to seek state.
+            UpdateState(GetSeekState());
             free = true;
         }
-        
     }
 
     private IEnumerator FlashDamage(bool heal)
@@ -300,26 +325,26 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
         yield return new WaitForSeconds(.5f);
     }
 
-    protected void Attacking()
+    public void Attacking()
     {
-        if (State == enemyState.DEAD)
-            return;
+        // if (State == enemyState.DEAD)
+        //     return;
 
         seesTarget = false;
         agent.ResetPath();
-        switch (phase)
+        switch (AttackPhase)
         {
-            case attackPhase.IDLE:
-                phase++;
+            case AttackPhases.IDLE:
+                AttackPhase++;
                 return;
-            case attackPhase.PRIMED:
+            case AttackPhases.PRIMED:
                 attacking = true;
                 attackTimer = AttackDelay;
-                phase++;
+                AttackPhase++;
                 break;
-            case attackPhase.ATTACK:
+            case AttackPhases.ATTACK:
                 attackTimer = AttackCD;
-                phase++;
+                AttackPhase++;
 
                 if (animator != null)
                 {
@@ -333,13 +358,13 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
                 AttackLogic();
 
                 break;
-            case attackPhase.RECOVERY:
+            case AttackPhases.RECOVERY:
                 if (attackTimer < 0)
                 {
                     attacking = false;
-                    phase = attackPhase.IDLE;
-                    if (State != enemyState.DEMOLITION)
-                        state = enemyState.SEEK;
+                    AttackPhase = AttackPhases.IDLE;
+                    if (CurrentState != null && CurrentState.Name != EnemyState.DEMOLITION)
+                        UpdateState(GetSeekState());
                 }
                 break;
         }
@@ -347,7 +372,7 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (State == enemyState.DEAD)
+        if (CurrentState != null && CurrentState.Name == EnemyState.DEAD)
             return;
 
         if (other.tag.Contains("Barricade"))
@@ -358,7 +383,9 @@ public class BaseZombie : BaseAI, ZombieStates, IDamageable
             }
 
             currentTarget = other.gameObject;
-            State = enemyState.DEMOLITION;
+            
+            // Set current state to demolition.
+            UpdateState(new DemolitionState(this));
         }
     }
  

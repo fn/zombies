@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.ProBuilder;
+using Zombies.AI;
+using Zombies.AI.States;
 
 public class Commander : BaseZombie
 {
@@ -20,8 +22,6 @@ public class Commander : BaseZombie
     bool commandSent;
     bool flanking;
 
-    
-    
     public override void Seek()
     {
         agent.speed = MoveSPD;
@@ -30,68 +30,71 @@ public class Commander : BaseZombie
 
     public override void Gather()
     {
-        SendCommand(mainGroup, enemyState.GATHER);
-        SendCommand(flankGroup, enemyState.GATHER);
-        State = enemyState.NORMAL;
+        // SendCommand(mainGroup, enemyState.GATHER);
+        // SendCommand(flankGroup, enemyState.GATHER);
+        // State = enemyState.NORMAL;
+        // 
+        // UpdateState(GetNormalState());
     }
 
     public override void Normal()
     {
-       
-            
-        UpdateTargetDir();
-        FaceTarget();
-        TargetVisibilityCheck();
-        if (seesTarget)
-        {
-            State = enemyState.ATTACK;
-            return;
-        }
+        //UpdateTargetDir();
+        //FaceTarget();
+        //TargetVisibilityCheck();
+        //if (seesTarget)
+        //{
+        //    UpdateState(GetAttackState());
+        //    return;
+        //}
 
-        if (readyZombies >= mainGroup.Count / 2)
-        {
-            State = enemyState.FLANK;
-            readyZombies = 0;
-        }
+        //if (readyZombies >= mainGroup.Count / 2)
+        //{
+        //    UpdateState(new FlankState(this));
+        //    readyZombies = 0;
+        //}
     }
 
     public override void Attack()
     {
-        UpdateTargetDir();
-        StartCoroutine(TargetProximityCheck());
-        FaceTarget();
+        //UpdateTargetDir();
+        //StartCoroutine(TargetProximityCheck());
+        //FaceTarget();
         
-        if (!seesTarget) State = enemyState.NORMAL;
-        if (attackTimer <= 0)
-        {
-            attackTimer = attackCooldown;
-            HealZeds();
-        }
-        commandTimer -= Time.deltaTime;
+        //if (!seesTarget) State = enemyState.NORMAL;
+        //if (attackTimer <= 0)
+        //{
+        //    attackTimer = attackCooldown;
+        //    HealZeds();
+        //}
+        //commandTimer -= Time.deltaTime;
 
-        if (commandTimer < 0)
-        {
-            commandTimer = 5;
-            commandSent = false;
-        }
-        if (nearPlayer) State = enemyState.FLEE;
+        //if (commandTimer < 0)
+        //{
+        //    commandTimer = 5;
+        //    commandSent = false;
+        //}
+        //if (nearPlayer) 
+        //    State = enemyState.FLEE;
 
 
-        if (commandSent)
-            return;
-        SendCommand(mainGroup, enemyState.SEEK);
-        SendCommand(mainGroup, currentTarget);
-        SendCommand(flankGroup, enemyState.SEEK);
-        SendCommand(flankGroup, currentTarget);
-        commandSent = true;
+        //if (commandSent)
+        //    return;
+
+
+        //SendCommand(mainGroup, nameof(GetSeekState));
+        //SendCommand(mainGroup, currentTarget);
+        //SendCommand(flankGroup, nameof(GetSeekState));
+        //SendCommand(flankGroup, currentTarget);
+        //commandSent = true;
 
     }
 
     public override void Flank()
     {
-        SendCommand(mainGroup, enemyState.SEEK);
-        SendCommand(flankGroup, enemyState.FLANK);
-        State = enemyState.NORMAL;
+        //SendCommand(mainGroup, enemyState.SEEK);
+        //SendCommand(flankGroup, enemyState.FLANK);
+        //State = enemyState.NORMAL;
     }
 
     public override void Dead()
@@ -121,18 +124,23 @@ public class Commander : BaseZombie
     public void PlayerVisible()
     {
         seesTarget = true;
-        State = enemyState.ATTACK;
+        
+        // Set our attack state.
+        UpdateState(GetAttackState());
     }
 
     //change state
-    void SendCommand(List<BaseZombie> horde, enemyState state)
+    void SendCommand(List<BaseZombie> horde, string stateName)
     {
         readyZombies = 0;
         foreach (var z in horde)
         {
             if (!z.Free)
                 continue;
-            z.State = state;
+
+            var state = z.GetType().GetMethod(stateName).Invoke(z, null);
+
+            z.UpdateState((BaseAIState)state);
             z.Free = false;
         }
     }
@@ -153,7 +161,22 @@ public class Commander : BaseZombie
             
     }
 
-    
+    public override BaseAIState GetNormalState()
+    {
+        return new CommanderNormalState(this);
+    }
+
+    public override BaseAIState GetAttackState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override BaseAIState GetSeekState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+
 
 
     ////gives a spot to move to/gather around

@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.AI;
 using Zombies;
 
+public enum EnemyState { 
+    NORMAL, 
+    SEEK, 
+    ATTACK, 
+    FLEE, 
+    DEMOLITION, 
+    GATHER, 
+    FLANK, 
+    DEAD 
+};
+
 public class BaseAI : MonoBehaviour
 {
     public GameObject currentTarget;
@@ -20,23 +31,20 @@ public class BaseAI : MonoBehaviour
     protected Vector3 movePosition;
     protected float origStoppingDistance;
 
-
-    public NavMeshAgent Agent()
-    {
-        return agent;
-    }
-
     public bool SeesTarget { get => seesTarget; set => seesTarget = value; }
+    public bool NearTarget { get => nearPlayer; set => nearPlayer = value; }
+
+    public NavMeshAgent Agent { get { return agent; } }
 
     void Start()
     {
     }
 
-    protected void UpdateTargetDir()
+    public void UpdateTargetDir()
     {
         targetDir = currentTarget.transform.position - transform.position;
     }
-    protected void TargetVisibilityCheck()
+    public void TargetVisibilityCheck()
     {
         UpdateTargetDir();
         if (Physics.Raycast(transform.position, targetDir, out RaycastHit vis, detectionRange, detectionLayers))
@@ -47,31 +55,31 @@ public class BaseAI : MonoBehaviour
         }
     }
 
-    protected IEnumerator TargetProximityCheck(float delay = 0.1f)
+    public IEnumerator TargetProximityCheck(float delay = 0.1f)
     {
         yield return new WaitForSeconds(delay);
         nearPlayer = GetDistanceToTarget() <= proximityRange;
         yield return new WaitForSeconds(delay);
     }
 
-    protected void FaceTarget()
+    public void FaceTarget()
     {
         Quaternion rot = Quaternion.LookRotation(targetDir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * faceTargetSpeed);
     }
 
-    protected float GetDistanceToTarget()
+    public float GetDistanceToTarget()
     {
         return Vector3.Distance(transform.position, currentTarget.transform.position);
     }
 
-    protected void Move()
+    public void Move()
     {
         agent.stoppingDistance = origStoppingDistance;
         agent.SetDestination(movePosition);
     }
 
-    protected void FlankTarget(Transform target, float offset)
+    public void FlankTarget(Transform target, float offset)
     {
 
          Vector3 dir = target.position - transform.position;

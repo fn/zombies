@@ -1,33 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Zombies.AI;
+using Zombies.AI.States;
 
 public class Runner : BaseZombie
 {
-    public override void Seek()
-    {
-        Move();
-
-        StartCoroutine(TargetProximityCheck(0.1f));
-
-        TargetVisibilityCheck();
-
-        agent.speed = seesTarget ? movementSpeed * 2 : movementSpeed;
-
-        if (attacking)
-        {
-            return;
-        }
-        if (nearPlayer)
-        {
-            State = enemyState.ATTACK;
-        }
-    }
-
-    public override void Attack()
-    {
-        Attacking();
-    }
+    //public override void Attack()
+    //{
+    //    Attacking();
+    //}
 
     public void OnAttackHit()
     {
@@ -46,10 +26,14 @@ public class Runner : BaseZombie
                 dmg.TakeDamage(destructionPower);
             if (!barrChild.activeSelf)
             {
-                State = enemyState.ATTACK;
-                phase = attackPhase.RECOVERY;
+                var attackState = GetAttackState();
+                if (attackState != null)
+                {
+                    UpdateState(attackState);
+                    AttackPhase = AttackPhases.RECOVERY;
+                }
             }
-                
+
             return;
         }
         else if (currentTarget.TryGetComponent(out IDamageable dmg))
@@ -59,5 +43,20 @@ public class Runner : BaseZombie
                 return;
             dmg.TakeDamage(AttackDMG);
         }      
+    }
+
+    public override BaseAIState GetNormalState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override BaseAIState GetAttackState()
+    {
+        return new RunnerAttackState(this);
+    }
+
+    public override BaseAIState GetSeekState()
+    {
+        return new RunnerSeekState(this);
     }
 }
