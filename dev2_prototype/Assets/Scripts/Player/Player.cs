@@ -113,7 +113,7 @@ namespace Zombies
                 HeldWeapon.Shoot(ShotOrigin.transform.position, View.viewCamera.transform.forward);
                 ViewModelAnimator.SetTrigger("Shoot");
 
-                Audio.PlayOneShot(HeldWeapon.Info.ShootSound, HeldWeapon.Info.WeaponVolume);
+                Audio.PlayOneShot(HeldWeapon.Info.ShootSound, HeldWeapon.Info.WeaponVolume * GameManager.Instance.gameOptions.effectVolume);
             }
 
             if (Input.GetButtonDown("Reload") && HeldWeapon.CanReload)

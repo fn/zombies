@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuWin;
     [SerializeField] GameObject MenuLose;
 
+    public GameSettings gameOptions;
+
     public GameObject PromptBackground;
     public TMP_Text PromptText;
 

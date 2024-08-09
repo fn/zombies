@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,7 +20,13 @@ public class UIManager : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene("TitleScreen", LoadSceneMode.Single);
-        //GameManager.Instance.StateRun();
+        GameManager.Instance.StateRun();
+    }
+
+    public void Play()
+    {
+        SceneManager.LoadScene("Mitchell", LoadSceneMode.Single);
+        GameManager.Instance.StateRun();
     }
 
     public void Quit()
