@@ -1775,6 +1775,7 @@ MonoBehaviour:
   MenuPause: {fileID: 1938458159114751155}
   MenuWin: {fileID: 0}
   MenuLose: {fileID: 1938458157773319695}
+  gameOptions: {fileID: 11400000, guid: 91b25053ccc14de4b802eb7ee949baeb, type: 2}
   PromptBackground: {fileID: 1635126243}
   PromptText: {fileID: 662456838}
   MoneyText: {fileID: 1822317320}

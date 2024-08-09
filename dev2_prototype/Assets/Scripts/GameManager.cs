@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Zombies;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,16 +16,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject MenuLose;
 
     public GameSettings gameOptions;
+    [SerializeField] GameObject MenuOptions;
+    [SerializeField] Slider effectSlider;
 
     public GameObject PromptBackground;
     public TMP_Text PromptText;
 
     public TMP_Text MoneyText;
-
-    //public GameObject PickupPrompt;
-    //public GameObject DropPrompt;
-    //public GameObject DoorPrompt;
-    //public GameObject ChestPrompt;
 
     public TMP_Text WaveHudText;
     public TMP_Text AmmoHudText;
@@ -41,8 +39,9 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
-        LocalPlayer = GameObject.FindWithTag("Player").GetComponent<Player>();
+        var scene = SceneManager.GetActiveScene();
+        if (scene.name != "TitleScreen")
+            LocalPlayer = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         origTimescale = Time.timeScale;
     }
@@ -61,13 +60,14 @@ public class GameManager : MonoBehaviour
             else if (MenuActive == MenuPause)
                 StateRun();
         }
-        MoneyText.SetText($"$ {LocalPlayer.Money}");
-        
+        if (LocalPlayer != null)
+        {
+            MoneyText.SetText($"$ {LocalPlayer.Money}");
+        }
     }
 
     public void LockInput()
     {
-        Cursor.visible = !Cursor.visible;
 
         if (Cursor.lockState == CursorLockMode.Locked)
         {
@@ -77,18 +77,14 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        //Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void StatePause()
     {
         IsPaused = !IsPaused;
         Time.timeScale = 0;
-
+        Cursor.visible = true;
         LockInput();
-
-        //Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void StateRun()
@@ -97,8 +93,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = origTimescale;
 
         LockInput();
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
 
         if (MenuActive != null)
         {
@@ -134,5 +128,22 @@ public class GameManager : MonoBehaviour
 
         MenuActive = MenuWin;
         MenuActive.SetActive(IsPaused);
+    }
+
+    public void GameOptions()
+    {
+        MenuActive = MenuOptions;
+        MenuActive.SetActive(IsPaused);
+    }
+
+    public void Back()
+    {
+        MenuActive.SetActive(false);
+        MenuActive = MenuPause;
+    }
+
+    public void EffectVolume()
+    {
+        gameOptions.effectVolume = effectSlider.value;
     }
 }

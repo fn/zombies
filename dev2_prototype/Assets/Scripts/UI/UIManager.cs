@@ -20,7 +20,9 @@ public class UIManager : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene("TitleScreen", LoadSceneMode.Single);
+
         GameManager.Instance.StateRun();
+        GameManager.Instance.LockInput();
     }
 
     public void Play()
