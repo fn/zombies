@@ -8,7 +8,7 @@ namespace Zombies.AI.States
             Name = EnemyState.NORMAL;
         }
 
-        public override void StateBehavior()
+        public override void Run()
         {
             Owner.UpdateTargetDir();
             Owner.FaceTarget();

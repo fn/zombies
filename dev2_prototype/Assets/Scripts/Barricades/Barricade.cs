@@ -11,7 +11,6 @@ public class Barricade : MonoBehaviour, IDamageable
     [SerializeField] int repairRateCost = 10;
     private bool isRepairing = false;
 
-
     public bool IsBroken { get; private set; }
 
     // health logic

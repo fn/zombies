@@ -15,7 +15,7 @@ namespace Zombies.AI.States
             Name = EnemyState.DEAD;
         }
 
-        public override void StateBehavior()
+        public override void Run()
         {
             Owner.ResetAttack();
             Owner.Free = false;

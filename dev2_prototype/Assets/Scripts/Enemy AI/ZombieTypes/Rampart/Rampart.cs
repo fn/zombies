@@ -15,69 +15,66 @@ public class Rampart : BaseZombie
     [SerializeField] private Collider[] hideSpots = new Collider[10];
     [SerializeField] bool rushing;
     [SerializeField] Vector3 oRotation;
-    public override void Seek()
-    {
-        agent.stoppingDistance = origStoppingDistance;
-        StartCoroutine(TargetProximityCheck());
-        TargetVisibilityCheck();
-        if (attacking)
-        {
-            return;
-        }
-        if (nearPlayer)
-        {
-            FaceTarget();
+    //public override void Seek()
+    //{
+    //    agent.stoppingDistance = origStoppingDistance;
+    //    TargetProximityCheck();
+    //    TargetVisibilityCheck();
+    //    if (attacking)
+    //    {
+    //        return;
+    //    }
+    //    if (nearPlayer)
+    //    {
+    //        FaceTarget();
             
-            //if (seesTarget)
-            //{
-            //    currentTarget = currentTarget.gameObject;
-            //    State = enemyState.ATTACK;
-            //    return;
-            //}
-        }
-        //agent.SetDestination(currentTarget.transform.position);
-        MoveLogic();
-    }
+    //        //if (seesTarget)
+    //        //{
+    //        //    currentTarget = currentTarget.gameObject;
+    //        //    State = enemyState.ATTACK;
+    //        //    return;
+    //        //}
+    //    }
+    //    //agent.SetDestination(currentTarget.transform.position);
+    //    MoveLogic();
+    //}
 
-    public override void Attack()
-    {
-        agent.stoppingDistance = 1;
-        StartCoroutine(TargetProximityCheck());
-        rushing = agent.velocity.sqrMagnitude >= 25;
-        if (rushing)
-        {
-            if (agent.velocity.sqrMagnitude < 25 || (transform.forward - oRotation).sqrMagnitude > 1)
-            {
-                Attacking();
-                return;
-            }
-            AttackLogic();
-        }
-        else
-        {
-            FaceTarget();
-            TargetVisibilityCheck();
+    //public override void Attack()
+    //{
+    //    agent.stoppingDistance = 1;
+    //    TargetProximityCheck();
+    //    rushing = agent.velocity.sqrMagnitude >= 25;
+    //    if (rushing)
+    //    {
+    //        if (agent.velocity.sqrMagnitude < 25 || (transform.forward - oRotation).sqrMagnitude > 1)
+    //        {
+    //            DoPhasedAttack();
+    //            return;
+    //        }
+    //        AttackLogic();
+    //    }
+    //    else
+    //    {
+    //        FaceTarget();
+    //        TargetVisibilityCheck();
             
 
-            if (nearPlayer & seesTarget)
-            {
-                Attacking();
-            }
-        }
+    //        if (nearPlayer & seesTarget)
+    //        {
+    //            DoPhasedAttack();
+    //        }
+    //    }
+
+    //    if (AttackPhase != AttackPhases.IDLE)
+    //    {
+    //        rushing = false;
+    //        DoPhasedAttack();
+    //        return;
+    //    }
 
 
-
-
-        if (AttackPhase != AttackPhases.IDLE)
-        {
-            rushing = false;
-            Attacking();
-            return;
-        }
-
-
-        agent.SetDestination(currentTarget.transform.position);
-    }
+    //    agent.SetDestination(CurrentTarget.transform.position);
+    //}
 
     protected override void AttackLogic()
     {
@@ -90,7 +87,7 @@ public class Rampart : BaseZombie
         {
             if (obj.TryGetComponent(out IDamageable dmg))
             {
-                dmg.TakeDamage(AttackDMG);
+                dmg.TakeDamage(AttackDamage);
             }
         }
 
@@ -123,7 +120,7 @@ public class Rampart : BaseZombie
         for (int i = 0; i < hits; i++)
         {
             float dist = Vector3.Distance(transform.position, hideSpots[i].transform.position);
-            Vector3 dir = (currentTarget.transform.position - hideSpots[i].transform.position).normalized;
+            Vector3 dir = (CurrentTarget.transform.position - hideSpots[i].transform.position).normalized;
 
             if (NavMesh.SamplePosition(hideSpots[i].transform.position, out NavMeshHit hit, dist, agent.areaMask))
             {

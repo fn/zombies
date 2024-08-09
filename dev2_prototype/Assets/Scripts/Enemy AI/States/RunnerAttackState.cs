@@ -9,9 +9,9 @@ namespace Zombies.AI.States
             Name = EnemyState.ATTACK;
         }
 
-        public override void StateBehavior()
+        public override void Run()
         {
-            Owner.Attacking();
+            Owner.DoPhasedAttack();
         }
     }
 }

@@ -7,16 +7,13 @@
             Name = EnemyState.SEEK;
         }
 
-        public override void StateBehavior()
+        public override void Run()
         {
-            //        free = false;
-            //        FaceTarget();
-            //        currentTarget = GameManager.Instance.LocalPlayer.gameObject;
             Owner.Free = false;
             Owner.FaceTarget();
-            Owner.currentTarget = GameManager.Instance.LocalPlayer.gameObject;
+            Owner.CurrentTarget = GameManager.Instance.LocalPlayer.gameObject;
 
-            Owner.StartCoroutine(Owner.TargetProximityCheck(0.1f));
+            Owner.TargetProximityCheck(0.1f);
             Owner.TargetVisibilityCheck();
         }
     }

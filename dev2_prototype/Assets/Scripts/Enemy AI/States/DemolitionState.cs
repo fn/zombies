@@ -7,9 +7,9 @@
             Name = EnemyState.DEMOLITION;
         }
 
-        public override void StateBehavior()
+        public override void Run()
         {
-            Owner.Attacking();
+            Owner.DoPhasedAttack();
         }
     }
 }

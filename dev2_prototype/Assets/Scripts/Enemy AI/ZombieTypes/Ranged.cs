@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zombies.AI;
+using Zombies.AI.States;
 
 public class Ranged : BaseZombie
 {
@@ -11,66 +13,54 @@ public class Ranged : BaseZombie
     [SerializeField] float fireRate;
     [SerializeField] float fleeingDist;
 
-    public override void Seek()
-    {
-        //agent.speed = movementSpeed;
-        //Move();
-        //TargetVisibilityCheck();
-        //StartCoroutine(TargetProximityCheck());
-        //if (nearPlayer && seesTarget)
-        //{
-        //    State = enemyState.ATTACK;
-        //}
-    }
+    public float FleeingDistance { get => fleeingDist; }
 
-    public override void Attack()
-    {
-        //if (State == enemyState.DEAD)
-        //    return;
+    // public override void Seek()
+    // {
+    //     agent.speed = movementSpeed;
+    //     Move();
+    //     TargetVisibilityCheck();
+    //     StartCoroutine(TargetProximityCheck());
+    //     if (nearPlayer && seesTarget)
+    //     {
+    //         State = enemyState.ATTACK;
+    //     }
+    // }
 
-        //UpdateTargetDir();
-        //FaceTarget();
+    //public override void Attack()
+    //{
 
-        //if (attacking)
-        //{
-        //    Attacking();
-        //    return;
-        //}
-
-        //fleeing = GetDistanceToTarget() < fleeingDist;
-        //if (fleeing)
-        //{
-        //    State = enemyState.FLEE;
-        //    return;
-        //}
-
-        //TargetVisibilityCheck();
-
-        //if (!seesTarget && !fleeing)
-        //{
-        //    State = enemyState.SEEK;
-        //    return;
-        //}
-
-        //Attacking();
-    }
+    //}
 
     public void OnAttackHit()
     {
-        if (currentTarget.tag.Contains("Barricade"))
+        if (CurrentTarget.tag.Contains("Barricade"))
         {
-            GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
-
-            if (barrChild.TryGetComponent(out IDamageable dmg))
-                dmg.TakeDamage(destructionPower);
-            if (!barrChild.activeSelf)
+            if(CurrentTarget.gameObject.TryGetComponent(out Barricade barricade))
             {
-                // State = enemyState.SEEK;
-                UpdateState(GetSeekState());
+                barricade.TakeDamage(destructionPower);
 
-                AttackPhase = AttackPhases.IDLE;
+                if (barricade.IsBroken)
+                {
+                    UpdateState(GetSeekState());
+
+                    ResetAttack();
+                }
+
             }
-                
+
+            //GameObject barrChild = CurrentTarget.gameObject.transform.GetChild(0).gameObject;
+
+            //if (barrChild.TryGetComponent(out IDamageable dmg))
+            //    dmg.TakeDamage(destructionPower);
+            //if (!barrChild.activeSelf)
+            //{
+            //    // State = enemyState.SEEK;
+            //    UpdateState(GetSeekState());
+
+            //    AttackPhase = AttackPhases.IDLE;
+            //}
+
             return;
         }
 
@@ -81,23 +71,23 @@ public class Ranged : BaseZombie
     {
         UpdateTargetDir();
 
-        Weapon.Info.Damage = AttackDMG;
+        Weapon.Info.Damage = AttackDamage;
         Weapon.Info.FireRate = fireRate;
         Weapon.Shoot(ShootPos.position, targetDir);
     }
 
     public override BaseAIState GetNormalState()
     {
-        throw new System.NotImplementedException();
+        return null;
     }
 
     public override BaseAIState GetAttackState()
     {
-        throw new System.NotImplementedException();
+        return new RangedAttackState(this);
     }
 
     public override BaseAIState GetSeekState()
     {
-        throw new System.NotImplementedException();
+        return new RangedSeekState(this);
     }
 }

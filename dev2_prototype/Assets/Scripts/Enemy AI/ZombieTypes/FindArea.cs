@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static BaseZombie;
 
 public class FindArea : MonoBehaviour
 {
@@ -20,25 +17,25 @@ public class FindArea : MonoBehaviour
             z.commander = comm;
             // z.State = EnemyState.GATHER;
 
-            int total = comm.mainGroup.Count + comm.flankGroup.Count;
+            int total = comm.MainGroup.Count + comm.FlankGroup.Count;
             float per = (float)comm.flankPercent / 100;
             float totPer = total * per;
 
-            if (comm.flankGroup.Count >= totPer)
+            if (comm.FlankGroup.Count >= totPer)
             {
-                comm.mainGroup.Add(z);
-                z.IsInMain = true;
+                comm.MainGroup.Add(z);
+                z.IsInMainGroup = true;
             }
             else
             {
-                z.IsInMain = false;
-                comm.flankGroup.Add(z);
+                z.IsInMainGroup = false;
+                comm.FlankGroup.Add(z);
             }
-
         }
 
         if (other.gameObject.tag == "Player")
         {
+
             // comm.Agent().ResetPath();
             // comm.State = EnemyState.GATHER;
         }

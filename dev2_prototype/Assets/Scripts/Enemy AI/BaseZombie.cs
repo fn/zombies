@@ -3,29 +3,27 @@ using UnityEngine;
 using Zombies.AI;
 using Zombies.AI.States;
 
-public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
+public abstract class BaseZombie : BaseAI, /*ZombieStates,*/ IDamageable
 {
-    public int HP { get => hp; set => hp = value; }
-    public int AttackDMG { get => attackDamage; set => attackDamage = value; }
+    public int Health { get => health; set => health = value; }
+    public int AttackDamage { get => attackDamage; set => attackDamage = value; }
     public float AttackDelay { get => attackDelay; set => attackDelay = value; }
-    public float AttackCD { get => attackCooldown; set => attackCooldown = value; }
-    public float MoveSPD { get => movementSpeed; set => movementSpeed = (int)value; }
-    public int DestructionPWR { get => destructionPower; set => destructionPower = value; }
+    public float AttackCooldown { get => attackCooldown; set => attackCooldown = value; }
+    public float MovementSpeed { get => movementSpeed; set => movementSpeed = (int)value; }
+    public int DestructionPower { get => destructionPower; set => destructionPower = value; }
     public int Cost { get => cost; set => cost = value; }
     public bool IsAttacking { get => attacking; set => attacking = value; }
-    public bool IsInMain { get => inMainGroup; set => inMainGroup = value; }
+    public bool IsInMainGroup { get => inMainGroup; set => inMainGroup = value; }
     public bool Free { get => free; set => free = value; }
 
-   
     // public enemyState State { get => state; set => state = value; }
     public Commander commander;
 
     public BaseAIState CurrentState;
-
-    virtual public void Normal() { }
-    virtual public void Seek() { }
-    
-    virtual public void Attack() { }
+    public EnemyState CurrentStateName;
+    // virtual public void Normal() { }
+    // virtual public void Seek() { }
+    // virtual public void Attack() { }
 
     // These should ideally just be temporary.
     public abstract BaseAIState GetNormalState();
@@ -45,7 +43,7 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
         {
             fleeing = false;
 
-            UpdateState(new SeekState(this));
+            UpdateState(GetSeekState());
         }
     }
 
@@ -71,8 +69,8 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
     virtual public void Flank()
     {
         agent.speed = 2 * movementSpeed;
-        FlankTarget(currentTarget.transform, commander.flankingDeviation);
-        if (Vector3.Distance(transform.position, currentTarget.transform.position) <= agent.stoppingDistance + commander.flankingDeviation)
+        FlankTarget(CurrentTarget.transform, commander.flankingDeviation);
+        if (Vector3.Distance(transform.position, CurrentTarget.transform.position) <= agent.stoppingDistance + commander.flankingDeviation)
         {
             // Set seek state.
             UpdateState(GetSeekState());
@@ -90,7 +88,7 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
 
     //everything below this is protected or privated by the class and wont be able to accessed by other classes
 
-    [SerializeField] protected int hp;
+    [SerializeField] protected int health;
     [SerializeField] protected int attackDamage;
     [SerializeField] protected float attackDelay;
     [SerializeField] protected float attackCooldown;
@@ -102,38 +100,38 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
     protected float attackTimer;
     protected bool inMainGroup;
     protected bool free;
+    
+    public bool IsFleeing { get => fleeing; set => fleeing = value; }
 
     protected enum AttackPhases { IDLE, PRIMED, ATTACK, RECOVERY };
 
     [SerializeField] protected AttackPhases AttackPhase;
 
-    protected Color origColor;
-    [SerializeField] protected Color colorPrimed;
-
-    // protected Renderer model;
+    // We will have a shader for this stuff.
+    // protected Color origColor;
+    // [SerializeField] protected Color colorPrimed;
 
     [SerializeField] protected bool attacking;
     [SerializeField] protected Vector3 maxDistance;
 
     public Animator animator;
-    int hpOriginal;
+    int origHP;
     Collider col;
     void Start()
     {
         col = GetComponent<Collider>();
-        hpOriginal = hp;
+        origHP = health;
         free = true;
         agent.speed = movementSpeed;
 
-        currentTarget = GameManager.Instance.LocalPlayer.gameObject;
+        CurrentTarget = GameManager.Instance.LocalPlayer.gameObject;
 
-        // model = GetComponent<Renderer>();
-        origColor = Color.white; //GetComponent<Renderer>().material.color;
         origStoppingDistance = agent.stoppingDistance;
 
-        AddDetLayer("Player");
-        AddDetLayer("Default");
-        
+        // AddDetLayer("Player");
+        // AddDetLayer("Default");
+        AddDetLayers(new string[] { "Player", "Default" });
+
         UpdateState(GetSeekState());
     }
 
@@ -176,11 +174,14 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
         // }
 
         // Temp dead check.
-        if (hp <= 0)
+        if (health <= 0)
             UpdateState(new DeadState(this));
 
         if (CurrentState != null)
-            CurrentState.StateBehavior();
+        {
+            CurrentStateName = CurrentState.Name;
+            CurrentState.Run();
+        }
 
         //switch (state)
         //{
@@ -224,7 +225,7 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
 
         if (!attacking)
         {
-            movePosition = currentTarget.transform.position;
+            movePosition = CurrentTarget.transform.position;
         }
         if (seesTarget)
         {
@@ -256,21 +257,17 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
         //check originally to snap zombies out of breaking barricades if attacked, but that just lets them phase right through the barricade (plus defeats the point of barricades anyway)
         //if (State == enemyState.DEMOLITION || State == enemyState.NORMAL)
         //    State = enemyState.SEEK;
-        hp -= amount;
+        health -= amount;
 
         if (amount > 0)
         {
-            StartCoroutine(FlashDamage(false));
             if (AttackPhase == AttackPhases.RECOVERY)
-                hp -= amount;
+                health -= amount;
         }
-        else
-            StartCoroutine(FlashDamage(true));
 
-
-        if (hp > hpOriginal * 2)
-            hp = hpOriginal * 2;
-        if (hp <= 0 && CurrentState != null && CurrentState.Name != EnemyState.DEAD)
+        if (health > origHP * 2)
+            health = origHP * 2;
+        if (health <= 0 && CurrentState != null && CurrentState.Name != EnemyState.DEAD)
         {
             GameManager.Instance.zombieDead.Add(this); //adds to the dead pile
 
@@ -289,7 +286,7 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
             if (Random.Range(0, 101) <= 25)
             {
                 // check if this object does have ItemDropper
-                if (TryGetComponent<ItemDropper>(out ItemDropper item))
+                if (TryGetComponent(out ItemDropper item))
                 {
                     // pass this items location and rotation to DropItem
                     item.DropItem(transform.position, transform.rotation);
@@ -302,7 +299,7 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
             UpdateState(new DeadState(this));
             return;
         }
-        if (hp > 0 && CurrentState != null && CurrentState.Name == EnemyState.DEAD)
+        if (health > 0 && CurrentState != null && CurrentState.Name == EnemyState.DEAD)
         {
             agent.ResetPath();
             col.isTrigger = false;
@@ -320,16 +317,8 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
         }
     }
 
-    private IEnumerator FlashDamage(bool heal)
+    public void DoPhasedAttack()
     {
-        yield return new WaitForSeconds(.5f);
-    }
-
-    public void Attacking()
-    {
-        // if (State == enemyState.DEAD)
-        //     return;
-
         seesTarget = false;
         agent.ResetPath();
         switch (AttackPhase)
@@ -343,15 +332,12 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
                 AttackPhase++;
                 break;
             case AttackPhases.ATTACK:
-                attackTimer = AttackCD;
+                attackTimer = AttackCooldown;
                 AttackPhase++;
 
                 if (animator != null)
                 {
-                    if (currentTarget.tag.Contains("Barricade"))
-                        animator.SetTrigger("BarricadeAttack");
-                    else
-                        animator.SetTrigger("Attack");
+                    animator.SetTrigger(CurrentTarget.tag.Contains("Barricade") ? "BarricadeAttack" : "Attack");
                     return;
                 }
 
@@ -382,7 +368,7 @@ public abstract class BaseZombie : BaseAI, ZombieStates, IDamageable
                 return;
             }
 
-            currentTarget = other.gameObject;
+            CurrentTarget = other.gameObject;
             
             // Set current state to demolition.
             UpdateState(new DemolitionState(this));

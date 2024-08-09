@@ -13,6 +13,6 @@ namespace Zombies.AI
         public EnemyState Name;
 
         // The behavior of the current state.
-        public abstract void StateBehavior();
+        public abstract void Run();
     }
 }

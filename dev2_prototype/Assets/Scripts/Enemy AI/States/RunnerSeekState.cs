@@ -4,15 +4,15 @@
     {
         public RunnerSeekState(BaseZombie owner) : base(owner) { }
 
-        public override void StateBehavior()
+        public override void Run()
         {
             // Call the base class's behavior
-            base.StateBehavior();
+            base.Run();
 
             Owner.Move();
 
-            Owner.Agent.speed = Owner.SeesTarget ? Owner.MoveSPD * 2 : Owner.MoveSPD;
-
+            Owner.Agent.speed = Owner.SeesTarget ? Owner.MovementSpeed * 2 : Owner.MovementSpeed;
+    
             if (Owner.NearTarget)
             {
                 Owner.UpdateState(new RunnerAttackState(Owner));

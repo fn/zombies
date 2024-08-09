@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.ProBuilder;
@@ -8,25 +9,24 @@ using Zombies.AI.States;
 
 public class Commander : BaseZombie
 {
-    
     [Tooltip("Percentage of zeds being sent to flanking")]
     [Range(0, 50)]
     [SerializeField] public int flankPercent;
     [Tooltip("the bigger the number, the further the flanking zeds will be from the player")]
     public int flankingDeviation;
     public GameObject movePos;
-    public List<BaseZombie> mainGroup;
-    public List<BaseZombie> flankGroup;
+    public List<BaseZombie> MainGroup;
+    public List<BaseZombie> FlankGroup;
     public int readyZombies;
     float commandTimer;
     bool commandSent;
     bool flanking;
 
-    public override void Seek()
-    {
-        agent.speed = MoveSPD;
-        Move();
-    }
+    //public override void Seek()
+    //{
+    //    agent.speed = MovementSpeed;
+    //    Move();
+    //}
 
     public override void Gather()
     {
@@ -37,58 +37,58 @@ public class Commander : BaseZombie
         // UpdateState(GetNormalState());
     }
 
-    public override void Normal()
-    {
-        //UpdateTargetDir();
-        //FaceTarget();
-        //TargetVisibilityCheck();
-        //if (seesTarget)
-        //{
-        //    UpdateState(GetAttackState());
-        //    return;
-        //}
+    //public override void Normal()
+    //{
+    //    //UpdateTargetDir();
+    //    //FaceTarget();
+    //    //TargetVisibilityCheck();
+    //    //if (seesTarget)
+    //    //{
+    //    //    UpdateState(GetAttackState());
+    //    //    return;
+    //    //}
 
-        //if (readyZombies >= mainGroup.Count / 2)
-        //{
-        //    UpdateState(new FlankState(this));
-        //    readyZombies = 0;
-        //}
-    }
+    //    //if (readyZombies >= mainGroup.Count / 2)
+    //    //{
+    //    //    UpdateState(new FlankState(this));
+    //    //    readyZombies = 0;
+    //    //}
+    //}
 
-    public override void Attack()
-    {
-        //UpdateTargetDir();
-        //StartCoroutine(TargetProximityCheck());
-        //FaceTarget();
+    //public override void Attack()
+    //{
+    //    //UpdateTargetDir();
+    //    //StartCoroutine(TargetProximityCheck());
+    //    //FaceTarget();
         
-        //if (!seesTarget) State = enemyState.NORMAL;
-        //if (attackTimer <= 0)
-        //{
-        //    attackTimer = attackCooldown;
-        //    HealZeds();
-        //}
-        //commandTimer -= Time.deltaTime;
+    //    //if (!seesTarget) State = enemyState.NORMAL;
+    //    //if (attackTimer <= 0)
+    //    //{
+    //    //    attackTimer = attackCooldown;
+    //    //    HealZeds();
+    //    //}
+    //    //commandTimer -= Time.deltaTime;
 
-        //if (commandTimer < 0)
-        //{
-        //    commandTimer = 5;
-        //    commandSent = false;
-        //}
-        //if (nearPlayer) 
-        //    State = enemyState.FLEE;
-
-
-        //if (commandSent)
-        //    return;
+    //    //if (commandTimer < 0)
+    //    //{
+    //    //    commandTimer = 5;
+    //    //    commandSent = false;
+    //    //}
+    //    //if (nearPlayer) 
+    //    //    State = enemyState.FLEE;
 
 
-        //SendCommand(mainGroup, nameof(GetSeekState));
-        //SendCommand(mainGroup, currentTarget);
-        //SendCommand(flankGroup, nameof(GetSeekState));
-        //SendCommand(flankGroup, currentTarget);
-        //commandSent = true;
+    //    //if (commandSent)
+    //    //    return;
 
-    }
+
+    //    //SendCommand(mainGroup, nameof(GetSeekState));
+    //    //SendCommand(mainGroup, currentTarget);
+    //    //SendCommand(flankGroup, nameof(GetSeekState));
+    //    //SendCommand(flankGroup, currentTarget);
+    //    //commandSent = true;
+
+    //}
 
     public override void Flank()
     {
@@ -104,20 +104,20 @@ public class Commander : BaseZombie
 
     public void HealZeds()
     {
-        foreach (var z in mainGroup)
+        // Loop over the main group and flank group.
+        foreach (var z in MainGroup.Concat(FlankGroup))
         {
-            IDamageable dmg = z.GetComponent<IDamageable>();
-            if (dmg == null)
-                continue;
-            dmg.TakeDamage(-attackDamage);
+            if (z.TryGetComponent(out IDamageable dmg))
+                dmg.TakeDamage(-attackDamage);
         }
-        foreach (var z in flankGroup)
-        {
-            IDamageable dmg = z.GetComponent<IDamageable>();
-            if (dmg == null)
-                continue;
-            dmg.TakeDamage(-attackDamage);
-        }
+
+        // foreach (var z in FlankGroup)
+        // {
+        //     IDamageable dmg = z.GetComponent<IDamageable>();
+        //     if (dmg == null)
+        //         continue;
+        //     dmg.TakeDamage(-attackDamage);
+        // }
 
     }
 
@@ -152,9 +152,10 @@ public class Commander : BaseZombie
         {
             if (!z.Free)
                 continue;
-            z.currentTarget = target;
+            z.CurrentTarget = target;
             if (!z.SeesTarget)
                 z.SeesTarget = seesTarget;
+
             z.DestinationCommand(target.transform.position);
             z.Free = false;
         }
@@ -175,9 +176,6 @@ public class Commander : BaseZombie
     {
         throw new System.NotImplementedException();
     }
-
-
-
 
     ////gives a spot to move to/gather around
     //void SendCommand(Vector3 destination)

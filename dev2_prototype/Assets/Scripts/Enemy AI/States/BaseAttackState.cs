@@ -7,12 +7,12 @@
             Name = EnemyState.ATTACK;
         }
 
-        public override void StateBehavior()
+        public override void Run()
         {
             Owner.Move();
-            Owner.StartCoroutine(Owner.TargetProximityCheck(0.1f));
+            Owner.TargetProximityCheck(0.1f);
             Owner.TargetVisibilityCheck();
-            Owner.Agent.speed = Owner.SeesTarget ? Owner.MoveSPD * 2 : Owner.MoveSPD;
+            Owner.Agent.speed = Owner.SeesTarget ? Owner.MovementSpeed * 2 : Owner.MovementSpeed;
 
             if (Owner.IsAttacking)
             {

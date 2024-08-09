@@ -18,9 +18,9 @@ public class Runner : BaseZombie
     {
         nearPlayer = GetDistanceToTarget() <= origStoppingDistance;
         TargetVisibilityCheck();
-        if (currentTarget.tag.Contains("Barricade"))
+        if (CurrentTarget.tag.Contains("Barricade"))
         {
-            GameObject barrChild = currentTarget.gameObject.transform.GetChild(0).gameObject;
+            GameObject barrChild = CurrentTarget.gameObject.transform.GetChild(0).gameObject;
 
             if (barrChild.TryGetComponent(out IDamageable dmg))
                 dmg.TakeDamage(destructionPower);
@@ -36,12 +36,12 @@ public class Runner : BaseZombie
 
             return;
         }
-        else if (currentTarget.TryGetComponent(out IDamageable dmg))
+        else if (CurrentTarget.TryGetComponent(out IDamageable dmg))
         {
 
             if (!nearPlayer || !seesTarget)
                 return;
-            dmg.TakeDamage(AttackDMG);
+            dmg.TakeDamage(AttackDamage);
         }      
     }
 
